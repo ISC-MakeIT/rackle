@@ -1,0 +1,75 @@
+.container {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.rootContainer {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 30px;
+  width: 100%;
+}
+
+.contentContainer {
+  padding-top: 30;
+}
+
+.tabBarInfoContainer {
+  align-items: center;
+  background-color: '#fbfbfb';
+  bottom: 0;
+  left: 0;
+  padding: 20px;
+  position: absolute;
+  right: 0;
+}
+
+.developmentModeText {
+  color: grey;
+  font-size: 12px;
+  line-height: 12px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.tabBarInfoText {
+  color: rgba(96,100, 109,1);
+  font-size: 17px;
+  text-align: center;
+}
+
+.getStartedContainer {
+  align-items: center;
+  margin: 50px;
+}
+
+.homeScreenFilename {
+  margin: 7px;
+}
+
+.getStartedText {
+  color: rgba(96,100,109, 1);
+  font-size: 17;
+  line-height: 24px;
+  text-align: center;
+}
+
+.codeHighlightContainer {
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 3px;
+  padding: 4px;
+}
+
+.codeHighlightText {
+  color: rgba(96,100,109,0.8);
+}
+
+.navigationFilename {
+  margin-top: 5px;
+}
+
