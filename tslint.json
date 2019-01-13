@@ -13,7 +13,8 @@
     "jsx-boolean-value": [true, "never"],
     "max-line-length": [true, 160],
     "jsx-no-multiline-js": false,
-    "arrow-parens": [true, "ban-single-arg-parens"]
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "indent": [true, "spaces", 4]
   },
   "extends": [ "tslint-react", "tslint:recommended" ],
   "linterOptions": {

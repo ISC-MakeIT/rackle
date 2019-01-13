@@ -6,7 +6,10 @@
     "ios": "expo start --ios",
     "eject": "expo eject",
     "test": "node ./node_modules/jest/bin/jest.js --watchAll",
-    "lint": "./node_modules/.bin/tslint ./src/**/*.ts*"
+    "tslint": "./node_modules/.bin/tslint ./src/**/*.ts*",
+    "tslint-fix": "./node_modules/.bin/tslint ./src/**/*.ts* --fix",
+    "style": "./node_modules/.bin/sass-lint -c .sass-lint.yml  -v",
+    "style-fix": "./node_modules/.bin/sass-lint-auto-fix --config-sass-lint .sass-lint.yml"
   },
   "jest": {
     "preset": "jest-expo"
@@ -32,6 +35,8 @@
     "jest-expo": "^31.0.0",
     "node-sass": "^4.11.0",
     "react-native-sass-transformer": "^1.3.1",
+    "sass-lint": "^1.12.1",
+    "sass-lint-auto-fix": "^0.15.1",
     "tslint-react": "^3.6.0",
     "typescript": "3.2.2"
   },
