@@ -5,7 +5,7 @@ import { createBottomTabNavigator, createStackNavigator } from "react-navigation
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
 import LinksScreen from "../screens/LinksScreen";
-import SettingsScreen from "../screens/SettingsScreen";
+import MyPageScreen from "../screens/MyPageScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -39,22 +39,22 @@ LinksStack.navigationOptions = {
   ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const MyPageStack = createStackNavigator({
+    MyPage: MyPageScreen,
 });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: "Settings",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
-    />
-  ),
+MyPageStack.navigationOptions = {
+    tabBarLabel: "Account",
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon
+            focused={focused}
+            name={Platform.OS === "ios" ? "ios-person" : "md-person"}
+        />
+    ),
 };
 
 export default createBottomTabNavigator({
   HomeStack,
   LinksStack,
-  SettingsStack,
+  MyPageStack,
 });
