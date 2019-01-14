@@ -15,5 +15,4 @@ export default class MyPageScreen extends React.Component {
       </View>
     );
   }
-  
 }
