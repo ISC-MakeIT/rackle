@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import MapViewComponent from "./mapComponents/MapViewComponent";
 
 export default class Test extends React.Component<{}, {}> {
@@ -9,7 +9,7 @@ export default class Test extends React.Component<{}, {}> {
             location: {
               latitude: 35.46588771428577,
               longitude: 139.62227088041905,
-              latitudeDelta: 0.019,
+              latitudeDelta: 0.5,
               longitudeDelta: 0.0121,
             },
             level: {
