@@ -1,24 +1,47 @@
-import React from "react";
-import { StyleSheet, View} from "react-native";
+import * as React from "react";
+import { StyleSheet, View } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MarkerComponent from "./MarkerComponent";
 
-interface MapViewComponentProps extends MarkerPoint {
+interface MapViewComponentProps {
     location: {
-      latitude: number;
-      longitude: number;
+        latitude: number;
+        longitude: number;
+        latitudeDelta: number;
+        longitudeDelta: number;
     };
-    level: {string: MarkerPoint};
+    level: {
+        [floor: number]: {
+            [type: string]: Array<{
+                latitude: number,
+                longitude: number,
+            }>,
+        };
+    };
 }
 
-interface MapViewComponentState extends MarkerPoint {
-  indoorLevel: number;
-  location: {
-    latitude: number;
-    longitude: number;
-  };
-  marker: MarkerPoint;
-  level: {string: MarkerPoint};
+interface MapViewComponentState {
+    indoorLevel: string;
+    location: {
+        latitude: number;
+        longitude: number;
+        latitudeDelta: number;
+        longitudeDelta: number;
+    };
+    marker: {
+        [type: string]: Array<{
+            latitude: number,
+            longitude: number,
+        }>,
+    };
+    level: {
+        [floor: number]: {
+            [type: string]: Array<{
+                latitude: number,
+                longitude: number,
+            }>,
+        };
+    };
 }
 
 interface Region {
@@ -33,27 +56,27 @@ interface LatLng {
     longitude: number;
 }
 
-interface MarkerPoint extends LatLng {
-  string: {
-    floor: LatLng[],
-    toilet: LatLng[],
-  };
+interface MarkerPoint {
+    [type: string]: Array<{
+        latitude: number,
+        longitude: number,
+    }>;
 }
 
-export default class MapViewComponent extends React.Component<MapViewComponentProps, MapViewComponentState> {
-  constructor(props: MapViewComponentProps) {
-    super (props);
-    this.state = {
-      indoorLevel: "1",
-      location: this.props.location,
-      marker: this.props.level[1],
-      level: this.props.level,
-    };
-  }
+export default class MapViewComponent extends React.Component <MapViewComponentProps, MapViewComponentState> {
+    constructor(props: MapViewComponentProps) {
+        super (props);
+        this.state = {
+            indoorLevel: "1",
+            location: this.props.location,
+            marker: this.props.level[1],
+            level: this.props.level,
+        };
+    }
 
-    public shouldComponentUpdate(nextProps, nextState) {
+    public shouldComponentUpdate(nextProps: MapViewComponentProps, nextState: MapViewComponentState) {
         // 階層が変わっていなければ再表示しない
-        if (this.state.indoorLevel === nextState.indoorLevel && this.state.region === nextState.region) {
+        if (this.state.indoorLevel === nextState.indoorLevel) {
             return false;
         }
         return true;
@@ -62,32 +85,32 @@ export default class MapViewComponent extends React.Component<MapViewComponentPr
     public render() {
         return (
             <View style={styles.container}>
-            <MapView
-                provider={PROVIDER_GOOGLE}
-                style={styles.map}
-                region={this.state.location}
-                onRegionChange={(e) => this.locationChange (e)} // 動くたび発火
-                minZoomLevel={18} // 初期拡大
-                onPress={(e) => console.log (e.nativeEvent.coordinate)}
-                onIndoorLevelActivated={(e) => { this.indoorLevel (e.nativeEvent.IndoorLevel.name); }} // 現在参照している階をgetだぜ
-            >
-            {
-                this.state.marker.floor.map((point: LatLng, index: number) => {
-                    return (
-                        // 案内用のアイコンを表示
-                        <MarkerComponent key={index} latLng={point} />
-                    );
-                })
-            }
-            {
-                this.state.marker.toilet.map((point: LatLng, index: number) => {
-                    return (
-                        // トイレ用のアイコンを表示
-                        <MarkerComponent key={index} latLng={point} icon={"toilet"} />
-                    );
-                })
-            }
-            </MapView>
+                <MapView
+                    provider={PROVIDER_GOOGLE}
+                    style={styles.map}
+                    region={this.state.location}
+                    onRegionChange={(e: Region) => this.locationChange (e)} // 動くたび発火
+                    minZoomLevel={18} // 初期拡大
+                    onPress={(e: any) => console.log (e.nativeEvent.coordinate)}
+                    onIndoorLevelActivated={(e: any) => { this.indoorLevel (e.nativeEvent.IndoorLevel.name); }} // 現在参照している階をgetだぜ
+                >
+                {
+                    this.state.marker.floor.map((point: LatLng, index: number) => {
+                        return (
+                            // 案内用のアイコンを表示
+                            <MarkerComponent key={index} latLng={point} icon={"floor"} />
+                        );
+                    })
+                }
+                {
+                    this.state.marker.toilet.map((point: LatLng, index: number) => {
+                        return (
+                            // トイレ用のアイコンを表示
+                            <MarkerComponent key={index} latLng={point} icon={"toilet"} />
+                        );
+                    })
+                }
+                </MapView>
             </View>
         );
     }
@@ -106,9 +129,9 @@ export default class MapViewComponent extends React.Component<MapViewComponentPr
 
     // 現在地を常に更新
     private locationChange(region: Region) {
-      this.setState ({
-        location: region,
-      });
+        this.setState ({
+            location: region,
+        });
     }
 }
 
@@ -118,9 +141,10 @@ const styles = StyleSheet.create({
         height: 700,
         width: 420,
         justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
+        alignItems: "center",
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
+        backfaceVisibility: "hidden",
+    },
 });

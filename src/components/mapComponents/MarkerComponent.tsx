@@ -1,10 +1,11 @@
-import React from "react";
+import * as React from "react";
 import {  Marker } from "react-native-maps";
 
 interface MarkerComponentProps {
-    coordinate: {
-        latitude: number,
-        longitude: number,
+    key: number;
+    latLng: {
+        latitude: number;
+        longitude: number;
     };
     icon: string;
 }
@@ -22,14 +23,14 @@ export default class MarkerComponent extends React.Component <MarkerComponentPro
         super (props);
         this.state =  {
             coordinate: this.props.latLng,
-            icon: this.props.icon
+            icon: this.props.icon,
         };
     }
 
-    public componentWillReceiveProps(nextProps) {
+    public componentWillReceiveProps(nextProps: MarkerComponentProps) {
         this.setState ({
             coordinate: nextProps.latLng,
-            icon: nextProps.icon
+            icon: nextProps.icon,
         });
     }
 
