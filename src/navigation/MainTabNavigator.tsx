@@ -3,12 +3,15 @@ import { Platform } from "react-native";
 import { createBottomTabNavigator, createStackNavigator } from "react-navigation";
 
 import TabBarIcon from "../components/TabBarIcon";
+import GuideScreen from "../screens/GuideScreen";
 import HomeScreen from "../screens/HomeScreen";
-import LinksScreen from "../screens/LinksScreen";
 import MyPageScreen from "../screens/MyPageScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
+  Guide: GuideScreen,
+}, {
+    initialRouteName: "Home",
 });
 
 HomeStack.navigationOptions = {
@@ -16,25 +19,7 @@ HomeStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={
-        Platform.OS === "ios"
-          ? `ios-information-circle${focused ? "" : "-outline"}`
-          : "md-information-circle"
-      }
-    />
-  ),
-};
-
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
-});
-
-LinksStack.navigationOptions = {
-  tabBarLabel: "Links",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
+      name={Platform.OS === "ios" ? "ios-search" : "md-search"}
     />
   ),
 };
@@ -55,6 +40,11 @@ MyPageStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
   MyPageStack,
+}, {
+    tabBarOptions: {
+        activeTintColor: "#037aff",
+        inactiveTintColor: "#737373",
+        showLabel: false, // TODO 確認
+    },
 });

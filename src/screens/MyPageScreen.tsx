@@ -5,7 +5,7 @@ import { MonoText } from "../components/StyledText";
 import myPageStyle from "../stylesheets/MypageScreen.scss";
 
 export default class MyPageScreen extends React.Component {
-    public static navigationOptions = { header: null };
+    public static navigationOptions = { title: "mypage" };
 
     public render() {
 
