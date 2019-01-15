@@ -4,6 +4,7 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MarkerComponent from "./MarkerComponent";
 
 interface MapViewComponentProps {
+    indoorLevel: string;
     location: {
         latitude: number;
         longitude: number;
@@ -11,11 +12,13 @@ interface MapViewComponentProps {
         longitudeDelta: number;
     };
     level: {
-        [floor: number]: {
+        // "1", B1, B2, ・・・
+        [floor: string]: {
+            // destination, floor, toilet
             [type: string]: Array<{
                 latitude: number,
                 longitude: number,
-            }>,
+            }> | "undefined",
         };
     };
 }
@@ -32,14 +35,14 @@ interface MapViewComponentState {
         [type: string]: Array<{
             latitude: number,
             longitude: number,
-        }>,
+        }> | "undefined",
     };
     level: {
-        [floor: number]: {
+        [floor: string]: {
             [type: string]: Array<{
                 latitude: number,
                 longitude: number,
-            }>,
+            }> | "undefined",
         };
     };
 }
@@ -60,16 +63,16 @@ interface MarkerPoint {
     [type: string]: Array<{
         latitude: number,
         longitude: number,
-    }>;
+    }> | "undefined";
 }
 
 export default class MapViewComponent extends React.Component <MapViewComponentProps, MapViewComponentState> {
     constructor(props: MapViewComponentProps) {
         super (props);
         this.state = {
-            indoorLevel: "1",
+            indoorLevel: this.props.indoorLevel,
             location: this.props.location,
-            marker: this.props.level[1],
+            marker: this.props.level[ this.props.indoorLevel ],
             level: this.props.level,
         };
     }
@@ -95,20 +98,47 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
                     onIndoorLevelActivated={(e: any) => { this.indoorLevel (e.nativeEvent.IndoorLevel.name); }} // 現在参照している階をgetだぜ
                 >
                 {
-                    this.state.marker.floor.map((point: LatLng, index: number) => {
-                        return (
-                            // 案内用のアイコンを表示
-                            <MarkerComponent key={index} latLng={point} icon={"floor"} />
-                        );
-                    })
+                    // typeごとに<MarkerComponent/>を呼ぶ
+                    ((floor = this.state.marker.floor) => {
+                         if (floor !== "undefined") {
+                            const marker = floor.map((point: LatLng, index: number) => {
+                                return (
+                                    // 階層ごとののアイコンを表示
+                                    <MarkerComponent key={index} latLng={point} icon={"floor"} />
+                                );
+                            });
+                            return marker;
+                         }
+                         return null;
+                    })()
                 }
                 {
-                    this.state.marker.toilet.map((point: LatLng, index: number) => {
-                        return (
-                            // トイレ用のアイコンを表示
-                            <MarkerComponent key={index} latLng={point} icon={"toilet"} />
-                        );
-                    })
+                    ((toilet = this.state.marker.toilet) => {
+                        if (toilet !== "undefined") {
+                            const marker = toilet.map((point: LatLng, index: number) => {
+                                return (
+                                    // トイレののアイコンを表示
+                                    <MarkerComponent key={index} latLng={point} icon={"toilet"} />
+                                );
+                            });
+                            return marker;
+                        }
+                        return null;
+                    })()
+                }
+                {
+                    ((destination = this.state.marker.destination) => {
+                        if (destination !== "undefined") {
+                            const marker = destination.map((point: LatLng, index: number) => {
+                                return (
+                                    // 目的地のアイコンを表示
+                                    <MarkerComponent key={index} latLng={point} icon={"destination"} />
+                                );
+                            });
+                            return marker;
+                        }
+                        return null;
+                    })()
                 }
                 </MapView>
             </View>
