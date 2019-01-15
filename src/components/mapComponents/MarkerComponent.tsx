@@ -15,7 +15,7 @@ interface MarkerComponentState {
         latitude: number,
         longitude: number,
     };
-    icon: string | null;
+    icon: string;
 }
 
 export default class MarkerComponent extends React.Component <MarkerComponentProps, MarkerComponentState> {
