@@ -7,38 +7,38 @@ interface MarkerComponentProps {
         latitude: number;
         longitude: number;
     };
-    icon: string;
+    iconName: string;
 }
 
 interface MarkerComponentState {
-    coordinate: {
+    latLng: {
         latitude: number,
         longitude: number,
     };
-    icon: string;
+    iconName: string;
 }
 
 export default class MarkerComponent extends React.Component <MarkerComponentProps, MarkerComponentState> {
     constructor(props: MarkerComponentProps) {
         super (props);
         this.state =  {
-            coordinate: this.props.latLng,
-            icon: this.props.icon,
+            latLng: this.props.latLng,
+            iconName: this.props.iconName,
         };
     }
 
     // propsの更新。これをしないとマーカーが更新されない
     public componentWillReceiveProps(nextProps: MarkerComponentProps) {
         this.setState ({
-            coordinate: nextProps.latLng,
-            icon: nextProps.icon,
+            latLng: nextProps.latLng,
+            iconName: nextProps.iconName,
         });
     }
 
     public render() {
        return (
             <Marker
-                coordinate={this.state.coordinate}
+                coordinate={this.state.latLng}
                 tracksInfoWindowChanges={false}
                 image={this.iconChange ()}
             />
@@ -47,6 +47,8 @@ export default class MarkerComponent extends React.Component <MarkerComponentPro
 
     // 必要な画像をしてい
     private iconChange() {
-        if (this.state.icon === "toilet") return require("../../../assets/images/toilet.jpg");
+        if (this.state.iconName === "toilet") return require("../../../assets/images/toilet.jpg");
+        if (this.state.iconName === "floor") return require("../../../assets/images/floor.jpg");
+        if (this.state.iconName === "destination") return false;
     }
 }

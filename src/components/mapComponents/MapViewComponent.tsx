@@ -1,50 +1,101 @@
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import MarkerComponent from "./MarkerComponent";
+
+interface InitializationLocation {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
+}
 
 interface MapViewComponentProps {
     indoorLevel: string;
-    location: {
-        latitude: number;
-        longitude: number;
-        latitudeDelta: number;
-        longitudeDelta: number;
-    };
-    level: {
-        // "1", B1, B2, ・・・
-        [floor: string]: Array<{
-            // destination, floor, toilet
-            [type: string]: {
-                latitude: number,
-                longitude: number,
-            },
-        }>;
-    };
-}
+    initializationLocation: InitializationLocation;
+    markers: [{
+        movieMarkers: [{
+            floor: string,
+            movieId: number,
+            latitude: number,
+            longitude: number,
+        }],
+    }, {
+        publicFacilityMarkers: [{
+            floor: string,
+            type: string,
+            latitude: number,
+            longitude: number,
+        }];
+    }];
+    guideLines: [{
+        floor: string,
+        path: [{
+            latitude: number,
+            longitude: number,
+        }],
+    }];
 
-interface MapViewComponentState {
-    indoorLevel: string;
-    location: {
-        latitude: number;
-        longitude: number;
-        latitudeDelta: number;
-        longitudeDelta: number;
-    };
-    marker: Array<{
-      [type: string]: {
+    tmpMarkers: {
+      movies: [{
+          floor: string,
+          movieId: number,
           latitude: number,
           longitude: number,
-      },
-    }>;
-    level: {
-        [floor: string]: Array<{
-            [type: string]: {
-                latitude: number,
-                longitude: number,
-            },
-        }>;
+      }],
+      publicFacilities: [{
+          floor: string,
+          type: string,
+          latitude: number,
+          longitude: number,
+      }];
     };
+  }
+
+interface MapViewComponentState {
+  indoorLevel: string;
+  initializationLocation: {
+      latitude: number;
+      longitude: number;
+      latitudeDelta: number;
+      longitudeDelta: number;
+  };
+  currentStateMarkers: {
+      movieMarkers: Array<{
+          floor: string,
+          movieId: number,
+          latitude: number,
+          longitude: number,
+      }>,
+      publicFacilityMarkers: Array<{
+          floor: string,
+          type: string,
+          latitude: number,
+          longitude: number,
+      }>;
+  };
+  markers: [{
+      movieMarkers: Array<{
+          floor: string,
+          movieId: number,
+          latitude: number,
+          longitude: number,
+      }>,
+  }, {
+      publicFacilityMarkers: Array<{
+          floor: string,
+          type: string,
+          latitude: number,
+          longitude: number,
+      }>;
+  }];
+  guideLines: [{
+      floor: string,
+      path: [{
+          latitude: number,
+          longitude: number,
+      }],
+  }];
 }
 
 interface Region {
@@ -54,23 +105,16 @@ interface Region {
     longitudeDelta: number;
 }
 
-interface MarkerPoint {
-    [floor: string]: Array<{
-          [type: string]: {
-              latitude: number,
-              longitude: number,
-          },
-    }>;
-}
-
 export default class MapViewComponent extends React.Component <MapViewComponentProps, MapViewComponentState> {
     constructor(props: MapViewComponentProps) {
         super (props);
+        const currentStateMarkers = this.currentStateMarkersGenerate(this.props.indoorLevel);
         this.state = {
             indoorLevel: this.props.indoorLevel,
-            location: this.props.location,
-            marker: this.props.level[ this.props.indoorLevel ],
-            level: this.props.level,
+            initializationLocation: this.props.initializationLocation,
+            currentStateMarkers,
+            markers: this.props.markers,
+            guideLines: this.props.guideLines,
         };
     }
 
@@ -83,32 +127,48 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
     }
 
     public render() {
+        const movieMarkers = this.state.currentStateMarkers.movieMarkers;
+        const currentMovieMarker = movieMarkers.map((point, index: number) => {
+            const latLng = {
+                latitude: point.latitude,
+                longitude: point.longitude,
+            };
+            return (
+                <MarkerComponent key={index} latLng={latLng} iconName={"floor"} />
+            );
+        });
+
+        const publicFacilityMarkers = this.state.currentStateMarkers.publicFacilityMarkers;
+        const currentPublicFacilityMarker = publicFacilityMarkers.map((point, index: number) => {
+            const latLng = {
+                latitude: point.latitude,
+                longitude: point.longitude,
+            };
+            const iconName = point.type;
+            return (
+                <MarkerComponent key={index} latLng={latLng} iconName={iconName} />
+            );
+        });
+
         return (
             <View style={styles.container}>
                 <MapView
                     provider={PROVIDER_GOOGLE}
                     style={styles.map}
-                    region={this.state.location}
+                    region={this.state.initializationLocation}
                     onRegionChange={(e: Region) => this.locationChange (e)} // 動くたび発火
                     minZoomLevel={18} // 初期拡大
                     onPress={(e: any) => console.log (e.nativeEvent.coordinate)}
                     onIndoorLevelActivated={(e: any) => { this.indoorLevel (e.nativeEvent.IndoorLevel.name); }} // 現在参照している階をgetだぜ
                 >
-                {
-                    // typeごとに<MarkerComponent/>を呼ぶ
-                    (() => {
-                        const type = this.state.marker;
-                        const marker = type.map((point, index: number) => {
-                            const keys = Object.keys(point);
-                            const key = keys[0];
-                            return (
-                                // 階層ごとののアイコンを表示
-                                <MarkerComponent key={index} latLng={point[key]} icon={key} />
-                            );
-                        });
-                        return marker;
-                    })()
-                }
+                {currentMovieMarker}
+                {currentPublicFacilityMarker}
+                <Polyline 
+                    coordinate={[
+                        {latitude: 35.46562469087737, longitude: 139.6228090301156},
+                        {latitude: 35.46562605622866, longitude: 139.62143406271935},
+                    ]}
+                />
                 </MapView>
             </View>
         );
@@ -116,12 +176,12 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
 
     // 現在の階層を取得しそれに対応した階のピンを刺す情報に置き換える
     private indoorLevel(name: string) {
-        // 階層を取得しているとたまに"Level 1"とか出てくるのでとりあえず無視
+        // FIXME 階層を取得しているとたまに"Level 1"とか出てくるのでとりあえず無視
         if (name !== "Level 1") {
-            const level: MarkerPoint = this.state.level;
+            const currentStateMarkers = this.currentStateMarkersGenerate(name);
             this.setState ({
                 indoorLevel: name,
-                marker: level[name],
+                currentStateMarkers,
             });
         }
     }
@@ -129,8 +189,19 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
     // 現在地を常に更新
     private locationChange(region: Region) {
         this.setState ({
-            location: region,
+          initializationLocation: region,
         });
+    }
+
+    // 階層を入れるとその階のマーカーの情報をcurrentStateMarkersに格納する
+    private currentStateMarkersGenerate(indoorLevel: string, markers = this.props.markers) {
+        const movieMarkers = markers[0].movieMarkers.filter(movieMarker => movieMarker.floor === indoorLevel);
+        const publicFacilityMarkers = markers[1].publicFacilityMarkers.filter(publicFacilityMarker => publicFacilityMarker.floor === indoorLevel);
+        const FloorMarkers = {
+            movieMarkers,
+            publicFacilityMarkers,
+        };
+        return FloorMarkers;
     }
 }
 
