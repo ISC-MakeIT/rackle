@@ -6,7 +6,7 @@ import {MonoText} from "../components/StyledText";
 import homeStyle from "../stylesheets/HomeScreen.scss";
 
 interface Props {
-    navigation: any; // navigation
+    navigation: any;
 }
 
 export default class HomeScreen extends React.Component<Props, {}> {

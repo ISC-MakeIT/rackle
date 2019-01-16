@@ -7,26 +7,19 @@ import GuideScreen from "../screens/GuideScreen";
 import HomeScreen from "../screens/HomeScreen";
 import MyPageScreen from "../screens/MyPageScreen";
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
-  Guide: GuideScreen,
-}, {
-    initialRouteName: "Home",
-});
+const HomeStack = createStackNavigator({ Home: { screen: HomeScreen } });
+const MyPageStack = createStackNavigator({ MyPage: { screen: MyPageScreen } });
+const GuideStack = createStackNavigator({ Guide: { screen: GuideScreen } });
 
 HomeStack.navigationOptions = {
-  tabBarLabel: "Home",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-search" : "md-search"}
-    />
-  ),
+    tabBarLabel: "Home",
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon
+            focused={focused}
+            name={Platform.OS === "ios" ? "ios-search" : "md-search"}
+        />
+    ),
 };
-
-const MyPageStack = createStackNavigator({
-    MyPage: MyPageScreen,
-});
 
 MyPageStack.navigationOptions = {
     tabBarLabel: "Account",
@@ -38,13 +31,20 @@ MyPageStack.navigationOptions = {
     ),
 };
 
-export default createBottomTabNavigator({
-  HomeStack,
-  MyPageStack,
-}, {
+GuideStack.navigationOptions = { tabBarVisible: true };
+
+const tabNavigator = createBottomTabNavigator({ HomeStack, MyPageStack }, {
     tabBarOptions: {
         activeTintColor: "#037aff",
         inactiveTintColor: "#737373",
         showLabel: false, // TODO 確認
     },
+});
+
+export default createStackNavigator({
+    Main: { screen: tabNavigator },
+    Guide: { screen: GuideStack },
+}, {
+    initialRouteName: "Main",
+    headerMode: "none",
 });
