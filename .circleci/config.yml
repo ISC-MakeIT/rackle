@@ -30,4 +30,5 @@ jobs:
           paths:
           - ~/workspace/node_modules
 
-      - run: yarn lint
+      - run: yarn tslint
+      - run: yarn style
