@@ -8,6 +8,7 @@ interface MarkerComponentProps {
         longitude: number;
     };
     iconName: string;
+    pinColor: string;
 }
 
 interface MarkerComponentState {
@@ -16,6 +17,7 @@ interface MarkerComponentState {
         longitude: number,
     };
     iconName: string;
+    pinColor: string;
 }
 
 export default class MarkerComponent extends React.Component <MarkerComponentProps, MarkerComponentState> {
@@ -24,6 +26,7 @@ export default class MarkerComponent extends React.Component <MarkerComponentPro
         this.state =  {
             latLng: this.props.latLng,
             iconName: this.props.iconName,
+            pinColor: this.props.pinColor,
         };
     }
 
@@ -40,7 +43,10 @@ export default class MarkerComponent extends React.Component <MarkerComponentPro
             <Marker
                 coordinate={this.state.latLng}
                 tracksInfoWindowChanges={false}
+                pinColor={this.state.pinColor}
                 image={this.iconChange ()}
+                // opacity={0.8}
+
             />
         );
     }
@@ -48,7 +54,7 @@ export default class MarkerComponent extends React.Component <MarkerComponentPro
     // 必要な画像をしてい
     private iconChange() {
         if (this.state.iconName === "toilet") return require("../../../assets/images/toilet.jpg");
-        if (this.state.iconName === "floor") return require("../../../assets/images/floor.jpg");
+        // if (this.state.iconName === "floor") return require("../../../assets/images/floor.jpg");
         if (this.state.iconName === "destination") return false;
     }
 }

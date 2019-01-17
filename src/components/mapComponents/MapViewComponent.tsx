@@ -2,6 +2,7 @@ import * as React from "react";
 import { StyleSheet, View } from "react-native";
 import MapView, { Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import MarkerComponent from "./MarkerComponent";
+import PolylineComponent from "./PolylineComponent";
 
 interface InitializationLocation {
   latitude: number;
@@ -12,7 +13,7 @@ interface InitializationLocation {
 
 interface MapViewComponentProps {
     indoorLevel: string;
-    initializationLocation: InitializationLocation;
+    initializationLocation: InitializationLocation
     markers: [{
         movieMarkers: [{
             floor: string,
@@ -134,11 +135,12 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
                 longitude: point.longitude,
             };
             return (
-                <MarkerComponent key={index} latLng={latLng} iconName={"floor"} />
+                <MarkerComponent key={index} latLng={latLng} iconName={"floor"} pinColor={"rgb(150,255,0)"} />
             );
         });
 
         const publicFacilityMarkers = this.state.currentStateMarkers.publicFacilityMarkers;
+        // console.log(publicFacilityMarkers);
         const currentPublicFacilityMarker = publicFacilityMarkers.map((point, index: number) => {
             const latLng = {
                 latitude: point.latitude,
@@ -146,13 +148,14 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
             };
             const iconName = point.type;
             return (
-                <MarkerComponent key={index} latLng={latLng} iconName={iconName} />
+                <MarkerComponent key={index} latLng={latLng} iconName={iconName} pinColor={"rgb(255,255,0)"}/>
             );
         });
 
         return (
             <View style={styles.container}>
                 <MapView
+                    showsTraffic={false}
                     provider={PROVIDER_GOOGLE}
                     style={styles.map}
                     region={this.state.initializationLocation}
@@ -163,11 +166,9 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
                 >
                 {currentMovieMarker}
                 {currentPublicFacilityMarker}
-                <Polyline 
-                    coordinate={[
-                        {latitude: 35.46562469087737, longitude: 139.6228090301156},
-                        {latitude: 35.46562605622866, longitude: 139.62143406271935},
-                    ]}
+                <PolylineComponent
+                    indoorLevel={this.state.indoorLevel}
+                    guideLines={this.state.guideLines}
                 />
                 </MapView>
             </View>
@@ -175,12 +176,14 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
     }
 
     // 現在の階層を取得しそれに対応した階のピンを刺す情報に置き換える
-    private indoorLevel(name: string) {
+    private indoorLevel(level: string) {
+        const floor = level.substr(-2);
+        console.log (floor);
         // FIXME 階層を取得しているとたまに"Level 1"とか出てくるのでとりあえず無視
-        if (name !== "Level 1") {
-            const currentStateMarkers = this.currentStateMarkersGenerate(name);
+        if (floor !== "Level 1") {
+            const currentStateMarkers = this.currentStateMarkersGenerate(floor);
             this.setState ({
-                indoorLevel: name,
+                indoorLevel: floor,
                 currentStateMarkers,
             });
         }
@@ -197,6 +200,7 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
     private currentStateMarkersGenerate(indoorLevel: string, markers = this.props.markers) {
         const movieMarkers = markers[0].movieMarkers.filter(movieMarker => movieMarker.floor === indoorLevel);
         const publicFacilityMarkers = markers[1].publicFacilityMarkers.filter(publicFacilityMarker => publicFacilityMarker.floor === indoorLevel);
+        // const guideLine = guideLines.filter
         const FloorMarkers = {
             movieMarkers,
             publicFacilityMarkers,
