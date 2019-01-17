@@ -39,19 +39,19 @@ export default class PolylineComponent extends React.Component <PolylineComponen
 
     private polylineGenerate(floor = this.state.indoorLevel, guideLines = this.props.guideLines) {
         const currentGuideLines = guideLines.filter(guideLine => guideLine.floor === floor);
-        if (currentGuideLines[0] !== undefined) {
-            const currentGuideLine = currentGuideLines[0].path;
-            return  (
-                <Polyline
-                    coordinates={currentGuideLine}
-                    strokeWidth={6}
-                    lineCap={"round"}
-                    lineDashPattern={[2, 1]}
-                    lineJoin={"miter"}
-                    strokeColor={"#f00"}
-                />
-            );
-        }
+        if (currentGuideLines[0] === undefined) return  null;
+        const currentGuideLine = currentGuideLines[0].path;
+        return  (
+            <Polyline
+                coordinates={currentGuideLine}
+                strokeWidth={6}
+                lineCap={"round"}
+                lineDashPattern={[2, 1]}
+                lineJoin={"miter"}
+                strokeColor={"#f00"}
+            />
+        );
+
         return null;
     }
 }

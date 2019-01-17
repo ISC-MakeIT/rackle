@@ -54,7 +54,5 @@ export default class MarkerComponent extends React.Component <MarkerComponentPro
     // 必要な画像をしてい
     private iconChange() {
         if (this.state.iconName === "toilet") return require("../../../assets/images/toilet.jpg");
-        // if (this.state.iconName === "floor") return require("../../../assets/images/floor.jpg");
-        if (this.state.iconName === "destination") return false;
     }
 }
