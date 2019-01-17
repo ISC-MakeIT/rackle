@@ -1,23 +1,26 @@
-import * as React from 'react';
-import { Platform } from 'react-native';
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
-import GuideScreen from '../screens/GuideScreen';
-import HomeScreen from '../screens/HomeScreen';
-import MapScreen from '../screens/MapScreen';
-import MovieNavigateScreen from '../screens/MovieNavigateScreen';
-import MyPageScreen from '../screens/MyPageScreen';
-import TabBarIcon from '../components/TabBarIcon';
+import * as React from "react";
+import { Platform } from "react-native";
+import { createBottomTabNavigator, createStackNavigator } from "react-navigation";
+import TabBarIcon from "../components/TabBarIcon";
+import HomeScreen from "../screens/HomeScreen";
+import MyPageScreen from "../screens/MyPageScreen";
+import MapScreen from "../screens/MapScreen";
+import MovieNavigateScreen from "../screens/MovieNavigateScreen";
+import GuideScreen from "../screens/GuideScreen";
 
-const GuideStack = createStackNavigator({ Guide: { screen: GuideScreen } });
 const HomeStack = createStackNavigator({ Home: { screen: HomeScreen } });
+const MyPageStack = createStackNavigator({ MyPage: { screen: MyPageScreen } });
 const MapStack = createStackNavigator({ Map: { screen: MapScreen } });
 const MovieNavigateStack = createStackNavigator({ MovieNavigate: { screen: MovieNavigateScreen } });
-const MyPageStack = createStackNavigator({ MyPage: { screen: MyPageScreen } });
+const GuideStack = createStackNavigator({ Guide: { screen: GuideScreen } });
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'} />
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? "ios-search" : "md-search"}
+    />
   ),
 };
 
