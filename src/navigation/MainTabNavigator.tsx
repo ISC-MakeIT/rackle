@@ -12,6 +12,9 @@ const MyPageStack = createStackNavigator({ MyPage: { screen: MyPageScreen } });
 const MovieNavigateStack = createStackNavigator({ MovieNavigate: { screen: MovieNavigateScreen } });
 const GuideStack = createStackNavigator({ Guide: { screen: GuideScreen } });
 
+const HomeStack = createStackNavigator({
+  Home: HomeScreen,
+});
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
@@ -42,6 +45,15 @@ const tabNavigator = createBottomTabNavigator({ HomeStack, MyPageStack, MovieNav
     showLabel: false, // TODO 確認
   },
 });
+SettingsStack.navigationOptions = {
+  tabBarLabel: "Settings",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+    />
+  ),
+};
 
 export default createStackNavigator({
   Main: { screen: tabNavigator },
