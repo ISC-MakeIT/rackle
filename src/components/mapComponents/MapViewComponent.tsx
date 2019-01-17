@@ -178,7 +178,6 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
     // 現在の階層を取得しそれに対応した階のピンを刺す情報に置き換える
     private indoorLevel(level: string) {
         const floor = level.substr(-2);
-        console.log (floor);
         // FIXME 階層を取得しているとたまに"Level 1"とか出てくるのでとりあえず無視
         if (floor !== "Level 1") {
             const currentStateMarkers = this.currentStateMarkersGenerate(floor);
@@ -213,6 +212,8 @@ const styles = StyleSheet.create({
     container: {
         ...StyleSheet.absoluteFillObject,
         height: 700,
+        margin: 0,
+        padding: 0,
         width: 420,
         justifyContent: "flex-end",
         alignItems: "center",
@@ -220,5 +221,6 @@ const styles = StyleSheet.create({
     map: {
         ...StyleSheet.absoluteFillObject,
         backfaceVisibility: "hidden",
+
     },
 });
