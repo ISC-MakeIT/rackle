@@ -3,6 +3,7 @@ import { Platform } from "react-native";
 import { createBottomTabNavigator, createStackNavigator } from "react-navigation";
 
 import TabBarIcon from "../components/TabBarIcon";
+import GuideScreen from "../screens/GuideScreen";
 import HomeScreen from "../screens/HomeScreen";
 import MovieNavigateScreen from "../screens/MovieNavigateScreen";
 import SettingsScreen from "../screens/SettingsScreen";
@@ -11,17 +12,13 @@ const HomeStack = createStackNavigator({
   Home: HomeScreen,
 });
 HomeStack.navigationOptions = {
-  tabBarLabel: "Home",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === "ios"
-          ? `ios-information-circle${focused ? "" : "-outline"}`
-          : "md-information-circle"
-      }
-    />
-  ),
+    tabBarLabel: "Home",
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon
+            focused={focused}
+            name={Platform.OS === "ios" ? "ios-search" : "md-search"}
+        />
+    ),
 };
 
 const MovieNavigateStack = createStackNavigator({
