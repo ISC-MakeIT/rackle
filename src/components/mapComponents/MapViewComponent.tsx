@@ -6,39 +6,39 @@ import PolylineComponent from './PolylineComponent';
 
 interface MapViewComponentProps {
     indoorLevel: string;
-    initializationLocation: {
+    initializedLocation: {
         latitude: number;
         longitude: number;
         latitudeDelta: number;
         longitudeDelta: number;
     };
     markers: [{
-        movieMarkers: [{
+        movieMarkers: Array<{
             floor: string,
             movieId: number,
             latitude: number,
             longitude: number,
-        }],
+        }>,
     }, {
-        publicFacilityMarkers: [{
+        publicFacilityMarkers: Array<{
             floor: string,
             type: 'toilet' | 'elevator',
             latitude: number,
             longitude: number,
-        }];
+        }>;
     }];
-    guideLines: [{
+    guideLines: Array<{
         floor: string,
-        path: [{
+        path: Array<{
             latitude: number,
             longitude: number,
-        }],
-    }];
+        }>,
+    }>;
 }
 
 interface MapViewComponentState {
   indoorLevel: string;
-  initializationLocation: {
+  initializedLocation: {
       latitude: number;
       longitude: number;
       latitudeDelta: number;
@@ -68,18 +68,18 @@ interface MapViewComponentState {
   }, {
       publicFacilityMarkers: Array<{
           floor: string,
-          type: string,
+          type: 'toilet' | 'elevator',
           latitude: number,
           longitude: number,
       }>;
   }];
-  guideLines: [{
+  guideLines: Array<{
       floor: string,
-      path: [{
+      path: Array<{
           latitude: number,
           longitude: number,
-      }],
-  }];
+      }>,
+  }>;
 }
 
 interface Region {
@@ -94,7 +94,7 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
         super (props);
         this.state = {
             indoorLevel: this.props.indoorLevel,
-            initializationLocation: this.props.initializationLocation,
+            initializedLocation: this.props.initializedLocation,
             currentStateMarkers: this.currentStateMarkersGenerate(this.props.indoorLevel),
             markers: this.props.markers,
             guideLines: this.props.guideLines,
@@ -140,7 +140,7 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
                     showsTraffic={false}
                     provider={PROVIDER_GOOGLE}
                     style={styles.map}
-                    region={this.state.initializationLocation}
+                    region={this.state.initializedLocation}
                     onRegionChange={(e: Region) => this.locationChange (e)} // 動くたび発火
                     minZoomLevel={18} // 初期拡大
                     // onPress={(e: any) => console.log (e.nativeEvent.coordinate)}
@@ -161,19 +161,17 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
     private indoorLevel(level: string) {
         const floor = level.substr(-2);
         // FIXME 階層を取得しているとたまに'Level 1'とか出てくるのでとりあえず無視
-        if (floor !== 'Level 1') {
-            const currentStateMarkers = this.currentStateMarkersGenerate(floor);
-            this.setState ({
-                indoorLevel: floor,
-                currentStateMarkers,
-            });
-        }
+        const currentStateMarkers = this.currentStateMarkersGenerate(floor);
+        this.setState ({
+            indoorLevel: floor,
+            currentStateMarkers,
+        });
     }
 
     // 現在地を常に更新
     private locationChange(region: Region) {
         this.setState ({
-            initializationLocation: region,
+            initializedLocation: region,
         });
     }
 

@@ -7,7 +7,8 @@ import { MonoText } from '../components/StyledText';
 // ダミーデータ
 const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
 const playlistYoutubeIds = ['uS00Bd9ZVz4', '9iieMHXubJU', '_Hdk2vXESB0', 'X8p0y5KXdIk', 'yYbWPRuxK1U', '33Np_lJseBE', 'z3VW7TNklww', 'tNMatlAOOcs', 'EyT0uC1D1I8', 'bxG4LTsLThE'];
-export default class MovieNavigateScreen extends React.Component {
+export default class MovieNavigateScreen
+ extends React.Component {
   constructor (props) {
     super(props);
     this.state = {

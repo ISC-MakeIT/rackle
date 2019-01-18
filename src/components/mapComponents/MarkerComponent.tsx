@@ -1,5 +1,5 @@
-import * as React from "react";
-import {  Marker } from "react-native-maps";
+import * as React from 'react';
+import {  Marker } from 'react-native-maps';
 
 interface MarkerComponentProps {
     key: number;
@@ -53,6 +53,6 @@ export default class MarkerComponent extends React.Component <MarkerComponentPro
 
     // 必要な画像をしてい
     private iconChange() {
-        if (this.state.iconName === "toilet") return require("../../../assets/images/toilet.jpg");
+        if (this.state.iconName === 'toilet') return require('../../../assets/images/toilet.jpg');
     }
 }

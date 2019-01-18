@@ -1,15 +1,15 @@
-import * as React from "react";
-import { Polyline } from "react-native-maps";
+import * as React from 'react';
+import { Polyline } from 'react-native-maps';
 
 interface PolylineComponentProps {
     indoorLevel: string;
-    guideLines: [{
+    guideLines: Array<{
         floor: string,
-        path: [{
+        path: Array<{
             latitude: number,
             longitude: number,
-        }],
-    }];
+        }>,
+    }>;
 }
 
 interface PolylineComponentState {
@@ -39,19 +39,17 @@ export default class PolylineComponent extends React.Component <PolylineComponen
 
     private polylineGenerate(floor = this.state.indoorLevel, guideLines = this.props.guideLines) {
         const currentGuideLines = guideLines.filter(guideLine => guideLine.floor === floor);
-        if (currentGuideLines[0] === undefined) return  null;
+        if (currentGuideLines[0] == undefined) return  null;
         const currentGuideLine = currentGuideLines[0].path;
         return  (
             <Polyline
                 coordinates={currentGuideLine}
                 strokeWidth={6}
-                lineCap={"round"}
+                lineCap={'round'}
                 lineDashPattern={[2, 1]}
-                lineJoin={"miter"}
-                strokeColor={"#f00"}
+                lineJoin={'miter'}
+                strokeColor={'#f00'}
             />
         );
-
-        return null;
     }
 }
