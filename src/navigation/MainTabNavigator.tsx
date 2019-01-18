@@ -59,7 +59,6 @@ export default createStackNavigator({
   Main: { screen: tabNavigator },
   Guide: { screen: GuideStack },
   Map: { screen: MapStack },
-  // Movie: { screen: MovieNavigateStack },
 }, {
     initialRouteName: 'Main',
     headerMode: 'none',

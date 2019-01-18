@@ -30,7 +30,6 @@ export default class MarkerComponent extends React.Component <MarkerComponentPro
         };
     }
 
-    // propsの更新。これをしないとマーカーが更新されない
     public componentWillReceiveProps(nextProps: MarkerComponentProps) {
         this.setState ({
             latLng: nextProps.latLng,
@@ -49,7 +48,6 @@ export default class MarkerComponent extends React.Component <MarkerComponentPro
         );
     }
 
-    // 必要な画像をしてい
     private iconChange() {
         if (this.state.iconName === 'toilet') return require('../../../assets/images/toilet.jpg');
     }
