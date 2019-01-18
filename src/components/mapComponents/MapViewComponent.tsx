@@ -179,11 +179,10 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
     private currentStateMarkersGenerate(indoorLevel: string, markers = this.props.markers) {
         const movieMarkers = markers[0].movieMarkers.filter(movieMarker => movieMarker.floor === indoorLevel);
         const publicFacilityMarkers = markers[1].publicFacilityMarkers.filter(publicFacilityMarker => publicFacilityMarker.floor === indoorLevel);
-        const FloorMarkers = {
+        return {
             movieMarkers,
             publicFacilityMarkers,
         };
-        return FloorMarkers;
     }
 }
 

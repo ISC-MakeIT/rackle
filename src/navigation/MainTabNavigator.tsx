@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Platform } from "react-native";
-import { createBottomTabNavigator, createStackNavigator } from "react-navigation";
-import TabBarIcon from "../components/TabBarIcon";
-import GuideScreen from "../screens/GuideScreen";
-import HomeScreen from "../screens/HomeScreen";
-import MapScreen from "../screens/MapScreen";
-import MovieNavigateScreen from "../screens/MovieNavigateScreen";
-import MyPageScreen from "../screens/MyPageScreen";
+import * as React from 'react';
+import { Platform } from 'react-native';
+import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
+import TabBarIcon from '../components/TabBarIcon';
+import GuideScreen from '../screens/GuideScreen';
+import HomeScreen from '../screens/HomeScreen';
+import MapScreen from '../screens/MapScreen';
+import MovieNavigateScreen from '../screens/MovieNavigateScreen';
+import MyPageScreen from '../screens/MyPageScreen';
 
 const GuideStack = createStackNavigator({ Guide: { screen: GuideScreen } });
 const HomeStack = createStackNavigator({ Home: { screen: HomeScreen } });
@@ -19,7 +19,7 @@ HomeStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-search" : "md-search"}
+      name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'}
     />
   ),
 };

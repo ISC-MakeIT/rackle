@@ -45,8 +45,6 @@ export default class MarkerComponent extends React.Component <MarkerComponentPro
                 tracksInfoWindowChanges={false}
                 pinColor={this.state.pinColor}
                 image={this.iconChange ()}
-                // opacity={0.8}
-
             />
         );
     }
