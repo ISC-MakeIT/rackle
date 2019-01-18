@@ -4,59 +4,23 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
 
-interface MapViewComponentProps {
+interface Props {
   indoorLevel: string;
-  initializedLocation: {
-    latitude: number;
-    longitude: number;
-    latitudeDelta: number;
-    longitudeDelta: number;
-  };
+  initializedLocation: InitializedLocation;
   markers: [{
-    movieMarkers: Array<{
-      floor: string,
-      movieId: number,
-      latitude: number,
-      longitude: number,
-    }>,
+    movieMarkers: MovieMarkers[],
   }, {
-    publicFacilityMarkers: Array<{
-      floor: string,
-      type: 'toilet' | 'elevator',
-      latitude: number,
-      longitude: number,
-    }>;
+    publicFacilityMarkers: PublicFacilityMarkers[]
   }];
-  guideLines: Array<{
-    floor: string,
-    path: Array<{
-      latitude: number,
-      longitude: number,
-    }>,
-  }>;
+  guideLines: guideLines[];
 }
 
-interface MapViewComponentState {
+interface State {
   indoorLevel: string;
-  initializedLocation: {
-    latitude: number;
-    longitude: number;
-    latitudeDelta: number;
-    longitudeDelta: number;
-  };
+  initializedLocation: InitializedLocation;
   currentStateMarkers: {
-    movieMarkers: Array<{
-      floor: string,
-      movieId: number,
-      latitude: number,
-      longitude: number,
-    }>,
-    publicFacilityMarkers: Array<{
-      floor: string,
-      type: 'toilet' | 'elevator',
-      latitude: number,
-      longitude: number,
-    }>;
+    movieMarkers: MovieMarkers[],
+    publicFacilityMarkers: PublicFacilityMarkers[],
   };
 }
 
@@ -67,8 +31,40 @@ interface Region {
   longitudeDelta: number;
 }
 
-export default class MapViewComponent extends React.Component<MapViewComponentProps, MapViewComponentState> {
-  constructor(props: MapViewComponentProps) {
+interface MovieMarkers {
+  floor: string;
+  movieId: number;
+  latitude: number;
+  longitude: number;
+}
+
+interface PublicFacilityMarkers {
+  floor: string;
+  type: 'toilet' | 'elevator';
+  latitude: number;
+  longitude: number;
+}
+
+interface InitializedLocation {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
+}
+
+interface guideLines {
+  floor: string;
+  lineLatLng: LatLng[];
+}
+
+interface LatLng {
+  latitude: number;
+  longitude: number;
+}
+
+
+export default class MapViewComponent extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       indoorLevel: this.props.indoorLevel,
@@ -77,16 +73,13 @@ export default class MapViewComponent extends React.Component<MapViewComponentPr
     };
   }
 
-  public shouldComponentUpdate(nextProps: MapViewComponentProps, nextState: MapViewComponentState) {
-    if (this.state.indoorLevel === nextState.indoorLevel) {
-      return false;
-    }
-    return true;
+  public shouldComponentUpdate(nextProps: Props, nextState: State) {
+    return this.state.indoorLevel === nextState.indoorLevel ? false : true;
   }
 
   public render() {
     const movieMarkers = this.state.currentStateMarkers.movieMarkers;
-    const currentMovieMarker = movieMarkers.map((point, index: number) => {
+    const currentMovieMarkers = movieMarkers.map((point, index: number) => {
       const latLng = {
         latitude: point.latitude,
         longitude: point.longitude,
@@ -97,7 +90,7 @@ export default class MapViewComponent extends React.Component<MapViewComponentPr
     });
 
     const publicFacilityMarkers = this.state.currentStateMarkers.publicFacilityMarkers;
-    const currentPublicFacilityMarker = publicFacilityMarkers.map((point, index: number) => {
+    const currentPublicFacilityMarkers = publicFacilityMarkers.map((point, index: number) => {
       const latLng = {
         latitude: point.latitude,
         longitude: point.longitude,
@@ -119,8 +112,8 @@ export default class MapViewComponent extends React.Component<MapViewComponentPr
           // onPress={(e: any) => console.log (e.nativeEvent.coordinate)}
           onIndoorLevelActivated={(e: any) => { this.indoorLevel(e.nativeEvent.IndoorLevel.name); }}
         >
-          {currentMovieMarker}
-          {currentPublicFacilityMarker}
+          {currentMovieMarkers}
+          {currentPublicFacilityMarkers}
           <PolylineComponent
             indoorLevel={this.state.indoorLevel}
             guideLines={this.props.guideLines}

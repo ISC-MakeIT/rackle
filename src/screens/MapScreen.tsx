@@ -6,7 +6,7 @@ export default class MapScreen extends React.Component<{}, {}> {
     super(props);
     this.state = {
       indoorLevel: '1',
-      initializationLocation: {
+      initializedLocation: {
         latitude: 35.46588771428577,
         longitude: 139.62227088041905,
         latitudeDelta: 0.5,
@@ -79,7 +79,7 @@ export default class MapScreen extends React.Component<{}, {}> {
       }],
       guideLines: [{
         floor: 'B1',
-        path: [{
+        lineLatLng: [{
           latitude: 35.465821301223436,
           longitude: 139.62295688688755,
         }, {
@@ -106,7 +106,7 @@ export default class MapScreen extends React.Component<{}, {}> {
         }],
       }, {
         floor: 'B3',
-        path: [{
+        lineLatLng: [{
           latitude: 35.46599115032989,
           longitude: 139.62186221033335,
         }, {
@@ -121,7 +121,7 @@ export default class MapScreen extends React.Component<{}, {}> {
     return (
       <MapViewComponent
         indoorLevel={this.state.indoorLevel} // 案内を開始する階を指定
-        initializedLocation={this.state.initializationLocation} // mapを表示するときの初期値 今回は横浜の緯度経度
+        initializedLocation={this.state.initializedLocation} // mapを表示するときの初期値 今回は横浜の緯度経度
         markers={this.state.markers} // ピンを刺す緯度経度をピンの種類と階層分けて渡す
         guideLines={this.state.guideLines}
       />

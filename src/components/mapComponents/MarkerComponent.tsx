@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Marker } from 'react-native-maps';
 
-interface MarkerComponentProps {
-  key: number;
+interface Props {
   latLng: {
     latitude: number;
     longitude: number;
@@ -11,8 +10,8 @@ interface MarkerComponentProps {
   pinColor: string;
 }
 
-export default class MarkerComponent extends React.Component<MarkerComponentProps, {}> {
-  constructor(props: MarkerComponentProps) {
+export default class MarkerComponent extends React.Component<Props, {}> {
+  constructor(props:Props) {
     super(props);
   }
 

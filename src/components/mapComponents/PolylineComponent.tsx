@@ -1,46 +1,39 @@
 import * as React from 'react';
 import { Polyline } from 'react-native-maps';
 
-interface PolylineComponentProps {
+interface Props {
   indoorLevel: string;
-  guideLines: Array<{
+  guideLines: {
     floor: string,
-    path: Array<{
+    lineLatLng: {
       latitude: number,
       longitude: number,
-    }>,
-  }>;
+    }[],
+  }[];
 }
 
-interface PolylineComponentState {
+interface State {
   indoorLevel: string;
 }
 
-export default class PolylineComponent extends React.Component<PolylineComponentProps, PolylineComponentState> {
-  constructor(props: PolylineComponentProps) {
+export default class PolylineComponent extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       indoorLevel: this.props.indoorLevel,
     };
   }
 
-  public componentWillReceiveProps(nextProps: PolylineComponentProps) {
+  public componentWillReceiveProps(nextProps: Props) {
     this.setState({
       indoorLevel: nextProps.indoorLevel,
     });
   }
 
   public render() {
-    const polyline = this.polylineGenerate();
-    return (
-      polyline
-    );
-  }
-
-  private polylineGenerate(floor = this.state.indoorLevel, guideLines = this.props.guideLines) {
-    const currentGuideLines = guideLines.filter(guideLine => guideLine.floor === floor);
+    const currentGuideLines = this.props.guideLines.filter(guideLine => guideLine.floor === this.state.indoorLevel);
     if (currentGuideLines[0] == undefined) return null;
-    const currentGuideLine = currentGuideLines[0].path;
+    const currentGuideLine = currentGuideLines[0].lineLatLng;
     return (
       <Polyline
         coordinates={currentGuideLine}
