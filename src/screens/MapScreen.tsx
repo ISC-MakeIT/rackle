@@ -120,9 +120,9 @@ export default class MapScreen extends React.Component<{}, {}> {
   public render() {
     return (
       <MapViewComponent
-        indoorLevel={this.state.indoorLevel} // 案内を開始する階を指定
-        initializedLocation={this.state.initializedLocation} // mapを表示するときの初期値 今回は横浜の緯度経度
-        markers={this.state.markers} // ピンを刺す緯度経度をピンの種類と階層分けて渡す
+        indoorLevel={this.state.indoorLevel}
+        initializedLocation={this.state.initializedLocation}
+        markers={this.state.markers}
         guideLines={this.state.guideLines}
       />
     );
