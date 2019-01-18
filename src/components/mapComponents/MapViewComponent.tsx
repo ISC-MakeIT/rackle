@@ -38,7 +38,7 @@ interface MapViewComponentProps {
 
 interface MapViewComponentState {
   indoorLevel: string;
-  initializedLocation: {
+  initializationLocation: {
       latitude: number;
       longitude: number;
       latitudeDelta: number;
@@ -94,7 +94,7 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
         super (props);
         this.state = {
             indoorLevel: this.props.indoorLevel,
-            initializedLocation: this.props.initializationLocation,
+            initializationLocation: this.props.initializationLocation,
             currentStateMarkers: this.currentStateMarkersGenerate(this.props.indoorLevel),
             markers: this.props.markers,
             guideLines: this.props.guideLines,
@@ -140,7 +140,7 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
                     showsTraffic={false}
                     provider={PROVIDER_GOOGLE}
                     style={styles.map}
-                    region={this.state.initializedLocation}
+                    region={this.state.initializationLocation}
                     onRegionChange={(e: Region) => this.locationChange (e)} // 動くたび発火
                     minZoomLevel={18} // 初期拡大
                     // onPress={(e: any) => console.log (e.nativeEvent.coordinate)}
@@ -173,7 +173,7 @@ export default class MapViewComponent extends React.Component <MapViewComponentP
     // 現在地を常に更新
     private locationChange(region: Region) {
         this.setState ({
-            initializedLocation: region,
+            initializationLocation: region,
         });
     }
 
