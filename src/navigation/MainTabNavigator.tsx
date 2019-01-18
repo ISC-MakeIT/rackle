@@ -1,20 +1,17 @@
 import * as React from 'react';
 import { Platform } from 'react-native';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
-
-import TabBarIcon from '../components/TabBarIcon';
 import GuideScreen from '../screens/GuideScreen';
 import HomeScreen from '../screens/HomeScreen';
+import MovieNavigateScreen from '../screens/MovieNavigateScreen';
 import MyPageScreen from '../screens/MyPageScreen';
+import TabBarIcon from '../components/TabBarIcon';
 
-const HomeStack = createStackNavigator({ Home: { screen: HomeScreen } });
-const MyPageStack = createStackNavigator({ MyPage: { screen: MyPageScreen } });
-const MovieNavigateStack = createStackNavigator({ MovieNavigate: { screen: MovieNavigateScreen } });
 const GuideStack = createStackNavigator({ Guide: { screen: GuideScreen } });
+const HomeStack = createStackNavigator({ Home: { screen: HomeScreen } });
+const MovieNavigateStack = createStackNavigator({ MovieNavigate: { screen: MovieNavigateScreen } });
+const MyPageStack = createStackNavigator({ MyPage: { screen: MyPageScreen } });
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
-});
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
@@ -45,21 +42,13 @@ const tabNavigator = createBottomTabNavigator({ HomeStack, MyPageStack, MovieNav
     showLabel: false, // TODO 確認
   },
 });
-SettingsStack.navigationOptions = {
-  tabBarLabel: "Settings",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
-    />
-  ),
-};
 
 export default createStackNavigator({
   Main: { screen: tabNavigator },
-  Guide: { screen: GuideStack },
+  // Guide: { screen: GuideStack },
+  Movie: { screen: MovieNavigateStack },
 }, {
-    initialRouteName: 'Main',
+    initialRouteName: 'Movie',
     headerMode: 'none',
   }
 );
