@@ -2,7 +2,7 @@ import { Constants } from 'expo';
 import * as React from 'react';
 import { Alert, FlatList, Image, Platform, TouchableOpacity, View, WebView, } from 'react-native';
 import { MonoText } from '../components/StyledText';
-import MovieNavigateStyle from './MovieNavigateScreen.scss';
+// import MovieNavigateStyle from '../stylesheets/MovieNavigateScreen.scss';
 
 // ダミーデータ
 const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
