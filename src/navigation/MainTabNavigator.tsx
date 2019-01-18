@@ -2,11 +2,11 @@ import * as React from "react";
 import { Platform } from "react-native";
 import { createBottomTabNavigator, createStackNavigator } from "react-navigation";
 import TabBarIcon from "../components/TabBarIcon";
+import GuideScreen from "../screens/GuideScreen";
 import HomeScreen from "../screens/HomeScreen";
-import MyPageScreen from "../screens/MyPageScreen";
 import MapScreen from "../screens/MapScreen";
 import MovieNavigateScreen from "../screens/MovieNavigateScreen";
-import GuideScreen from "../screens/GuideScreen";
+import MyPageScreen from "../screens/MyPageScreen";
 
 const HomeStack = createStackNavigator({ Home: { screen: HomeScreen } });
 const MyPageStack = createStackNavigator({ MyPage: { screen: MyPageScreen } });
