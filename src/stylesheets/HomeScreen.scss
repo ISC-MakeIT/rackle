@@ -54,8 +54,16 @@
 }
 
 .execBtn {
+  background-color: #63BF8E;
   border-radius: 30px;
-  font-size: 10px;
+  height: 52px;
   margin: 10px auto;
-  width: 30%;
+  width: 300px;
+}
+
+.execText {
+  color: white;
+  font-size: 32px;
+  line-height: 52px;
+  text-align: center;
 }

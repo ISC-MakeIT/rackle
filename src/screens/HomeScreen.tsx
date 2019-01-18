@@ -1,11 +1,9 @@
 import * as React from 'react';
-import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Button} from 'react-native-elements';
+import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
-import {MonoText} from '../components/StyledText';
 import styles from '../stylesheets/HomeScreen.scss';
 import RNPickerSelect from 'react-native-picker-select';
-
+import { LinearGradient } from 'expo';
 
 interface Props { navigation: any; }
 interface State {
@@ -35,6 +33,18 @@ export default class HomeScreen extends React.Component<Props, State> {
 
       return (
         <View style={styles.container}>
+          <LinearGradient
+            colors={['rgba(99, 191, 142, 0.2)', 'rgba(248, 247, 244, 0.2)', 'white']}
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: 0,
+              height: 600,
+            }}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+          />
 
           <View style={styles.appTitleContainer}>
             <Text style={styles.appName}>横浜駅 </Text>
@@ -86,11 +96,12 @@ export default class HomeScreen extends React.Component<Props, State> {
             </View>
           </View>
 
-          <Button
-            title='案内開始'
+          <TouchableOpacity
             style={styles.execBtn}
             onPress={() => this.props.navigation.navigate('Guide')}
-          />
+          >
+            <Text style={styles.execText}>案内開始</Text>
+          </TouchableOpacity>
         </View>
       );
   }
