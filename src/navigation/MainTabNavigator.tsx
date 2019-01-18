@@ -8,11 +8,11 @@ import MapScreen from "../screens/MapScreen";
 import MovieNavigateScreen from "../screens/MovieNavigateScreen";
 import MyPageScreen from "../screens/MyPageScreen";
 
+const GuideStack = createStackNavigator({ Guide: { screen: GuideScreen } });
 const HomeStack = createStackNavigator({ Home: { screen: HomeScreen } });
-const MyPageStack = createStackNavigator({ MyPage: { screen: MyPageScreen } });
 const MapStack = createStackNavigator({ Map: { screen: MapScreen } });
 const MovieNavigateStack = createStackNavigator({ MovieNavigate: { screen: MovieNavigateScreen } });
-const GuideStack = createStackNavigator({ Guide: { screen: GuideScreen } });
+const MyPageStack = createStackNavigator({ MyPage: { screen: MyPageScreen } });
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
