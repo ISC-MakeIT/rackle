@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 import styles from '../stylesheets/HomeScreen.scss';
 import RNPickerSelect from 'react-native-picker-select';
@@ -31,6 +31,8 @@ export default class HomeScreen extends React.Component<Props, State> {
       { value: 4, label: 'blueline' },
     ];
 
+    const { height } = Dimensions.get('window');
+
       return (
         <View style={styles.container}>
           <LinearGradient
@@ -40,7 +42,7 @@ export default class HomeScreen extends React.Component<Props, State> {
               left: 0,
               right: 0,
               top: 0,
-              height: 600,
+              height: height,
             }}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
