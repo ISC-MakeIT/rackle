@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
@@ -61,7 +61,6 @@ interface LatLng {
   latitude: number;
   longitude: number;
 }
-
 
 export default class MapViewComponent extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -148,19 +147,19 @@ export default class MapViewComponent extends React.Component<Props, State> {
   }
 }
 
+const {width, height} = Dimensions.get('screen');
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    height: 700,
-    margin: 0,
+    height: height,
+    width: width,
+    marginTop: -44,
     padding: 0,
-    width: 420,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
     backfaceVisibility: 'hidden',
-
-  },
+    },
 });
