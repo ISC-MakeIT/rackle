@@ -7,7 +7,7 @@ interface Props {
     longitude: number;
   };
   iconName: string;
-  pinColor: string;
+  pinColor?: string;
 }
 
 export default class MarkerComponent extends React.Component<Props, {}> {

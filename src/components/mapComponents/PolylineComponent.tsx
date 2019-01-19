@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Polyline } from 'react-native-maps';
+import Colors from '../../constants/Colors';
 
 interface Props {
   indoorLevel: string;
@@ -37,11 +38,12 @@ export default class PolylineComponent extends React.Component<Props, State> {
     return (
       <Polyline
         coordinates={currentGuideLine}
-        strokeWidth={6}
+        strokeWidth={5}
         lineCap={'round'}
-        lineDashPattern={[2, 1]}
+        lineDashPattern={[1.7, 1.5]}
         lineJoin={'miter'}
-        strokeColor={'#f00'}
+        strokeColor={Colors.mainColor}
+        miterLimit={11}
       />
     );
   }
