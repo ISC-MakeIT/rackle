@@ -109,7 +109,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
           region={this.state.initializedLocation}
           onRegionChange={(e: Region) => this.locationChange(e)}
           minZoomLevel={18}
-          // onPress={(e: any) => console.log (e.nativeEvent.coordinate)}
+          onPress={(e: any) => console.log (e.nativeEvent.coordinate)} // debugのため
           onIndoorLevelActivated={(e: any) => { this.indoorLevel(e.nativeEvent.IndoorLevel.name); }}
         >
           {currentMovieMarkers}
