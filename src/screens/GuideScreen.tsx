@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
 import { MonoText } from '../components/StyledText';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
@@ -32,6 +32,7 @@ export default class GuideScreen extends React.Component<Props, {}> {
             </View>
           </View>
         ),
+
       // TODO
       // header: ({ goBack }) => ({
       //     left: (
@@ -49,10 +50,36 @@ export default class GuideScreen extends React.Component<Props, {}> {
   }
 
   public render() {
+    const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
+    const playlistYoutubeIds = ['uS00Bd9ZVz4', '9iieMHXubJU', '_Hdk2vXESB0', 'X8p0y5KXdIk', 'yYbWPRuxK1U', '33Np_lJseBE', 'z3VW7TNklww', 'tNMatlAOOcs', 'EyT0uC1D1I8', 'bxG4LTsLThE'];
+
+    const thumbnails = (
+      <FlatList
+        data={playlistYoutubeIds}
+        renderItem={({ item }) => (
+          <TouchableOpacity>
+            <Image
+              style={guideStyle.thumbnailImage}
+              source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }}
+            />
+          </TouchableOpacity>
+        )}
+        horizontal={true}
+        keyExtractor={item => item}
+      />);
+
     return (
       <View style={guideStyle.container}>
-        <View>
-          <MonoText>screen/GuideScreen</MonoText>
+        <View style={guideStyle.mainContainer}>
+          <View>
+            <MonoText>screen/GuideScreen</MonoText>
+          </View>
+
+          <View style={guideStyle.subWindowCircle}>
+          </View>
+        </View>
+        <View style={guideStyle.thumbnailContainer}>
+          {thumbnails}
         </View>
       </View>
     );
@@ -63,6 +90,19 @@ const guideStyle = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  mainContainer: { },
+  thumbnailImage: {
+    width: 100,
+    height: 100,
+  },
+  thumbnailContainer: {},
+  subWindowCircle: {
+    backgroundColor: 'red',
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
 });
 
