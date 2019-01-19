@@ -2,6 +2,12 @@ import * as React from 'react';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 
 export default class MapScreen extends React.Component<{}, {}> {
+  public static navigationOptions = {
+    headerStyle: {
+      display: 'none',
+    },
+  };
+
   constructor(props) {
     super(props);
     this.state = {
