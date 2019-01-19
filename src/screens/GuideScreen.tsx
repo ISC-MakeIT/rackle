@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { MonoText } from '../components/StyledText';
-import guideStyle from '../stylesheets/GuideScreen.scss';
 
 interface Props { navigation: any; }
 
@@ -35,3 +34,10 @@ export default class GuideScreen extends React.Component<Props, {}> {
     );
   }
 }
+
+const guideStyle = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+});
