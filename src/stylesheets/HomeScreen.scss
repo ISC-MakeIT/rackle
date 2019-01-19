@@ -1,32 +1,9 @@
 .container {
-  background-color: white;
+  background: #63BF8E;
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
-}
-
-.rootContainer {
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding-top: 30px;
-  width: 100%;
-}
-
-.contentContainer {
-  padding-top: 30;
-}
-
-.tabBarInfoContainer {
-  align-items: center;
-  background-color: '#fbfbfb';
-  bottom: 0;
-  left: 0;
-  padding: 20px;
-  position: absolute;
-  right: 0;
 }
 
 .developmentModeText {
@@ -37,38 +14,56 @@
   text-align: center;
 }
 
-.tabBarInfoText {
-  color: rgba(96,100, 109,1);
-  font-size: 17px;
+.appTitleContainer {
+  line-height: 20%;
+  margin: 30px auto 10px;
+  text-align: center;
+  width: 200px;
+}
+
+.appName {
+  color: white;
+  font-size: 32px;
   text-align: center;
 }
 
-.getStartedContainer {
-  align-items: center;
-  margin: 50px;
-}
-
-.homeScreenFilename {
-  margin: 7px;
-}
-
-.getStartedText {
-  color: rgba(96,100,109, 1);
-  font-size: 17;
-  line-height: 24px;
+.appNameKana {
+  color: white;
+  font-size: 20px;
+  margin-top: 10px;
   text-align: center;
 }
 
-.codeHighlightContainer {
-  background-color: rgba(0,0,0,0.05);
-  border-radius: 3px;
-  padding: 4px;
+.fromSelectIcon {
+  background: red;
+  border-radius: 50%;
+  height: 20px;
+  position: relative;
+  top: 20px;
+  width: 20px;
 }
 
-.codeHighlightText {
-  color: rgba(96,100,109,0.8);
+.searchedList {
+  border: 1px solid;
+  font-size: 20px;
+  height: 30px;
+  line-height: 30px;
+  margin: 10px;
+  text-align: center;
+  width: 40%;
 }
 
-.navigationFilename {
-  margin-top: 5px;
+.execBtn {
+  background-color: #63BF8E;
+  border-radius: 30px;
+  height: 52px;
+  margin: 10px auto;
+  width: 300px;
+}
+
+.execText {
+  color: white;
+  font-size: 32px;
+  line-height: 52px;
+  text-align: center;
 }

@@ -22,6 +22,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-elements": "^1.0.0-beta7",
     "react-native-icons": "^0.7.1",
+    "react-native-picker-select": "^5.2.2",
     "react-navigation": "^3.0.9",
     "tslib": "1.9.3",
     "tslint": "^5.12.0"
