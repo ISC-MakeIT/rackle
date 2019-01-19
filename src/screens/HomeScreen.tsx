@@ -4,6 +4,7 @@ import {Dimensions, StyleSheet, Text, View, TouchableOpacity} from 'react-native
 import styles from '../stylesheets/HomeScreen.scss';
 import RNPickerSelect from 'react-native-picker-select';
 import { LinearGradient } from 'expo';
+import Color from '../constants/Colors';
 
 interface Props { navigation: any; }
 interface State {
@@ -218,7 +219,7 @@ const containerStyles = StyleSheet.create({
 
 const rootSelectStyle = StyleSheet.create({
   titleLabelHere: {
-    backgroundColor: '#DF5656',
+    backgroundColor: Color.subColorRed,
     position: 'absolute',
     width: 38,
     height: 38,
@@ -230,7 +231,7 @@ const rootSelectStyle = StyleSheet.create({
     alignItems: 'center',
   },
   titleLabelDestination: {
-    backgroundColor: '#63BF8E',
+    backgroundColor: Color.mainColor,
     position: 'absolute',
     width: 38,
     height: 38,
@@ -245,11 +246,11 @@ const rootSelectStyle = StyleSheet.create({
 
 const rootTextStyle = StyleSheet.create({
   colorHere: {
-    color: '#ffffff',
+    color: Color.white,
     fontWeight: '700',
   },
   colorDestination: {
-    color: '#ffffff',
+    color: Color.white,
     fontWeight: '700',
   },
 });
@@ -259,9 +260,9 @@ const rootButtonStyle = StyleSheet.create({
     width: 150,
     height: 44,
     borderWidth: 2,
-    borderColor: '#63BF8E',
+    borderColor: Color.mainColor,
     borderRadius: 5,
-    backgroundColor: '#ffffff',
+    backgroundColor: Color.white,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -271,12 +272,12 @@ const rootButtonStyle = StyleSheet.create({
     marginRight: 3,
   },
   active: {
-    backgroundColor: '#63BF8E',
+    backgroundColor: Color.mainColor,
   },
   execBtn: {
     width: 300,
     height: 52,
-    backgroundColor: '#63BF8E',
+    backgroundColor: Color.mainColor,
     marginLeft: 'auto',
     marginRight: 'auto',
     borderRadius: 50,
@@ -287,7 +288,7 @@ const rootButtonStyle = StyleSheet.create({
   switchButton: {
     width: 20,
     height: 20,
-    backgroundColor: '#63BF8E',
+    backgroundColor: Color.mainColor,
   },
 });
 
@@ -295,15 +296,15 @@ const rootButtonText = StyleSheet.create({
   searchedText: {
     fontSize: 19,
     fontWeight: '700',
-    color: '#63BF8E',
+    color: Color.mainColor,
   },
   active: {
-    color: '#ffffff',
+    color: Color.white,
   },
   execText: {
     fontSize: 25,
     fontWeight: '700',
-    color: '#ffffff',
+    color: Color.white,
     letterSpacing: 2,
   },
 });
@@ -316,7 +317,7 @@ const inputPickerStyle = StyleSheet.create({
     paddingHorizontal: 10,
     paddingBottom: 12,
     borderWidth: 1,
-    borderColor: '#EBEBEB',
+    borderColor: Color.subColorGray,
     borderRadius: 50,
     backgroundColor: 'white',
     color: 'black',
@@ -330,7 +331,7 @@ const inputPickerStyle = StyleSheet.create({
     paddingHorizontal: 10,
     paddingBottom: 12,
     borderWidth: 1,
-    borderColor: '#EBEBEB',
+    borderColor: Color.subColorGray,
     borderRadius: 50,
     backgroundColor: 'white',
     color: 'black',
@@ -338,5 +339,4 @@ const inputPickerStyle = StyleSheet.create({
     position: 'relative',
     paddingLeft: 50,
   },
-  
 });
