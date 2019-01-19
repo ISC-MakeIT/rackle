@@ -1,7 +1,6 @@
 import { Constants } from 'expo';
 import * as React from 'react';
 import { Alert, FlatList, Image, Platform, TouchableOpacity, View, WebView, } from 'react-native';
-import { MonoText } from '../components/StyledText';
 import MovieNavigateStyle from '../stylesheets/MovieNavigateScreen';
 
 // ダミーデータ
