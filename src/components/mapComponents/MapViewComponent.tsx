@@ -85,7 +85,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
         longitude: point.longitude,
       };
       return (
-        <MarkerComponent key={index} latLng={latLng} iconName={'floor'} pinColor={'rgb(150,255,0)'} />
+        <MarkerComponent key={`movieMarker_${index}`} latLng={latLng} iconName={'floor'} pinColor={'rgb(150,255,0)'} />
       );
     });
 
@@ -96,7 +96,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
         longitude: point.longitude,
       };
       return (
-        <MarkerComponent key={index} latLng={latLng} iconName={point.type} pinColor={'rgb(255,255,0)'} />
+        <MarkerComponent key={`publicFacilityMarker_${index}`} latLng={latLng} iconName={point.type} pinColor={'rgb(255,255,0)'} />
       );
     });
 
@@ -110,7 +110,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
           onRegionChange={(e: Region) => this.locationChange(e)}
           minZoomLevel={18}
           onPress={(e: any) => console.log (e.nativeEvent.coordinate)} // debugのため
-          onIndoorLevelActivated={(e: any) => { this.indoorLevel(e.nativeEvent.IndoorLevel.name); }}
+          onIndoorLevelActivated={(e: any) => { this.changeIndoorLevel(e.nativeEvent.IndoorLevel.name); }}
         >
           {currentMovieMarkers}
           {currentPublicFacilityMarkers}
@@ -123,7 +123,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
     );
   }
 
-  private indoorLevel(level: string) {
+  private changeIndoorLevel(level: string) {
     const floor = level.substr(-2);
     const currentStateMarkers = this.currentStateMarkersGenerate(floor);
     this.setState({
