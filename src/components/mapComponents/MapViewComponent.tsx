@@ -84,7 +84,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
         longitude: point.longitude,
       };
       return (
-        <MarkerComponent key={`movieMarker_${index}`} latLng={latLng} iconName={'floor'} pinColor={'rgb(150,255,0)'} />
+        <MarkerComponent key={`movieMarker_${index}`} latLng={latLng} iconName={'floor'} pinColor={'#DF5656'} />
       );
     });
 
@@ -103,6 +103,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
       <View style={styles.container}>
         <MapView
           showsTraffic={false}
+          showsBuildings={false}
           provider={PROVIDER_GOOGLE}
           style={styles.map}
           region={this.state.initializedLocation}
@@ -110,6 +111,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
           minZoomLevel={18}
           onPress={(e: any) => console.log (e.nativeEvent.coordinate)} // debugのため
           onIndoorLevelActivated={(e: any) => { this.changeIndoorLevel(e.nativeEvent.IndoorLevel.name); }}
+          loadingEnabled={true}
         >
           {currentMovieMarkers}
           {currentPublicFacilityMarkers}
@@ -123,7 +125,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
   }
 
   private changeIndoorLevel(level: string) {
-    const floor = level.substr(-2);
+    const replace = level.replace(/階/, '');
+    const floor = replace.substr(-2);
     const currentStateMarkers = this.currentStateMarkersGenerate(floor);
     this.setState({
       indoorLevel: floor,
@@ -161,5 +164,5 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
     backfaceVisibility: 'hidden',
-    },
+  },
 });

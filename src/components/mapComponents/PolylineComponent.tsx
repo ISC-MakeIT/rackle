@@ -37,11 +37,12 @@ export default class PolylineComponent extends React.Component<Props, State> {
     return (
       <Polyline
         coordinates={currentGuideLine}
-        strokeWidth={6}
+        strokeWidth={5}
         lineCap={'round'}
-        lineDashPattern={[2, 1]}
+        lineDashPattern={[1.7, 1.5]}
         lineJoin={'miter'}
-        strokeColor={'#f00'}
+        strokeColor={'#63BF8E'}
+        miterLimit={11}
       />
     );
   }
