@@ -13,7 +13,7 @@ interface State {
 
 export default class HomeScreen extends React.Component<Props, State> {
   public static navigationOptions = {
-    title: 'fremap',
+    title: 'rackle',
     headerStyle: {
       backgroundColor: '#63BF8E',
     },
