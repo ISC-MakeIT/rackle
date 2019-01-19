@@ -14,6 +14,12 @@ interface State {
 export default class HomeScreen extends React.Component<Props, State> {
   public static navigationOptions = {
     title: 'fremap',
+    headerStyle: {
+      backgroundColor: '#63BF8E',
+    },
+    headerTitleStyle: {
+      color: '#ffffff',
+    },
   };
 
   inputRefs: any;
@@ -36,7 +42,7 @@ export default class HomeScreen extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <LinearGradient
-          colors={['rgba(99, 191, 142, 0.2)', 'rgba(248, 247, 244, 0.2)', 'white']}
+          colors={['rgba(99, 191, 142, 0.2)', '#F8F7F4', 'white']}
           style={{
             position: 'absolute',
             left: 0,
@@ -48,61 +54,88 @@ export default class HomeScreen extends React.Component<Props, State> {
           end={{ x: 0, y: 1 }}
         />
 
-        <View style={styles.appTitleContainer}>
-          <Text style={styles.appName}>横浜駅 </Text>
-          <Text style={styles.appNameKana}>Yokohama</Text>
+        <View style={titleContainerStyle.appTitleContainer}>
+          <Text style={titleContainerStyle.appName}>横浜駅 </Text>
+          <Text style={titleContainerStyle.appNameKana}>Yokohama</Text>
         </View>
 
-        <View style={styles.searchFormContainer}>
-          <View style={containerStyles.inputContainer}>
-            <View style={containerStyles.selectContainer} >
-              {/* TODO <View style={styles.fromSelectIcon} /> */}
+        <View style={containerStyles.searchFormContainer}>
+          <View>
+            <View style={containerStyles.inputContainer}>
+              <View style={containerStyles.selectContainer} >
+                {/* TODO <View style={styles.fromSelectIcon} /> */}
 
-              <RNPickerSelect
-                placeholder={{ label: '駅を選択してください', value: null, color: '#9EA0A4', }}
-                items={options}
-                onValueChange={(value: number) => { this.setState({ selectedFromValue: value }); }}
-                style={{...inputPickerStyle}}
-                value={this.state.selectedFromValue}
-                useNativeAndroidPickerStyle={false}
-              />
+                <RNPickerSelect
+                  placeholder={{ label: '駅を選択してください', value: null, color: '#9EA0A4', }}
+                  items={options}
+                  onValueChange={(value: number) => { this.setState({ selectedFromValue: value }); }}
+                  style={{...inputPickerStyle}}
+                  value={this.state.selectedFromValue}
+                  useNativeAndroidPickerStyle={false}
+                />
+                <View style={rootSelectStyle.titleLabelHere}>
+                  <Text style={rootTextStyle.colorHere}>現在</Text>
+                </View>
 
-            </View>
+              </View>
 
             <View style={containerStyles.searchedListContainer}>
-              <Text style={[styles.searchedList, styles.active]} onPress={() => alert('hoge')}>中央北</Text>
-              <Text style={[styles.searchedList]} onPress={() => alert('fuga')}>中央南</Text>
-              <Text style={[styles.searchedList]} onPress={() => alert('foo')}>中央東</Text>
-              <Text style={[styles.searchedList]} onPress={() => alert('var')}>中央西</Text>
+              <TouchableOpacity style={[rootButtonStyle.searchedList, rootButtonStyle.active]} onPress={() => alert('hoge')}>
+              <Text style={[rootButtonText.searchedText, rootButtonText.active]}>中央北</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[rootButtonStyle.searchedList]} onPress={() => alert('fuga')}>
+                <Text style={rootButtonText.searchedText}>中央南</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[rootButtonStyle.searchedList]} onPress={() => alert('foo')}>
+                <Text style={rootButtonText.searchedText}>中央東</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[rootButtonStyle.searchedList]} onPress={() => alert('var')}>
+                <Text style={rootButtonText.searchedText}>中央西</Text>
+              </TouchableOpacity>
             </View>
 
           </View>
-          <View style={[styles.toInputContainer, containerStyles.inputContainer]}>
-            <View style={containerStyles.selectContainer}>
-              {/* TODO <View style={styles.fromSelectIcon} /> */}
-              <RNPickerSelect
-                placeholder={{ label: '駅を選択してください', value: null, color: '#9EA0A4', }}
-                items={options}
-                onValueChange={(value: number) => { this.setState({ selectedToValue: value }); }}
-                style={{...inputPickerStyle}}
-                value={this.state.selectedToValue}
-                useNativeAndroidPickerStyle={false}
-              />
+            <View style={[styles.toInputContainer, containerStyles.inputContainer]}>
+              <View style={containerStyles.selectContainer}>
+                {/* TODO <View style={styles.fromSelectIcon} /> */}
+                <RNPickerSelect
+                  placeholder={{ label: '駅を選択してください', value: null, color: '#9EA0A4', }}
+                  items={options}
+                  onValueChange={(value: number) => { this.setState({ selectedToValue: value }); }}
+                  style={{...inputPickerStyle}}
+                  value={this.state.selectedToValue}
+                  useNativeAndroidPickerStyle={false}
+                />
+                <View style={rootSelectStyle.titleLabelDestination}>
+                  <Text style={rootTextStyle.colorDestination}>目的</Text>
+                </View>
+              </View>
+              <View style={containerStyles.searchedListContainer}>
+                <TouchableOpacity style={[rootButtonStyle.searchedList, rootButtonStyle.active]} onPress={() => alert('hoge')}>
+                  <Text style={[rootButtonText.searchedText, rootButtonText.active]}>中央北</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[rootButtonStyle.searchedList]} onPress={() => alert('fuga')}>
+                  <Text style={rootButtonText.searchedText}>中央南</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[rootButtonStyle.searchedList]} onPress={() => alert('foo')}>
+                  <Text style={rootButtonText.searchedText}>中央東</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[rootButtonStyle.searchedList]} onPress={() => alert('var')}>
+                  <Text style={rootButtonText.searchedText}>中央西</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={containerStyles.searchedListContainer}>
-              <Text style={[styles.searchedList, styles.active]} onPress={() => alert('hoge')}>中央北</Text>
-              <Text style={[styles.searchedList]} onPress={() => alert('fuga')}>中央南</Text>
-              <Text style={[styles.searchedList]} onPress={() => alert('foo')}>中央東</Text>
-              <Text style={[styles.searchedList]} onPress={() => alert('var')}>中央西</Text>
-            </View>
+          </View>
+          <View style={rootButtonStyle.switchButton}>
+            <Text>■</Text>
           </View>
         </View>
 
         <TouchableOpacity
-          style={styles.execBtn}
+          style={rootButtonStyle.execBtn}
           onPress={() => this.props.navigation.navigate('Guide')}
         >
-          <Text style={styles.execText}>案内開始</Text>
+          <Text style={rootButtonText.execText}>案内開始</Text>
         </TouchableOpacity>
       </View>
     );
@@ -128,8 +161,41 @@ export default class HomeScreen extends React.Component<Props, State> {
   }
 }
 
+const titleContainerStyle = StyleSheet.create( {
+  appTitleContainer: {
+    lineHeight: 20,
+    marginTop: 40,
+    marginBottom: 40,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    textAlign: 'center',
+    width: 200,
+  },
+  appName: {
+    color: 'white',
+    fontSize: 35,
+    textAlign: 'center',
+    shadowColor: '#ffffff',
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 1,
+    shadowRadius: 2,
+  },
+  appNameKana: {
+    color: 'white',
+    fontSize: 20,
+    marginTop: 10,
+    textAlign: 'center',
+    shadowColor: '#ffffff',
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    letterSpacing: 2,
+  },
+});
+
 const containerStyles = StyleSheet.create({
   inputContainer: {
+    width:355,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -143,6 +209,103 @@ const containerStyles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 30,
   },
+  searchFormContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+});
+
+const rootSelectStyle = StyleSheet.create({
+  titleLabelHere: {
+    backgroundColor: '#DF5656',
+    position: 'absolute',
+    width: 38,
+    height: 38,
+    borderRadius: 50,
+    marginTop: 4,
+    marginLeft: 4,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  titleLabelDestination: {
+    backgroundColor: '#63BF8E',
+    position: 'absolute',
+    width: 38,
+    height: 38,
+    borderRadius: 50,
+    marginTop: 4,
+    marginLeft: 4,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+const rootTextStyle = StyleSheet.create({
+  colorHere: {
+    color: '#ffffff',
+    fontWeight: '700',
+  },
+  colorDestination: {
+    color: '#ffffff',
+    fontWeight: '700',
+  },
+});
+
+const rootButtonStyle = StyleSheet.create({
+  searchedList: {
+    width: 150,
+    height: 44,
+    borderWidth: 2,
+    borderColor: '#63BF8E',
+    borderRadius: 5,
+    backgroundColor: '#ffffff',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 3,
+    marginBottom: 3,
+    marginLeft: 3,
+    marginRight: 3,
+  },
+  active: {
+    backgroundColor: '#63BF8E',
+  },
+  execBtn: {
+    width: 300,
+    height: 52,
+    backgroundColor: '#63BF8E',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    borderRadius: 50,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  switchButton: {
+    width: 20,
+    height: 20,
+    backgroundColor: '#63BF8E',
+  },
+});
+
+const rootButtonText = StyleSheet.create({
+  searchedText: {
+    fontSize: 19,
+    fontWeight: '700',
+    color: '#63BF8E',
+  },
+  active: {
+    color: '#ffffff',
+  },
+  execText: {
+    fontSize: 25,
+    fontWeight: '700',
+    color: '#ffffff',
+    letterSpacing: 2,
+  },
 });
 
 const inputPickerStyle = StyleSheet.create({
@@ -153,11 +316,13 @@ const inputPickerStyle = StyleSheet.create({
     paddingHorizontal: 10,
     paddingBottom: 12,
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#EBEBEB',
     borderRadius: 50,
     backgroundColor: 'white',
     color: 'black',
-    minWidth: 300,
+    minWidth: 330,
+    position: 'relative',
+    paddingLeft: 50,
   },
   inputAndroid: {
     fontSize: 16,
@@ -165,9 +330,13 @@ const inputPickerStyle = StyleSheet.create({
     paddingHorizontal: 10,
     paddingBottom: 12,
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#EBEBEB',
     borderRadius: 50,
     backgroundColor: 'white',
     color: 'black',
+    minWidth: 330,
+    position: 'relative',
+    paddingLeft: 50,
   },
+  
 });
