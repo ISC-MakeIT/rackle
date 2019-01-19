@@ -49,8 +49,8 @@ GuideStack.navigationOptions = { tabBarVisible: true };
 
 const tabNavigator = createBottomTabNavigator({ HomeStack, MyPageStack, MapStack, MovieNavigateStack }, {
   tabBarOptions: {
-    activeTintColor: '#037aff',
-    inactiveTintColor: '#737373',
+    activeTintColor: '#312D2D',
+    inactiveTintColor: '#312D2D',
     showLabel: false, // TODO 確認
   },
 });
