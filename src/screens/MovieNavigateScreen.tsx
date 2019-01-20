@@ -1,7 +1,6 @@
 import { Constants } from 'expo';
 import * as React from 'react';
 import { Alert, FlatList, Image, Platform, TouchableOpacity, View, WebView, } from 'react-native';
-import MovieNavigateStyle from '../stylesheets/MovieNavigateScreen';
 
 // ダミーデータ
 const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
@@ -18,10 +17,14 @@ export default class MovieNavigateScreen extends React.Component {
   /**
    * ListViewの内容を描画
    */
-  private renderItem = ({ item, index }) => (
+  private renderItem = ({item, index}) => (
     <View style={{ padding: 4 }}>
-      <TouchableOpacity onPress={event => this.onPress(item, index)} >
-        <Image style={MovieNavigateStyle.thumbnailImage} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
+      <TouchableOpacity onPress={event => this.onPress(item, index)}>
+        <Image
+          style={styles.thumbnailImage}
+          source={{
+          uri: `http://i.ytimg.com/vi/${item}/default.jpg`
+        }}/>
       </TouchableOpacity>
     </View>
   )
@@ -30,15 +33,37 @@ export default class MovieNavigateScreen extends React.Component {
    * FlatViewを描画
    */
   private renderList = () => (
-    <FlatList data={playlistYoutubeIds} renderItem={this.renderItem} horizontal={true} keyExtractor={(item, index) => index.toString()} />
-  )
+    <FlatList
+      data={playlistYoutubeIds}
+      renderItem={this.renderItem}
+      horizontal={true}
+      keyExtractor={(item, index) => index.toString()}
+    />
+  );
 
   public render() {
     return (
-      <View style={MovieNavigateStyle.container}>
-        <WebView source={{ uri: this.state.youtubeURL }} scrollEnabled={false} allowsInlineMediaPlayback={true} useWebKit={Platform.OS === 'ios'} onMessage={this.onMessage} />
+      <View style={styles.container}>
+        <WebView
+          source={{ uri: this.state.youtubeURL }}
+          scrollEnabled={false}
+          allowsInlineMediaPlayback={true}
+          useWebKit={Platform.OS === 'ios'}
+          onMessage={this.onMessage}
+        />
         {this.renderList()}
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  thumbnailImage: {
+    height: 100,
+    width: 100,
+  },
+});
