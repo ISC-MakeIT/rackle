@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-  StyleSheet, FlatList, Image, Platform,
-  TouchableOpacity, View, WebView
-} from 'react-native';
+import { Animated, AppRegistry, Dimensions, FlatList, Image, PanResponder, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, WebView,} from 'react-native';
 
 // ダミーデータ
 const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
@@ -13,7 +10,14 @@ const playlistYoutubeIds = [
 ];
 
 export default class MovieNavigateScreen extends React.Component {
-  constructor(props: {}) {
+
+  public static navigationOptions = {
+    headerStyle: {
+      display: 'none',
+    },
+  };
+  
+  constructor (props) {
     super(props);
     this.state = {
       // cacheはキャッシュしたhtmlを読み込ませないため、playlistIdはyoutubeプレイヤーの初期値を送る
@@ -26,12 +30,8 @@ export default class MovieNavigateScreen extends React.Component {
    */
   private renderItem = ({item, index}) => (
     <View style={{ padding: 4 }}>
-      <TouchableOpacity onPress={event => this.onPress(item, index)}>
-        <Image
-          style={styles.thumbnailImage}
-          source={{
-          uri: `http://i.ytimg.com/vi/${item}/default.jpg`,
-        }}/>
+      <TouchableOpacity onPress={event => this.onPress(item, index)} >
+        <Image style={{height: 90, width: 120,}} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
       </TouchableOpacity>
     </View>
   )
@@ -49,15 +49,11 @@ export default class MovieNavigateScreen extends React.Component {
   )
 
   public render() {
+    const { width, height: screenHeight } = Dimensions.get('window');
+    const height = width * 0.5625;
     return (
-      <View style={styles.container}>
-        <WebView
-          source={{ uri: this.state.youtubeURL }}
-          scrollEnabled={false}
-          allowsInlineMediaPlayback={true}
-          useWebKit={Platform.OS === 'ios'}
-          onMessage={this.onMessage}
-        />
+      <View style={{backgroundColor: '#ecf0f1', flex: 1, justifyContent: 'center',}}>
+        <WebView source={{ uri: this.state.youtubeURL }} scrollEnabled={false} allowsInlineMediaPlayback={true} useWebKit={Platform.OS === 'ios'} onMessage={this.onMessage} />
         {this.renderList()}
       </View>
     );
@@ -65,12 +61,12 @@ export default class MovieNavigateScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  test: {
+    color: '#ff0000',
+  },
   container: {
+    backgroundColor: '#ecf0f1',
     flex: 1,
     justifyContent: 'center',
-  },
-  thumbnailImage: {
-    height: 100,
-    width: 100,
   },
 });
