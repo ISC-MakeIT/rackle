@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {Dimensions, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-
-import styles from '../stylesheets/HomeScreen.scss';
 import RNPickerSelect from 'react-native-picker-select';
 import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
@@ -64,8 +62,6 @@ export default class HomeScreen extends React.Component<Props, State> {
           <View>
             <View style={containerStyles.inputContainer}>
               <View style={containerStyles.selectContainer} >
-                {/* TODO <View style={styles.fromSelectIcon} /> */}
-
                 <RNPickerSelect
                   placeholder={{ label: '駅を選択してください', value: null, color: '#9EA0A4', }}
                   items={options}
@@ -96,9 +92,8 @@ export default class HomeScreen extends React.Component<Props, State> {
             </View>
 
           </View>
-            <View style={[styles.toInputContainer, containerStyles.inputContainer]}>
+            <View style={containerStyles.inputContainer}>
               <View style={containerStyles.selectContainer}>
-                {/* TODO <View style={styles.fromSelectIcon} /> */}
                 <RNPickerSelect
                   placeholder={{ label: '駅を選択してください', value: null, color: '#9EA0A4', }}
                   items={options}
@@ -147,20 +142,28 @@ export default class HomeScreen extends React.Component<Props, State> {
       const learnMoreButton = (<Text> Learn more </Text>);
 
       return (
-        <Text style={styles.developmentModeText}>
+        <Text>
           Development mode is enabled, your app will be slower but you can use useful
           development tools. {learnMoreButton}
         </Text>
       );
     } else {
       return (
-        <Text style={styles.developmentModeText}>
+        <Text>
           You are not in development mode, your app will run at full speed.
         </Text>
       );
     }
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Color.mainColor,
+    flex: 1,
+    flexDirection: 'column',
+  },
+});
 
 const titleContainerStyle = StyleSheet.create( {
   appTitleContainer: {
