@@ -1,5 +1,21 @@
 import * as React from 'react';
-import { Animated, AppRegistry, Dimensions, FlatList, Image, PanResponder, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, WebView,} from 'react-native';
+import { 
+  Animated,
+  AppRegistry,
+  Dimensions,
+  FlatList,
+  Image,
+  PanResponder,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  WebView,
+} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
+
 
 // ダミーデータ
 const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
@@ -49,24 +65,49 @@ export default class MovieNavigateScreen extends React.Component {
   )
 
   public render() {
-    const { width, height: screenHeight } = Dimensions.get('window');
-    const height = width * 0.5625;
     return (
-      <View style={{backgroundColor: '#ecf0f1', flex: 1, justifyContent: 'center',}}>
+      <View style={styles.test_area}>
+        <View style={styles.test_text_wrap}>
+          <Text style={styles.test_text}>show a list of all available commands.</Text>
+        </View>
         <WebView source={{ uri: this.state.youtubeURL }} scrollEnabled={false} allowsInlineMediaPlayback={true} useWebKit={Platform.OS === 'ios'} onMessage={this.onMessage} />
-        {this.renderList()}
+        <View>
+          {this.renderList()}
+        </View>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  test: {
-    color: '#ff0000',
+EStyleSheet.build();
+
+const styles = EStyleSheet.create({
+  container:{
+    width: '100%',
+    height: '66%',
+    // marginHorizontal: '10%',
+    marginTop: '20%',
+    backgroundColor: 'yellow',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
-  container: {
+  movie_naviate_area:{
     backgroundColor: '#ecf0f1',
+    height: '100%',
+    width: '100%',
     flex: 1,
     justifyContent: 'center',
+  },
+  test_area:{
+    flex: 1,
+    height: 'auto',
+  },
+  test_text_wrap:{
+    width: '100%',
+  },
+  test_text:{
+    textAlign: 'center',
+    fontSize: '1rem',
+    color: 'red',
   },
 });
