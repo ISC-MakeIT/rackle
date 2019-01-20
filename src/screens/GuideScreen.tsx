@@ -1,12 +1,18 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions } from 'react-native';
-import { MonoText } from '../components/StyledText';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import {
+  View, Text, StyleSheet, TouchableOpacity,
+  FlatList, Image, Dimensions, WebView
+} from 'react-native';
 
 interface Props { navigation: any; }
+type State = {
+  playListId: string;
+  activeYouTubeId: string,
+};
 
-export default class GuideScreen extends React.Component<Props, {}> {
-  public static navigationOptions = (navigation: any) => {
+export default class GuideScreen extends React.Component<Props, State> {
+  public static navigationOptions = () => {
     return {
       title: 'GuideScreen',
       header: () => (
@@ -47,10 +53,13 @@ export default class GuideScreen extends React.Component<Props, {}> {
 
   constructor(props: Props) {
     super(props);
+    this.state = {
+      playListId: 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX',
+      activeYouTubeId: 'uS00Bd9ZVz4',
+    };
   }
 
   public render() {
-    const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
     const playlistYoutubeIds = ['uS00Bd9ZVz4', '9iieMHXubJU', '_Hdk2vXESB0', 'X8p0y5KXdIk', 'yYbWPRuxK1U', '33Np_lJseBE', 'z3VW7TNklww', 'tNMatlAOOcs', 'EyT0uC1D1I8', 'bxG4LTsLThE'];
 
     const thumbnails = (
@@ -72,7 +81,12 @@ export default class GuideScreen extends React.Component<Props, {}> {
       <View style={guideStyle.container}>
         <View style={guideStyle.mainContainer}>
           <View style={guideStyle.mainWindow}>
-            <MonoText>screen/GuideScreen</MonoText>
+            <WebView
+              source={{ uri: this.getYouTubeURL() }}
+              scrollEnabled={false}
+              allowsInlineMediaPlayback={true}
+              useWebKit={true}
+            />
           </View>
 
           <TouchableOpacity
@@ -86,6 +100,13 @@ export default class GuideScreen extends React.Component<Props, {}> {
       </View>
     );
   }
+
+  private getYouTubeURL () {
+    // cacheはキャッシュしたhtmlを読み込ませないため、playlistIdはyoutubeプレイヤーの初期値を送る
+    const baseURL = 'https://haduki1208-app.firebaseapp.com/youtube.html';
+    const cachePath = new Date().getTime(); // FIXME debug mode ? using cache : don't use cache
+    return `${baseURL}?${cachePath}&playlistId=${this.state.playListId}`;
+  }
 }
 
 const { width, height } = Dimensions.get('window');
@@ -98,9 +119,11 @@ const guideStyle = StyleSheet.create({
   },
   mainContainer: {
     width: width,
+    height: (height - 200),
   },
   mainWindow: {
-    height: (height - 200),
+    height: 450,
+    width: width,
   },
   subWindowCircle: {
     backgroundColor: '#03A9F4',
