@@ -1,5 +1,21 @@
 import * as React from 'react';
-import { Animated, AppRegistry, Dimensions, FlatList, Image, PanResponder, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, WebView,} from 'react-native';
+import { 
+  Animated,
+  AppRegistry,
+  Dimensions,
+  FlatList,
+  Image,
+  PanResponder,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  WebView,
+} from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
+
 
 // ダミーデータ
 const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
@@ -52,21 +68,29 @@ export default class MovieNavigateScreen extends React.Component {
     const { width, height: screenHeight } = Dimensions.get('window');
     const height = width * 0.5625;
     return (
-      <View style={{backgroundColor: '#ecf0f1', flex: 1, justifyContent: 'center',}}>
-        <WebView source={{ uri: this.state.youtubeURL }} scrollEnabled={false} allowsInlineMediaPlayback={true} useWebKit={Platform.OS === 'ios'} onMessage={this.onMessage} />
-        {this.renderList()}
+      <View style={styles.column}>
+        <Text style={styles.header}>Welcome to Extended StyleSheet!</Text>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  test: {
+EStyleSheet.build();
+
+const styles = EStyleSheet.create({
+  header: {
+    fontSize: '1.5rem',
     color: '#ff0000',
+    textAlign: 'center',
   },
-  container: {
-    backgroundColor: '#ecf0f1',
-    flex: 1,
+  column: {
+    width: '80%',
+    height: '60%',
+    marginHorizontal: '10%',
+    marginTop: '20%',
+    backgroundColor: 'yellow',
+    flexDirection: 'column',
     justifyContent: 'center',
-  },
+    padding: 5,
+  }
 });
