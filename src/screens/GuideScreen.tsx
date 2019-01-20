@@ -13,7 +13,7 @@ export default class GuideScreen extends React.Component<Props, {}> {
           <View style={guideHeaderStyle.container}>
             <View style={guideHeaderStyle.leftContainer}>
               <Text style={guideHeaderStyle.stationName}>横浜駅</Text>
-              <View style={guideHeaderStyle.routeContainer}>
+            <View style={guideHeaderStyle.routeContainer}>
                 <TouchableOpacity style={guideHeaderStyle.gateNameContainer}>
                   <Text style={guideHeaderStyle.gateName}>JR/中央改札</Text>
                 </TouchableOpacity>

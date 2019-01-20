@@ -1,11 +1,14 @@
-import { Constants } from 'expo';
 import * as React from 'react';
 import { Animated, AppRegistry, Dimensions, FlatList, Image, PanResponder, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, WebView,} from 'react-native';
 
-
 // ダミーデータ
 const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
-const playlistYoutubeIds = ['uS00Bd9ZVz4', '9iieMHXubJU', '_Hdk2vXESB0', 'X8p0y5KXdIk', 'yYbWPRuxK1U', '33Np_lJseBE', 'z3VW7TNklww', 'tNMatlAOOcs', 'EyT0uC1D1I8', 'bxG4LTsLThE'];
+const playlistYoutubeIds = [
+  'uS00Bd9ZVz4', '9iieMHXubJU', '_Hdk2vXESB0', 'X8p0y5KXdIk',
+  'yYbWPRuxK1U', '33Np_lJseBE', 'z3VW7TNklww', 'tNMatlAOOcs',
+  'EyT0uC1D1I8', 'bxG4LTsLThE',
+];
+
 export default class MovieNavigateScreen extends React.Component {
 
   public static navigationOptions = {
@@ -13,6 +16,7 @@ export default class MovieNavigateScreen extends React.Component {
       display: 'none',
     },
   };
+  
   constructor (props) {
     super(props);
     this.state = {
@@ -24,7 +28,7 @@ export default class MovieNavigateScreen extends React.Component {
   /**
    * ListViewの内容を描画
    */
-  private renderItem = ({ item, index }) => (
+  private renderItem = ({item, index}) => (
     <View style={{ padding: 4 }}>
       <TouchableOpacity onPress={event => this.onPress(item, index)} >
         <Image style={{height: 90, width: 120,}} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
@@ -36,7 +40,12 @@ export default class MovieNavigateScreen extends React.Component {
    * FlatViewを描画
    */
   private renderList = () => (
-    <FlatList data={playlistYoutubeIds} renderItem={this.renderItem} horizontal={true} keyExtractor={(item, index) => index.toString()} />
+    <FlatList
+      data={playlistYoutubeIds}
+      renderItem={this.renderItem}
+      horizontal={true}
+      keyExtractor={(item, index) => index.toString()}
+    />
   )
 
   public render() {

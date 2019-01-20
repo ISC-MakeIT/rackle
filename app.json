@@ -4,10 +4,6 @@
     "slug": "rackle",
     "privacy": "public",
     "sdkVersion": "31.0.0",
-     "packagerOpts": {
-      "sourceExts": ["js", "jsx", "scss", "sass"],
-      "transformer": "node_modules/react-native-sass-transformer/index.js"
-    },
     "platforms": [
       "ios",
       "android"
