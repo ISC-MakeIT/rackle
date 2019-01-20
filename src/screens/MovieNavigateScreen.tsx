@@ -1,12 +1,18 @@
 import { Constants } from 'expo';
 import * as React from 'react';
-import { Alert, FlatList, Image, Platform, TouchableOpacity, View, WebView, } from 'react-native';
-import MovieNavigateStyle from '../stylesheets/MovieNavigateScreen';
+import { Animated, AppRegistry, Dimensions, FlatList, Image, PanResponder, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, WebView,} from 'react-native';
+
 
 // ダミーデータ
 const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
 const playlistYoutubeIds = ['uS00Bd9ZVz4', '9iieMHXubJU', '_Hdk2vXESB0', 'X8p0y5KXdIk', 'yYbWPRuxK1U', '33Np_lJseBE', 'z3VW7TNklww', 'tNMatlAOOcs', 'EyT0uC1D1I8', 'bxG4LTsLThE'];
 export default class MovieNavigateScreen extends React.Component {
+
+  public static navigationOptions = {
+    headerStyle: {
+      display: 'none',
+    },
+  };
   constructor (props) {
     super(props);
     this.state = {
@@ -21,7 +27,7 @@ export default class MovieNavigateScreen extends React.Component {
   private renderItem = ({ item, index }) => (
     <View style={{ padding: 4 }}>
       <TouchableOpacity onPress={event => this.onPress(item, index)} >
-        <Image style={MovieNavigateStyle.thumbnailImage} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
+        <Image style={{height: 90, width: 120,}} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
       </TouchableOpacity>
     </View>
   )
@@ -34,11 +40,24 @@ export default class MovieNavigateScreen extends React.Component {
   )
 
   public render() {
+    const { width, height: screenHeight } = Dimensions.get('window');
+    const height = width * 0.5625;
     return (
-      <View style={MovieNavigateStyle.container}>
+      <View style={{backgroundColor: '#ecf0f1', flex: 1, justifyContent: 'center',}}>
         <WebView source={{ uri: this.state.youtubeURL }} scrollEnabled={false} allowsInlineMediaPlayback={true} useWebKit={Platform.OS === 'ios'} onMessage={this.onMessage} />
         {this.renderList()}
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  test: {
+    color: '#ff0000',
+  },
+  container: {
+    backgroundColor: '#ecf0f1',
+    flex: 1,
+    justifyContent: 'center',
+  },
+});
