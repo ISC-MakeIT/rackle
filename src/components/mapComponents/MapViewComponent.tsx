@@ -4,6 +4,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
 import Colors from '../../constants/Colors';
+import CustomMap from '../mapComponents/CustomMap';
 
 interface Props {
   indoorLevel: string;
@@ -103,6 +104,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <MapView
+          customMapStyle= {CustomMap.mapStyle}
+          showsIndoorLevelPicker={true}
           showsTraffic={false}
           showsBuildings={false}
           provider={PROVIDER_GOOGLE}
