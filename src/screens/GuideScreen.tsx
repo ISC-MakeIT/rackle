@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions } from 'react-native';
 import { MonoText } from '../components/StyledText';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
@@ -57,9 +57,9 @@ export default class GuideScreen extends React.Component<Props, {}> {
       <FlatList
         data={playlistYoutubeIds}
         renderItem={({ item }) => (
-          <TouchableOpacity>
+          <TouchableOpacity >
             <Image
-              style={guideStyle.thumbnailImage}
+              style={thumbnailStyle.Image}
               source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }}
             />
           </TouchableOpacity>
@@ -71,14 +71,16 @@ export default class GuideScreen extends React.Component<Props, {}> {
     return (
       <View style={guideStyle.container}>
         <View style={guideStyle.mainContainer}>
-          <View>
+          <View style={guideStyle.mainWindow}>
             <MonoText>screen/GuideScreen</MonoText>
           </View>
 
-          <View style={guideStyle.subWindowCircle}>
-          </View>
+          <TouchableOpacity
+            style={guideStyle.subWindowCircle}
+          >
+          </TouchableOpacity>
         </View>
-        <View style={guideStyle.thumbnailContainer}>
+        <View style={thumbnailStyle.Container}>
           {thumbnails}
         </View>
       </View>
@@ -86,23 +88,41 @@ export default class GuideScreen extends React.Component<Props, {}> {
   }
 }
 
+const { width, height } = Dimensions.get('window');
+
 const guideStyle = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
-  mainContainer: { },
-  thumbnailImage: {
-    width: 100,
-    height: 100,
+  mainContainer: {
+    width: width,
   },
-  thumbnailContainer: {},
+  mainWindow: {
+    height: (height - 200),
+  },
   subWindowCircle: {
-    backgroundColor: 'red',
+    backgroundColor: '#03A9F4',
     width: 100,
     height: 100,
     borderRadius: 50,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 15,
+    top: 20,
+    elevation: 8,
+  },
+});
+
+const thumbnailStyle = StyleSheet.create({
+  Image: {
+    width: 120,
+    height: 120,
+  },
+  Container: {
+    height: 200,
   },
 });
 
