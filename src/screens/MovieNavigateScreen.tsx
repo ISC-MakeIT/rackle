@@ -1,12 +1,19 @@
-import { Constants } from 'expo';
 import * as React from 'react';
-import { Alert, FlatList, Image, Platform, TouchableOpacity, View, WebView, } from 'react-native';
+import {
+  StyleSheet, FlatList, Image, Platform,
+  TouchableOpacity, View, WebView
+} from 'react-native';
 
 // ダミーデータ
 const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
-const playlistYoutubeIds = ['uS00Bd9ZVz4', '9iieMHXubJU', '_Hdk2vXESB0', 'X8p0y5KXdIk', 'yYbWPRuxK1U', '33Np_lJseBE', 'z3VW7TNklww', 'tNMatlAOOcs', 'EyT0uC1D1I8', 'bxG4LTsLThE'];
+const playlistYoutubeIds = [
+  'uS00Bd9ZVz4', '9iieMHXubJU', '_Hdk2vXESB0', 'X8p0y5KXdIk',
+  'yYbWPRuxK1U', '33Np_lJseBE', 'z3VW7TNklww', 'tNMatlAOOcs',
+  'EyT0uC1D1I8', 'bxG4LTsLThE',
+];
+
 export default class MovieNavigateScreen extends React.Component {
-  constructor (props) {
+  constructor(props: {}) {
     super(props);
     this.state = {
       // cacheはキャッシュしたhtmlを読み込ませないため、playlistIdはyoutubeプレイヤーの初期値を送る
@@ -23,7 +30,7 @@ export default class MovieNavigateScreen extends React.Component {
         <Image
           style={styles.thumbnailImage}
           source={{
-          uri: `http://i.ytimg.com/vi/${item}/default.jpg`
+          uri: `http://i.ytimg.com/vi/${item}/default.jpg`,
         }}/>
       </TouchableOpacity>
     </View>
@@ -39,7 +46,7 @@ export default class MovieNavigateScreen extends React.Component {
       horizontal={true}
       keyExtractor={(item, index) => index.toString()}
     />
-  );
+  )
 
   public render() {
     return (
