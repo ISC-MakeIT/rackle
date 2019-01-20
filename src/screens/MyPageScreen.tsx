@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { MonoText } from '../components/StyledText';
-import myPageStyle from '../stylesheets/MyPageScreen.scss';
 
 export default class MyPageScreen extends React.Component {
   public static navigationOptions = { title: 'mypage' };
 
   public render() {
     return (
-      <View style={myPageStyle.container}>
+      <View style={styles.container}>
         <View>
           <MonoText>screens/myPageScreen</MonoText>
         </View>
@@ -16,3 +15,11 @@ export default class MyPageScreen extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    marginTop: 30,
+  },
+});
