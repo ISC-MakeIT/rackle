@@ -1,6 +1,6 @@
 import { Constants } from 'expo';
 import * as React from 'react';
-import { Animated, AppRegistry, Dimensions, FlatList, Image, PanResponder, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, WebView,} from "react-native";
+import { Animated, AppRegistry, Dimensions, FlatList, Image, PanResponder, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, WebView,} from 'react-native';
 
 
 // ダミーデータ
@@ -40,7 +40,7 @@ export default class MovieNavigateScreen extends React.Component {
   )
 
   public render() {
-    const { width, height: screenHeight } = Dimensions.get("window");
+    const { width, height: screenHeight } = Dimensions.get('window');
     const height = width * 0.5625;
     return (
       <View style={{backgroundColor: '#ecf0f1', flex: 1, justifyContent: 'center',}}>
@@ -59,5 +59,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#ecf0f1',
     flex: 1,
     justifyContent: 'center',
-  }
+  },
 });
