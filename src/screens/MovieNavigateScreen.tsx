@@ -65,11 +65,15 @@ export default class MovieNavigateScreen extends React.Component {
   )
 
   public render() {
-    const { width, height: screenHeight } = Dimensions.get('window');
-    const height = width * 0.5625;
     return (
-      <View style={styles.column}>
-        <Text style={styles.header}>Welcome to Extended StyleSheet!</Text>
+      <View style={styles.test_area}>
+        <View style={styles.test_text_wrap}>
+          <Text style={styles.test_text}>show a list of all available commands.</Text>
+        </View>
+        <WebView source={{ uri: this.state.youtubeURL }} scrollEnabled={false} allowsInlineMediaPlayback={true} useWebKit={Platform.OS === 'ios'} onMessage={this.onMessage} />
+        <View>
+          {this.renderList()}
+        </View>
       </View>
     );
   }
@@ -78,19 +82,32 @@ export default class MovieNavigateScreen extends React.Component {
 EStyleSheet.build();
 
 const styles = EStyleSheet.create({
-  header: {
-    fontSize: '1.5rem',
-    color: '#ff0000',
-    textAlign: 'center',
-  },
-  column: {
-    width: '80%',
-    height: '60%',
-    marginHorizontal: '10%',
+  container:{
+    width: '100%',
+    height: '66%',
+    // marginHorizontal: '10%',
     marginTop: '20%',
     backgroundColor: 'yellow',
     flexDirection: 'column',
     justifyContent: 'center',
-    padding: 5,
-  }
+  },
+  movie_naviate_area:{
+    backgroundColor: '#ecf0f1',
+    height: '100%',
+    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  test_area:{
+    flex: 1,
+    height: 'auto',
+  },
+  test_text_wrap:{
+    width: '100%',
+  },
+  test_text:{
+    textAlign: 'center',
+    fontSize: '1rem',
+    color: 'red',
+  },
 });
