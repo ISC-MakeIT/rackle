@@ -10,4 +10,5 @@ export default {
   subColorRed: '#DF5656',
   subColorGray: '#EBEBEB',
   white: '#ffffff',
+  black: '#312D2D',
 };
