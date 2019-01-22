@@ -5,7 +5,7 @@ import Colors from '../../constants/Colors';
 interface Props {
   indoorLevel: string;
   guideLines:guideLines[];
-  color?: string;
+  guideLinesColor?: string;
 }
 
 interface State {
@@ -35,7 +35,7 @@ export default class PolylineComponent extends React.Component<Props, State> {
   }
 
   public render() {
-    return this.props.color == undefined ? this.createStrongColor() : this.createWeakColor(this.props.color);
+    return this.props.guideLinesColor == undefined ? this.createStrongColor() : this.createWeakColor(this.props.guideLinesColor);
   }
 
   private createStrongColor() {

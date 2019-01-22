@@ -1,38 +1,17 @@
 import * as React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import MapViewComponent from './mapComponents/MapViewComponent';
 
 interface Props {
-  flg: string;
-  MapViewComponent: MapViewComponent;
+  indoorLevel: string;
+  initializedLocation: InitializedLocation;
+  guideLines: guideLines[];
+  currentScreen: string;
+  mapChange: any;
 }
 
 interface State {
-  flg: string;
-}
-
-interface MapViewComponent {
-  indoorLevel: string;
-  initializedLocation: InitializedLocation;
-  markers: [{
-    movieMarkers: MovieMarkers[],
-  }, {
-    publicFacilityMarkers: PublicFacilityMarkers[]
-  }];
-  guideLines: guideLines[];
-}
-
-interface MovieMarkers {
-  floor: string;
-  movieId: number;
-  latitude: number;
-  longitude: number;
-}
-
-interface PublicFacilityMarkers {
-  floor: string;
-  type: 'toilet' | 'elevator';
-  latitude: number;
-  longitude: number;
+  currentScreen: string;
 }
 
 interface InitializedLocation {
@@ -44,10 +23,6 @@ interface InitializedLocation {
 
 interface guideLines {
   floor: string;
-  lineLatLng: LatLng[];
-}
-
-interface LatLng {
   latitude: number;
   longitude: number;
 }
@@ -56,24 +31,41 @@ export default class MapScreen extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      flg: this.props.flg,
+      currentScreen: this.props.currentScreen,
     };
   }
 
   public render() {
-    const currentScreen = this.state.flg === 'map' ? this.mapScreen() : this.videoScreen();
+    const currentScreen = this.state.currentScreen === 'video' ? this.mapScreen() : this.videoScreen();
     return (
-      <View>
+      <TouchableOpacity style={style.container} onPress={this.props.mapChange}>
         {currentScreen}
-      </View>
+      </TouchableOpacity>
     );
   }
 
   private mapScreen() {
-
+    return (
+      <MapViewComponent
+        indoorLevel={this.props.indoorLevel}
+        initializedLocation={this.props.initializedLocation}
+        guideLines={this.props.guideLines}
+        guideLinesColor={'#ff0000'}
+      />
+    );
   }
 
   private videoScreen() {
-
+    return (
+      <View style={{backgroundColor: '#000000', ...style.container}}></View>
+    );
   }
 }
+
+const style = StyleSheet.create({
+  container: {
+    width: 150,
+    height: 150,
+    position: 'absolute',
+  },
+});
