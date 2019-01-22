@@ -3,27 +3,20 @@ import { StyleSheet, View, Dimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
-import Colors from '../../constants/Colors';
 import CustomMap from '../mapComponents/CustomMap';
 
 interface Props {
   indoorLevel: string;
   initializedLocation: InitializedLocation;
-  markers: [{
-    movieMarkers: MovieMarkers[],
-  }, {
-    publicFacilityMarkers: PublicFacilityMarkers[]
-  }];
-  guideLines: guideLines[];
+  movieMarkers?: MovieMarkers[];
+  publicFacilityMarkers?: PublicFacilityMarkers[];
+  guideLines?: guideLines[];
+  guideLinesColor?: string[];
 }
 
 interface State {
   indoorLevel: string;
   initializedLocation: InitializedLocation;
-  currentStateMarkers: {
-    movieMarkers: MovieMarkers[],
-    publicFacilityMarkers: PublicFacilityMarkers[],
-  };
 }
 
 interface Region {
@@ -56,10 +49,6 @@ interface InitializedLocation {
 
 interface guideLines {
   floor: string;
-  lineLatLng: LatLng[];
-}
-
-interface LatLng {
   latitude: number;
   longitude: number;
 }
@@ -70,7 +59,6 @@ export default class MapViewComponent extends React.Component<Props, State> {
     this.state = {
       indoorLevel: this.props.indoorLevel,
       initializedLocation: this.props.initializedLocation,
-      currentStateMarkers: this.currentStateMarkersGenerate(this.props.indoorLevel),
     };
   }
 
@@ -79,28 +67,12 @@ export default class MapViewComponent extends React.Component<Props, State> {
   }
 
   public render() {
-    const movieMarkers = this.state.currentStateMarkers.movieMarkers;
-    const currentMovieMarkers = movieMarkers.map((point, index: number) => {
-      const latLng = {
-        latitude: point.latitude,
-        longitude: point.longitude,
-      };
-      return (
-        <MarkerComponent key={`movieMarker_${index}`} latLng={latLng} iconName={'floor'} pinColor={Colors.subColorRed} />
-      );
-    });
-
-    const publicFacilityMarkers = this.state.currentStateMarkers.publicFacilityMarkers;
-    const currentPublicFacilityMarkers = publicFacilityMarkers.map((point, index: number) => {
-      const latLng = {
-        latitude: point.latitude,
-        longitude: point.longitude,
-      };
-      return (
-        <MarkerComponent key={`publicFacilityMarker_${index}`} latLng={latLng} iconName={point.type} />
-      );
-    });
-
+    const movieMarker = this.props.movieMarkers ?
+      <MarkerComponent indoorLevel={this.state.indoorLevel} movieMarkers={this.props.movieMarkers} /> : null;
+    const publicFacilityMarker = this.props.publicFacilityMarkers ?
+      <MarkerComponent indoorLevel={this.state.indoorLevel} publicFacilityMarkers={this.props.publicFacilityMarkers} /> : null;
+    const polyline = this.props.guideLines ?
+      <PolylineComponent indoorLevel={this.state.indoorLevel} guideLines={this.props.guideLines} /> : null;
     return (
       <View style={styles.container}>
         <MapView
@@ -117,12 +89,9 @@ export default class MapViewComponent extends React.Component<Props, State> {
           onIndoorLevelActivated={(e: any) => { this.changeIndoorLevel(e.nativeEvent.IndoorLevel.name); }}
           loadingEnabled={true}
         >
-          {currentMovieMarkers}
-          {currentPublicFacilityMarkers}
-          <PolylineComponent
-            indoorLevel={this.state.indoorLevel}
-            guideLines={this.props.guideLines}
-          />
+          {movieMarker}
+          {publicFacilityMarker}
+          {polyline}
         </MapView>
       </View>
     );
@@ -131,10 +100,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
   private changeIndoorLevel(indoorLevel: string) {
     const validatedIndoorLevel = indoorLevel.replace(/階/, '');
     const currentFloor = validatedIndoorLevel.substr(-2);
-    const currentStateMarkers = this.currentStateMarkersGenerate(currentFloor);
     this.setState({
       indoorLevel: currentFloor,
-      currentStateMarkers,
     });
   }
 
@@ -142,15 +109,6 @@ export default class MapViewComponent extends React.Component<Props, State> {
     this.setState({
       initializedLocation: region,
     });
-  }
-
-  private currentStateMarkersGenerate(indoorLevel: string, markers = this.props.markers) {
-    const movieMarkers = markers[0].movieMarkers.filter(movieMarker => movieMarker.floor === indoorLevel);
-    const publicFacilityMarkers = markers[1].publicFacilityMarkers.filter(publicFacilityMarker => publicFacilityMarker.floor === indoorLevel);
-    return {
-      movieMarkers,
-      publicFacilityMarkers,
-    };
   }
 }
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
-import MapViewComponent from '../mapComponents/MapViewComponent';
-import Colors from '../../constants/Colors';
+// import MapViewComponent from '../mapComponents/MapViewComponent';
+// import Colors from '../../constants/Colors';
 
 interface Props {
   indoorLevel: string;
