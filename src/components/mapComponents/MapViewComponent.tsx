@@ -71,9 +71,9 @@ export default class MapViewComponent extends React.Component<Props, State> {
       <MarkerComponent indoorLevel={this.state.indoorLevel} movieMarkers={this.props.movieMarkers} /> : null;
     const publicFacilityMarker = this.props.publicFacilityMarkers ?
       <MarkerComponent indoorLevel={this.state.indoorLevel} publicFacilityMarkers={this.props.publicFacilityMarkers} /> : null;
-    const bigMapPolyline = this.props.guideLines ?
+    const mainColorPolyline = this.props.guideLines ?
       <PolylineComponent indoorLevel={this.state.indoorLevel} guideLines={this.props.guideLines} /> : null;
-    const smallMapPolyline = this.props.guideLinesColor && this.props.guideLines ?
+    const subColorPolyline = this.props.guideLinesColor && this.props.guideLines ?
       <PolylineComponent indoorLevel={this.state.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
     return (
       <MapView
@@ -92,8 +92,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
       >
         {movieMarker}
         {publicFacilityMarker}
-        {bigMapPolyline}
-        {smallMapPolyline}
+        {mainColorPolyline}
+        {subColorPolyline}
       </MapView>
     );
   }
