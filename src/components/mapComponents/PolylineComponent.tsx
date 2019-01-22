@@ -35,7 +35,11 @@ export default class PolylineComponent extends React.Component<Props, State> {
   }
 
   public render() {
-    return this.props.guideLinesColor == undefined ? this.createStrongColor() : this.createWeakColor(this.props.guideLinesColor);
+    if (this.props.guideLinesColor) {
+      return this.createWeakColor(this.props.guideLinesColor);
+    } else {
+      return this.createStrongColor();
+    }
   }
 
   private createStrongColor() {

@@ -73,12 +73,12 @@ export default class MapViewComponent extends React.Component<Props, State> {
       <MarkerComponent indoorLevel={this.state.indoorLevel} publicFacilityMarkers={this.props.publicFacilityMarkers} /> : null;
     const bigMapPolyline = this.props.guideLines ?
       <PolylineComponent indoorLevel={this.state.indoorLevel} guideLines={this.props.guideLines} /> : null;
-    const smallMapPolyline = this.props.guideLinesColor ? this.props.guideLines ?
-      <PolylineComponent indoorLevel={this.state.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null : null;
+    const smallMapPolyline = this.props.guideLinesColor && this.props.guideLines ?
+      <PolylineComponent indoorLevel={this.state.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
     return (
       <MapView
         customMapStyle= {CustomMap.mapStyle}
-        showsIndoorLevelPicker={this.props.guideLinesColor ? false : true}
+        showsIndoorLevelPicker={!this.props.guideLinesColor ? true : false}
         showsTraffic={false}
         showsBuildings={false}
         provider={PROVIDER_GOOGLE}
