@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
-import SmallWindow from '../components/SmallWindow';
+import SubWindow from '../components/SubWindow';
 
 interface State {
   indoorLevel: string;
@@ -177,7 +177,7 @@ export default class MapScreen extends React.Component<{}, State> {
           guideLines={this.state.guideLines}
         />
         <View>
-          <SmallWindow
+          <SubWindow
             currentScreen={'video'}
             indoorLevel={this.state.indoorLevel}
             initializedLocation={this.state.initializedLocation}

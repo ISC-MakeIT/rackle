@@ -10,10 +10,6 @@ interface Props {
   mapChange: any;
 }
 
-interface State {
-  currentScreen: string;
-}
-
 interface InitializedLocation {
   latitude: number;
   longitude: number;
@@ -27,16 +23,13 @@ interface guideLines {
   longitude: number;
 }
 
-export default class MapScreen extends React.Component<Props, State> {
+export default class SubWindow extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props);
-    this.state = {
-      currentScreen: this.props.currentScreen,
-    };
   }
 
   public render() {
-    const currentScreen = this.state.currentScreen === 'video' ? this.mapScreen() : this.videoScreen();
+    const currentScreen = this.props.currentScreen === 'video' ? this.mapScreen() : this.videoScreen();
     return (
       <TouchableOpacity style={style.container} onPress={this.props.mapChange}>
         {currentScreen}
@@ -57,7 +50,7 @@ export default class MapScreen extends React.Component<Props, State> {
 
   private videoScreen() {
     return (
-      <View style={{backgroundColor: '#000000', ...style.container}}></View>
+      <View style={style.container}></View>
     );
   }
 }
@@ -67,5 +60,6 @@ const style = StyleSheet.create({
     width: 150,
     height: 150,
     position: 'absolute',
+    backgroundColor: '#000000',
   },
 });
