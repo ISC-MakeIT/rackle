@@ -1,12 +1,14 @@
 import * as React from 'react';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
+import SubWindow from '../components/SubWindow';
 
 interface State {
   indoorLevel: string;
   initializedLocation: InitializedLocation;
   movieMarkers?: MovieMarkers[];
   publicFacilityMarkers?: PublicFacilityMarkers[];
-  guideLines?: guideLines[];
+  guideLines: guideLines[];
 }
 
 interface MovieMarkers {
@@ -156,19 +158,40 @@ export default class MapScreen extends React.Component<{}, State> {
         floor: 'B3',
         latitude: 35.46597258163476,
         longitude: 139.62195876985788,
+      }, {
+        floor: 'B3',
+        latitude: 35.46622462399851,
+        longitude: 139.62239295244217,
       }],
     };
   }
 
   public render() {
     return (
-      <MapViewComponent
-        indoorLevel={this.state.indoorLevel}
-        initializedLocation={this.state.initializedLocation}
-        movieMarkers={this.state.movieMarkers}
-        publicFacilityMarkers={this.state.publicFacilityMarkers}
-        guideLines={this.state.guideLines}
-      />
+      <View style={styles.map}>
+        <MapViewComponent
+          indoorLevel={this.state.indoorLevel}
+          initializedLocation={this.state.initializedLocation}
+          movieMarkers={this.state.movieMarkers}
+          publicFacilityMarkers={this.state.publicFacilityMarkers}
+          guideLines={this.state.guideLines}
+        />
+        <View>
+          <SubWindow
+            currentScreen={'video'}
+            indoorLevel={this.state.indoorLevel}
+            initializedLocation={this.state.initializedLocation}
+            guideLines={this.state.guideLines}
+          />
+        </View>
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  map: {
+    ...StyleSheet.absoluteFillObject,
+    backfaceVisibility: 'hidden',
+  },
+});

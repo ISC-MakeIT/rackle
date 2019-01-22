@@ -5,7 +5,7 @@ import Colors from '../../constants/Colors';
 interface Props {
   indoorLevel: string;
   guideLines:guideLines[];
-  color?: string;
+  guideLinesColor?: string;
 }
 
 interface State {
@@ -35,33 +35,12 @@ export default class PolylineComponent extends React.Component<Props, State> {
   }
 
   public render() {
-    return this.props.color == undefined ? this.createStrongColor() : this.createWeakColor(this.props.color);
+    return this.createLineColor(this.props.guideLinesColor);
   }
 
-  private createStrongColor() {
-    const currentGuideLines = this.props.guideLines.filter(guideLine => guideLine.floor === this.state.indoorLevel);
-    if (currentGuideLines.length === 0) return null;
-    const coordinates = currentGuideLines.map(currentGuideLine => {
-      return {
-        latitude: currentGuideLine.latitude,
-        longitude: currentGuideLine.longitude,
-      };
-    });
-      return (
-        <Polyline
-          coordinates={coordinates}
-          strokeWidth={5}
-          lineCap={'round'}
-          lineDashPattern={[1.7, 1.5]}
-          lineJoin={'miter'}
-          strokeColor={Colors.mainColor}
-          miterLimit={11}
-        />
-      );
-  }
-
-  private createWeakColor(color: string) {
-    const currentGuideLines = this.props.guideLines.filter(guideLine => guideLine.floor !== this.state.indoorLevel);
+  private createLineColor(color = Colors.mainColor) {
+    const currentGuideLines = this.props.guideLinesColor ?
+      this.props.guideLines.filter(guideLine => guideLine.floor !== this.state.indoorLevel) : this.props.guideLines.filter(guideLine => guideLine.floor === this.state.indoorLevel);
     if (currentGuideLines.length === 0) return null;
     const coordinates = currentGuideLines.map(currentGuideLine => {
       return {

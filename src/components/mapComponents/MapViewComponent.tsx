@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
@@ -11,7 +11,7 @@ interface Props {
   movieMarkers?: MovieMarkers[];
   publicFacilityMarkers?: PublicFacilityMarkers[];
   guideLines?: guideLines[];
-  guideLinesColor?: string[];
+  guideLinesColor?: string;
 }
 
 interface State {
@@ -71,29 +71,30 @@ export default class MapViewComponent extends React.Component<Props, State> {
       <MarkerComponent indoorLevel={this.state.indoorLevel} movieMarkers={this.props.movieMarkers} /> : null;
     const publicFacilityMarker = this.props.publicFacilityMarkers ?
       <MarkerComponent indoorLevel={this.state.indoorLevel} publicFacilityMarkers={this.props.publicFacilityMarkers} /> : null;
-    const polyline = this.props.guideLines ?
+    const mainColorPolyline = this.props.guideLines ?
       <PolylineComponent indoorLevel={this.state.indoorLevel} guideLines={this.props.guideLines} /> : null;
+    const subColorPolyline = this.props.guideLinesColor && this.props.guideLines ?
+      <PolylineComponent indoorLevel={this.state.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
     return (
-      <View style={styles.container}>
-        <MapView
-          customMapStyle= {CustomMap.mapStyle}
-          showsIndoorLevelPicker={true}
-          showsTraffic={false}
-          showsBuildings={false}
-          provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          region={this.state.initializedLocation}
-          onRegionChange={(e: Region) => this.locationChange(e)}
-          minZoomLevel={18}
-          onPress={(e: any) => console.log (e.nativeEvent.coordinate)} // debugのため
-          onIndoorLevelActivated={(e: any) => { this.changeIndoorLevel(e.nativeEvent.IndoorLevel.name); }}
-          loadingEnabled={true}
-        >
-          {movieMarker}
-          {publicFacilityMarker}
-          {polyline}
-        </MapView>
-      </View>
+      <MapView
+        customMapStyle= {CustomMap.mapStyle}
+        showsIndoorLevelPicker={!this.props.guideLinesColor ? true : false}
+        showsTraffic={false}
+        showsBuildings={false}
+        provider={PROVIDER_GOOGLE}
+        style={styles.map}
+        region={this.state.initializedLocation}
+        onRegionChange={(e: Region) => this.locationChange(e)}
+        minZoomLevel={this.props.guideLinesColor ? 17 : 18}
+        onPress={(e: any) => console.log (e.nativeEvent.coordinate)} // debugのため
+        onIndoorLevelActivated={(e: any) => { this.changeIndoorLevel(e.nativeEvent.IndoorLevel.name); }}
+        loadingEnabled={true}
+      >
+        {movieMarker}
+        {publicFacilityMarker}
+        {mainColorPolyline}
+        {subColorPolyline}
+      </MapView>
     );
   }
 
@@ -112,17 +113,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
   }
 }
 
-const {width, height} = Dimensions.get('screen');
 const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    height: height,
-    width: width,
-    marginTop: -44,
-    padding: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
   map: {
     ...StyleSheet.absoluteFillObject,
     backfaceVisibility: 'hidden',
