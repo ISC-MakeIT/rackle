@@ -4,6 +4,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import ExtButton from '../components/screenComponents/ExtButton';
 
 interface Props { navigation: any; }
 interface State {
@@ -129,13 +130,11 @@ export default class HomeScreen extends React.Component<Props, State> {
             <Text>■</Text>
           </View>
         </View>
-
-        <TouchableOpacity
-          style={rootButtonStyle.execBtn}
-          onPress={() => this.props.navigation.navigate('Guide')}
-        >
-          <Text style={rootButtonText.execText}>案内開始</Text>
-        </TouchableOpacity>
+          <ExtButton 
+            buttonText={'案内開始'}
+            navigate={this.props.navigation.navigate}
+            pageName={'Guide'}
+          />
         </ScrollView>
       </View>
     );
