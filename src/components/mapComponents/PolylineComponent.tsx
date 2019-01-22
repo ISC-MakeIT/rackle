@@ -4,17 +4,19 @@ import Colors from '../../constants/Colors';
 
 interface Props {
   indoorLevel: string;
-  guideLines: {
-    floor: string,
-    lineLatLng: {
-      latitude: number,
-      longitude: number,
-    }[],
-  }[];
+  guideLines:guideLines[];
+  color?: string;
 }
 
 interface State {
   indoorLevel: string;
+  guideLines: guideLines[];
+}
+
+interface guideLines {
+  floor: string;
+    latitude: number;
+    longitude: number;
 }
 
 export default class PolylineComponent extends React.Component<Props, State> {
@@ -22,6 +24,7 @@ export default class PolylineComponent extends React.Component<Props, State> {
     super(props);
     this.state = {
       indoorLevel: this.props.indoorLevel,
+      guideLines: this.props.guideLines,
     };
   }
 
@@ -32,19 +35,50 @@ export default class PolylineComponent extends React.Component<Props, State> {
   }
 
   public render() {
+    return this.props.color == undefined ? this.createStrongColor() : this.createWeakColor(this.props.color);
+  }
+
+  private createStrongColor() {
     const currentGuideLines = this.props.guideLines.filter(guideLine => guideLine.floor === this.state.indoorLevel);
-    if (currentGuideLines[0] == undefined) return null;
-    const currentGuideLine = currentGuideLines[0].lineLatLng;
-    return (
-      <Polyline
-        coordinates={currentGuideLine}
-        strokeWidth={5}
-        lineCap={'round'}
-        lineDashPattern={[1.7, 1.5]}
-        lineJoin={'miter'}
-        strokeColor={Colors.mainColor}
-        miterLimit={11}
-      />
-    );
+    if (currentGuideLines.length === 0) return null;
+    const coordinates = currentGuideLines.map(currentGuideLine => {
+      return {
+        latitude: currentGuideLine.latitude,
+        longitude: currentGuideLine.longitude,
+      };
+    });
+      return (
+        <Polyline
+          coordinates={coordinates}
+          strokeWidth={5}
+          lineCap={'round'}
+          lineDashPattern={[1.7, 1.5]}
+          lineJoin={'miter'}
+          strokeColor={Colors.mainColor}
+          miterLimit={11}
+        />
+      );
+  }
+
+  private createWeakColor(color: string) {
+    const currentGuideLines = this.props.guideLines.filter(guideLine => guideLine.floor !== this.state.indoorLevel);
+    if (currentGuideLines.length === 0) return null;
+    const coordinates = currentGuideLines.map(currentGuideLine => {
+      return {
+        latitude: currentGuideLine.latitude,
+        longitude: currentGuideLine.longitude,
+      };
+    });
+      return (
+        <Polyline
+          coordinates={coordinates}
+          strokeWidth={5}
+          lineCap={'round'}
+          lineDashPattern={[1.7, 1.5]}
+          lineJoin={'miter'}
+          strokeColor={color}
+          miterLimit={11}
+        />
+      );
   }
 }
