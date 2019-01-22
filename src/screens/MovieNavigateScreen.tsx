@@ -1,113 +1,54 @@
-import * as React from 'react';
-import { 
-  Animated,
-  AppRegistry,
-  Dimensions,
-  FlatList,
-  Image,
-  PanResponder,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  WebView,
-} from 'react-native';
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
+import { LinearGradient } from 'expo';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-
-// ダミーデータ
-const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
-const playlistYoutubeIds = [
-  'uS00Bd9ZVz4', '9iieMHXubJU', '_Hdk2vXESB0', 'X8p0y5KXdIk',
-  'yYbWPRuxK1U', '33Np_lJseBE', 'z3VW7TNklww', 'tNMatlAOOcs',
-  'EyT0uC1D1I8', 'bxG4LTsLThE',
-];
-
-export default class MovieNavigateScreen extends React.Component {
+export default class MyComponent extends Component {
 
   public static navigationOptions = {
     headerStyle: {
       display: 'none',
     },
   };
-  
-  constructor (props) {
-    super(props);
-    this.state = {
-      // cacheはキャッシュしたhtmlを読み込ませないため、playlistIdはyoutubeプレイヤーの初期値を送る
-      youtubeURL: `https://haduki1208-app.firebaseapp.com/youtube.html?cache=${new Date().getTime()}&playlistId=${playlistId}`,
-    };
-  }
-
-  /**
-   * ListViewの内容を描画
-   */
-  private renderItem = ({item, index}) => (
-    <View style={{ padding: 4 }}>
-      <TouchableOpacity onPress={event => this.onPress(item, index)} >
-        <Image style={{height: 90, width: 120,}} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
-      </TouchableOpacity>
-    </View>
-  )
-
-  /**
-   * FlatViewを描画
-   */
-  private renderList = () => (
-    <FlatList
-      data={playlistYoutubeIds}
-      renderItem={this.renderItem}
-      horizontal={true}
-      keyExtractor={(item, index) => index.toString()}
-    />
-  )
-
   public render() {
-    return (
-      <View style={styles.test_area}>
-        <View style={styles.test_text_wrap}>
-          <Text style={styles.test_text}>show a list of all available commands.</Text>
-        </View>
-        <WebView source={{ uri: this.state.youtubeURL }} scrollEnabled={false} allowsInlineMediaPlayback={true} useWebKit={Platform.OS === 'ios'} onMessage={this.onMessage} />
-        <View>
-          {this.renderList()}
+    return(
+      <View style={styles.for_section}>
+        <View style={styles.section__header}></View>
+        <View style={styles.section__main_container}>
+          <View style={styles.for_container}>
+            <View style={styles.container__main_content}>
+              <View style={styles.container__movie}></View>
+              <View style={styles.container__option_window}></View>
+              <View style={styles.container__controller}></View>
+            </View>
+            <View style={styles.container__thumbnail}></View>
+          </View>
         </View>
       </View>
     );
   }
 }
 
-EStyleSheet.build();
+        // <View style={styles.for_container}>
+        // <View style={styles.container__main_content}>
+          // <View style={styles.container__movie}></View>
+          // <View style={styles.container__option_window}></View>
+          // <View style={styles.container__controller}></View>
+        // </View>
+        // <View style={styles.container__thumbnail}></View>
+        // </View>
+
+
+EStyleSheet.build({});
 
 const styles = EStyleSheet.create({
-  container:{
-    width: '100%',
-    height: '66%',
-    // marginHorizontal: '10%',
-    marginTop: '20%',
-    backgroundColor: 'yellow',
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  movie_naviate_area:{
-    backgroundColor: '#ecf0f1',
-    height: '100%',
-    width: '100%',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  test_area:{
-    flex: 1,
-    height: 'auto',
-  },
-  test_text_wrap:{
-    width: '100%',
-  },
-  test_text:{
-    textAlign: 'center',
-    fontSize: '1rem',
-    color: 'red',
-  },
+  for_section: {flex: 1, top: '5%', backgroundColor: 'red',},
+  section__header: {flex: 0.1, backgroundColor: 'blue',},
+  section__main_container: {flex: 0.9, backgroundColor: 'green',},
+  for_container: {flex: 0.8,  width: '100%', justifyContent: 'center', backgroundColor: 'pink',},
+  container__main_content: {position: 'relative', flex: 1, justifyContent: 'center', backgroundColor: 'white',},
+  container__movie: {padding: 10, position: 'absolute', top: 0, zIndex: 10, width: '100%', opacity: 0.2, backgroundColor: 'yellow',},
+  container__option_window: {flex:1, zIndex: 1, width: '100%', backgroundColor: 'brown',},
+  container__controller: {padding: 10, position: 'absolute', bottom: 0, zIndex: 10, width: '100%', opacity: 0.2, backgroundColor: 'gray',},
+  container__thumbnail: {position: 'absolute', bottom: 0, backgroundColor: 'black',},
 });
