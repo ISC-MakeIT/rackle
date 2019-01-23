@@ -7,7 +7,7 @@ interface Props {
   initializedLocation: InitializedLocation;
   guideLines: guideLines[];
   currentScreen: string;
-  mapChange: any;
+  screenChange: any;
 }
 
 interface InitializedLocation {
@@ -31,7 +31,7 @@ export default class SubWindow extends React.Component<Props, {}> {
   public render() {
     const currentScreen = this.props.currentScreen === 'video' ? this.mapScreen() : this.videoScreen();
     return (
-      <TouchableOpacity style={style.container} onPress={this.props.mapChange}>
+      <TouchableOpacity style={style.container} onPress={()=> this.props.screenChange('video')}>
         {currentScreen}
       </TouchableOpacity>
     );

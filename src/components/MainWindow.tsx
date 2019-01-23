@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import MapViewComponent from './mapComponents/MapViewComponent';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
   publicFacilityMarkers?: PublicFacilityMarkers[];
   guideLines: guideLines[];
   currentScreen: string;
-  mapChange: any;
+  screenChange: any;
 }
 
 interface MovieMarkers {
@@ -39,7 +39,7 @@ interface guideLines {
     longitude: number;
   }
 
-export default class SubWindow extends React.Component<Props, State> {
+export default class SubWindow extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props);
   }
@@ -47,7 +47,7 @@ export default class SubWindow extends React.Component<Props, State> {
   public render() {
     const currentScreen = this.props.currentScreen === 'map' ? this.mapScreen() : this.videoScreen();
     return (
-      <TouchableOpacity style={style.container} onPress={this.props.mapChange}>
+      <TouchableOpacity style={style.container} onPress={()=> this.props.screenChange('map')}>
         {currentScreen}
       </TouchableOpacity>
     );
@@ -56,11 +56,12 @@ export default class SubWindow extends React.Component<Props, State> {
   private mapScreen() {
     return (
       <MapViewComponent
-        indoorLevel={this.state.indoorLevel}
-        initializedLocation={this.state.initializedLocation}
-        movieMarkers={this.state.movieMarkers}
-        publicFacilityMarkers={this.state.publicFacilityMarkers}
-        guideLines={this.state.guideLines}
+        onPress={this.props.screenChange}
+        indoorLevel={this.props.indoorLevel}
+        initializedLocation={this.props.initializedLocation}
+        movieMarkers={this.props.movieMarkers}
+        publicFacilityMarkers={this.props.publicFacilityMarkers}
+        guideLines={this.props.guideLines}
       />
     );
   }
@@ -72,10 +73,12 @@ export default class SubWindow extends React.Component<Props, State> {
   }
 }
 
+const {width, height} = Dimensions.get('screen');
+
 const style = StyleSheet.create({
   container: {
-    width: 150,
-    height: 150,
+    width: width,
+    height: height,
     position: 'absolute',
     backgroundColor: '#000000',
   },

@@ -2,9 +2,11 @@ import * as React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import SubWindow from '../components/SubWindow';
+import MainWindow from '../components/MainWindow';
 
 interface State {
   indoorLevel: string;
+  currentScreen:string;
   initializedLocation: InitializedLocation;
   movieMarkers?: MovieMarkers[];
   publicFacilityMarkers?: PublicFacilityMarkers[];
@@ -50,6 +52,7 @@ export default class MapScreen extends React.Component<{}, State> {
     super(props);
     this.state = {
       indoorLevel: '1',
+      currentScreen:'video',
       initializedLocation: {
         latitude: 35.46588771428577,
         longitude: 139.62227088041905,
@@ -176,24 +179,35 @@ export default class MapScreen extends React.Component<{}, State> {
 
   public render() {
     return (
-      <View style={styles.map}>
-        <MapViewComponent
-          indoorLevel={this.state.indoorLevel}
-          initializedLocation={this.state.initializedLocation}
-          movieMarkers={this.state.movieMarkers}
-          publicFacilityMarkers={this.state.publicFacilityMarkers}
-          guideLines={this.state.guideLines}
-        />
-        <View>
-          <SubWindow
-            currentScreen={'video'}
-            indoorLevel={this.state.indoorLevel}
+      <View>
+        <View style={styles.container}>
+          <MainWindow
             initializedLocation={this.state.initializedLocation}
+            indoorLevel={this.state.indoorLevel}
+            movieMarkers={this.state.movieMarkers}
+            publicFacilityMarkers={this.state.publicFacilityMarkers}
             guideLines={this.state.guideLines}
+            screenChange={this.screenChange.bind(this)}
+            currentScreen={this.state.currentScreen}
           />
+        </View>
+        <View>
+            <SubWindow
+              currentScreen={this.state.currentScreen}
+              indoorLevel={this.state.indoorLevel}
+              initializedLocation={this.state.initializedLocation}
+              guideLines={this.state.guideLines}
+              screenChange={(currentScreen: string)=> this.screenChange(currentScreen)}
+            />
         </View>
       </View>
     );
+  }
+
+  private screenChange(currentScreen: string) {
+    this.setState({
+      currentScreen: currentScreen,
+    });
   }
 }
 
@@ -201,5 +215,8 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
     backfaceVisibility: 'hidden',
+  },
+  container: {
+    marginTop: -44,
   },
 });
