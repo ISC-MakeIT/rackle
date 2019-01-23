@@ -119,6 +119,14 @@ export default class MapScreen extends React.Component<{}, State> {
         longitude: 139.62186221033335,
       }],
       guideLines:[{
+        floor: 'B2',
+        latitude: 35.46612386176152,
+        longitude: 139.62268766015768,
+      }, {
+        floor: 'B2',
+        latitude: 35.46605177162828,
+        longitude: 139.62281808257103,
+      }, {
         floor: 'B1',
         latitude: 35.465821301223436,
         longitude: 139.62295688688755,

@@ -5,9 +5,25 @@ import MapViewComponent from './mapComponents/MapViewComponent';
 interface Props {
   indoorLevel: string;
   initializedLocation: InitializedLocation;
+  movieMarkers?: MovieMarkers[];
+  publicFacilityMarkers?: PublicFacilityMarkers[];
   guideLines: guideLines[];
   currentScreen: string;
   mapChange: any;
+}
+
+interface MovieMarkers {
+  floor: string;
+  movieId: number;
+  latitude: number;
+  longitude: number;
+}
+
+interface PublicFacilityMarkers {
+  floor: string;
+  type: 'toilet' | 'elevator';
+  latitude: number;
+  longitude: number;
 }
 
 interface InitializedLocation {
@@ -18,18 +34,18 @@ interface InitializedLocation {
 }
 
 interface guideLines {
-  floor: string;
-  latitude: number;
-  longitude: number;
-}
+    floor: string;
+    latitude: number;
+    longitude: number;
+  }
 
-export default class SubWindow extends React.Component<Props, {}> {
+export default class SubWindow extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
   }
 
   public render() {
-    const currentScreen = this.props.currentScreen === 'video' ? this.mapScreen() : this.videoScreen();
+    const currentScreen = this.props.currentScreen === 'map' ? this.mapScreen() : this.videoScreen();
     return (
       <TouchableOpacity style={style.container} onPress={this.props.mapChange}>
         {currentScreen}
@@ -40,10 +56,11 @@ export default class SubWindow extends React.Component<Props, {}> {
   private mapScreen() {
     return (
       <MapViewComponent
-        indoorLevel={this.props.indoorLevel}
-        initializedLocation={this.props.initializedLocation}
-        guideLines={this.props.guideLines}
-        guideLinesColor={'#ddd'}
+        indoorLevel={this.state.indoorLevel}
+        initializedLocation={this.state.initializedLocation}
+        movieMarkers={this.state.movieMarkers}
+        publicFacilityMarkers={this.state.publicFacilityMarkers}
+        guideLines={this.state.guideLines}
       />
     );
   }

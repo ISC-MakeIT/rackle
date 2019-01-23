@@ -40,7 +40,7 @@ export default class PolylineComponent extends React.Component<Props, State> {
 
   private createLineColor(color = Colors.mainColor) {
     const currentGuideLines = this.props.guideLinesColor ?
-      this.props.guideLines.filter(guideLine => guideLine.floor !== this.state.indoorLevel) : this.props.guideLines.filter(guideLine => guideLine.floor === this.state.indoorLevel);
+      this.props.guideLines : this.props.guideLines.filter(guideLine => guideLine.floor === this.state.indoorLevel);
     if (currentGuideLines.length === 0) return null;
     const coordinates = currentGuideLines.map(currentGuideLine => {
       return {
@@ -53,7 +53,7 @@ export default class PolylineComponent extends React.Component<Props, State> {
           coordinates={coordinates}
           strokeWidth={5}
           lineCap={'round'}
-          lineDashPattern={[1.7, 1.5]}
+          lineDashPattern={[1.7, 2]}
           lineJoin={'miter'}
           strokeColor={color}
           miterLimit={11}
