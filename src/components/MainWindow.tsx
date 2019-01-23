@@ -10,6 +10,7 @@ interface Props {
   guideLines: guideLines[];
   currentScreen: string;
   screenChange: any;
+  changeIndoorLevel: any;
 }
 
 interface MovieMarkers {
@@ -47,21 +48,21 @@ export default class SubWindow extends React.Component<Props, {}> {
   public render() {
     const currentScreen = this.props.currentScreen === 'map' ? this.mapScreen() : this.videoScreen();
     return (
-      <TouchableOpacity style={style.container} onPress={()=> this.props.screenChange('map')}>
+      <View style={style.container}>
         {currentScreen}
-      </TouchableOpacity>
+      </View>
     );
   }
 
   private mapScreen() {
     return (
       <MapViewComponent
-        onPress={this.props.screenChange}
         indoorLevel={this.props.indoorLevel}
         initializedLocation={this.props.initializedLocation}
         movieMarkers={this.props.movieMarkers}
         publicFacilityMarkers={this.props.publicFacilityMarkers}
         guideLines={this.props.guideLines}
+        changeIndoorLevel={this.props.changeIndoorLevel}
       />
     );
   }

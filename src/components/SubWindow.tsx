@@ -6,8 +6,9 @@ interface Props {
   indoorLevel: string;
   initializedLocation: InitializedLocation;
   guideLines: guideLines[];
-  currentScreen: string;
+  currentScreen: 'video' | 'map';
   screenChange: any;
+  changeIndoorLevel: any;
 }
 
 interface InitializedLocation {
@@ -31,9 +32,9 @@ export default class SubWindow extends React.Component<Props, {}> {
   public render() {
     const currentScreen = this.props.currentScreen === 'video' ? this.mapScreen() : this.videoScreen();
     return (
-      <TouchableOpacity style={style.container} onPress={()=> this.props.screenChange('video')}>
+      <View style={style.container}>
         {currentScreen}
-      </TouchableOpacity>
+      </View>
     );
   }
 
@@ -44,14 +45,25 @@ export default class SubWindow extends React.Component<Props, {}> {
         initializedLocation={this.props.initializedLocation}
         guideLines={this.props.guideLines}
         guideLinesColor={'#ddd'}
+        changeIndoorLevel={this.props.changeIndoorLevel}
+        screenChange={this.props.screenChange}
+        currentScreen={this.props.currentScreen}
       />
     );
   }
 
   private videoScreen() {
     return (
-      <View style={style.container}></View>
+      <TouchableOpacity
+        onPress={() =>this.props.screenChange(this.screenChangeCheck())}
+        style={style.container}
+      >
+      </TouchableOpacity>
     );
+  }
+
+  private screenChangeCheck () {
+    return this.props.currentScreen === 'video' ? 'map' : 'video';
   }
 }
 

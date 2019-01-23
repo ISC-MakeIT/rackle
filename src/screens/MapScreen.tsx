@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
-import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import SubWindow from '../components/SubWindow';
 import MainWindow from '../components/MainWindow';
 
 interface State {
   indoorLevel: string;
-  currentScreen:string;
+  currentScreen: 'video' | 'map';
   initializedLocation: InitializedLocation;
   movieMarkers?: MovieMarkers[];
   publicFacilityMarkers?: PublicFacilityMarkers[];
@@ -189,6 +188,7 @@ export default class MapScreen extends React.Component<{}, State> {
             guideLines={this.state.guideLines}
             screenChange={this.screenChange.bind(this)}
             currentScreen={this.state.currentScreen}
+            changeIndoorLevel={this.changeIndoorLevel.bind(this)}
           />
         </View>
         <View>
@@ -197,16 +197,25 @@ export default class MapScreen extends React.Component<{}, State> {
               indoorLevel={this.state.indoorLevel}
               initializedLocation={this.state.initializedLocation}
               guideLines={this.state.guideLines}
-              screenChange={(currentScreen: string)=> this.screenChange(currentScreen)}
+              screenChange={this.screenChange.bind(this)}
+              changeIndoorLevel={this.changeIndoorLevel.bind(this)}
             />
         </View>
       </View>
     );
   }
 
-  private screenChange(currentScreen: string) {
+  private screenChange(currentScreen: 'video' | 'map') {
     this.setState({
       currentScreen: currentScreen,
+    });
+  }
+
+  private changeIndoorLevel(indoorLevel: string) {
+    const validatedIndoorLevel = indoorLevel.replace(/階/, '');
+    const currentFloor = validatedIndoorLevel.substr(-2);
+    this.setState({
+      indoorLevel: currentFloor,
     });
   }
 }
