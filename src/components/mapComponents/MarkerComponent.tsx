@@ -99,7 +99,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
   }
 
   private createMovieMarkers() {
-    const movieMarkerComponent = this.state.currentMovieMarkers != undefined ?
+    return this.state.currentMovieMarkers != undefined ?
       this.state.currentMovieMarkers.map((movieMarker, index: number) => {
         return (
           <Marker
@@ -109,11 +109,10 @@ export default class MarkerComponent extends React.Component<Props, State> {
           />
         );
       }) : undefined;
-    return movieMarkerComponent;
   }
 
   private createElevatorMarkers() {
-    const elevatorMarkerComponent = this.state.currentElevatorMarkers != undefined ?
+    return this.state.currentElevatorMarkers != undefined ?
       this.state.currentElevatorMarkers.map((elevatorMarker, index: number) => {
         return (
           <Marker
@@ -123,11 +122,10 @@ export default class MarkerComponent extends React.Component<Props, State> {
           />
         );
       }) : undefined;
-    return elevatorMarkerComponent;
   }
 
   private createToiletMarkers() {
-    const toiletMarkerComponent = this.state.currentToiletMarkers != undefined ?
+    return this.state.currentToiletMarkers != undefined ?
       this.state.currentToiletMarkers.map((toiletMarker, index: number) => {
         return (
           <Marker
@@ -137,6 +135,5 @@ export default class MarkerComponent extends React.Component<Props, State> {
           />
         );
       }) : undefined;
-    return toiletMarkerComponent;
   }
 }
