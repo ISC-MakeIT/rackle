@@ -70,7 +70,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
   }
 
   public render() {
-    const movieMarker = this.createMovieMarkers();
+    const movieMarker = this.state.currentMovieMarkers ? this.createMovieMarkers(this.state.currentMovieMarkers.length) : undefined;
     const elevatorMarker = this.createElevatorMarkers();
     const toiletMarker = this.createToiletMarkers();
     if (movieMarker != undefined) return movieMarker;
@@ -95,17 +95,20 @@ export default class MarkerComponent extends React.Component<Props, State> {
   }
 
   private iconChange(iconName: string) {
-    if (iconName === 'toilet') return require('../../../assets/images/toilet.jpg');
+    if (iconName === 'toilet') return require('../../../assets/images/toilet.png');
+    if (iconName === 'movie') return require('../../../assets/images/map-pointer.png');
+    if (iconName === 'elevator6seater') return require('../../../assets/images/elevator.png');
+    if (iconName === 'elevator12seater') return require('../../../assets/images/big_elevator.png');
   }
 
-  private createMovieMarkers() {
+  private createMovieMarkers(maxLength: number | undefined) {
     return this.state.currentMovieMarkers != undefined ?
       this.state.currentMovieMarkers.map((movieMarker, index: number) => {
         return (
           <Marker
               key={`movieMarker_${index}`}
               coordinate={{latitude: movieMarker.latitude, longitude: movieMarker.longitude}}
-              pinColor={this.props.pinColor}
+              image={maxLength === index || index === 0 ? this.iconChange('') : this.iconChange('movie')}
           />
         );
       }) : undefined;
@@ -118,7 +121,8 @@ export default class MarkerComponent extends React.Component<Props, State> {
           <Marker
               key={`elevatorMarker_${index}`}
               coordinate={{latitude: elevatorMarker.latitude, longitude: elevatorMarker.longitude}}
-              image={this.iconChange('elevator')}
+              description={`最大${elevatorMarker.capacity}人まで乗れます`}
+              image={this.iconChange(`elevator${elevatorMarker.capacity}seater`)}
           />
         );
       }) : undefined;
