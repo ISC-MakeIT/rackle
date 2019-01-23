@@ -4,7 +4,8 @@ import { Marker } from 'react-native-maps';
 interface Props {
   indoorLevel: string;
   movieMarkers?: MovieMarker[];
-  publicFacilityMarkers?: PublicFacilityMarker[];
+  toiletMarkers?: ToiletMarker[];
+  elevatorMarkers?: ElevatorMarker[];
   iconName?: string;
   pinColor?: string;
 }
@@ -12,7 +13,8 @@ interface Props {
 interface State {
   indoorLevel: string;
   currentMovieMarkers?: MovieMarker[];
-  currentPublicFacilityMarkers?: PublicFacilityMarker[];
+  currentToiletMarkers?: ToiletMarker[];
+  currentElevatorMarkers?: ElevatorMarker[];
 }
 
 interface MovieMarker {
@@ -22,9 +24,15 @@ interface MovieMarker {
   longitude: number;
 }
 
-interface PublicFacilityMarker {
+interface ToiletMarker {
   floor: string;
-  type: 'toilet' | 'elevator';
+  latitude: number;
+  longitude: number;
+}
+
+interface ElevatorMarker {
+  floor: string;
+  capacity: 6 | 12;
   latitude: number;
   longitude: number;
 }
@@ -34,32 +42,40 @@ export default class MarkerComponent extends React.Component<Props, State> {
     super(props);
     const currentMovieMarkers = this.props.movieMarkers ?
       this.currentMovieMarkerGenerate(this.props.indoorLevel, this.props.movieMarkers) : undefined;
-    const currentPublicFacilityMarkers = this.props.publicFacilityMarkers ?
-      this.currentPublicFacilityMarkersGenerate(this.props.indoorLevel, this.props.publicFacilityMarkers) : undefined;
+    const currentElevatorMarkers = this.props.elevatorMarkers ?
+      this.currentElevatorMarkerGenerate(this.props.indoorLevel, this.props.elevatorMarkers) : undefined;
+      const currentToiletMarkers = this.props.toiletMarkers ?
+      this.currentToiletMarkerGenerate(this.props.indoorLevel, this.props.toiletMarkers) : undefined;
     this.state = {
       indoorLevel: this.props.indoorLevel,
       currentMovieMarkers,
-      currentPublicFacilityMarkers,
+      currentElevatorMarkers,
+      currentToiletMarkers,
     };
   }
 
   public componentWillReceiveProps(nextProps: Props, nextState: State) {
     const currentMovieMarkers = nextProps.movieMarkers ?
       this.currentMovieMarkerGenerate(nextProps.indoorLevel, nextProps.movieMarkers) : undefined;
-    const currentPublicFacilityMarkers = nextProps.publicFacilityMarkers ?
-      this.currentPublicFacilityMarkersGenerate(nextProps.indoorLevel, nextProps.publicFacilityMarkers) : undefined;
+    const currentElevatorMarkers = nextProps.elevatorMarkers ?
+      this.currentElevatorMarkerGenerate(nextProps.indoorLevel, nextProps.elevatorMarkers) : undefined;
+    const currentToiletMarkers = nextProps.toiletMarkers ?
+      this.currentToiletMarkerGenerate(nextProps.indoorLevel, nextProps.toiletMarkers) : undefined;
     this.setState({
       indoorLevel: nextProps.indoorLevel,
       currentMovieMarkers,
-      currentPublicFacilityMarkers,
+      currentElevatorMarkers,
+      currentToiletMarkers,
     });
   }
 
   public render() {
     const movieMarker = this.createMovieMarkers();
-    const publicFacilityMarker = this.createPublicFacilityMarkers();
-    if (movieMarker != undefined) return [...movieMarker];
-    if (publicFacilityMarker != undefined) return [...publicFacilityMarker];
+    const elevatorMarker = this.createElevatorMarkers();
+    const toiletMarker = this.createToiletMarkers();
+    if (movieMarker != undefined) return movieMarker;
+    if (toiletMarker != undefined) return toiletMarker;
+    if (elevatorMarker != undefined) return elevatorMarker;
     return null;
   }
 
@@ -68,9 +84,14 @@ export default class MarkerComponent extends React.Component<Props, State> {
     return currentMovieMarkers;
   }
 
-  private currentPublicFacilityMarkersGenerate(indoorLevel: string, publicFacilityMarkers: PublicFacilityMarker[]) {
-    const currentPublicFacilityMarkers = publicFacilityMarkers.filter(publicFacilityMarker => publicFacilityMarker.floor === indoorLevel);
-    return currentPublicFacilityMarkers;
+  private currentElevatorMarkerGenerate(indoorLevel: string, elevatorMarkers: ElevatorMarker[]) {
+    const currentElevatorMarkers = elevatorMarkers.filter(elevatorMarker => elevatorMarker.floor === indoorLevel);
+    return currentElevatorMarkers;
+  }
+
+  private currentToiletMarkerGenerate(indoorLevel: string, toiletMarkers: ToiletMarker[]) {
+    const currentToiletMarkers = toiletMarkers.filter(toiletMarker => toiletMarker.floor === indoorLevel);
+    return currentToiletMarkers;
   }
 
   private iconChange(iconName: string) {
@@ -78,7 +99,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
   }
 
   private createMovieMarkers() {
-    const movieMarkerComponent = this.state.currentMovieMarkers != undefined ?
+    return this.state.currentMovieMarkers != undefined ?
       this.state.currentMovieMarkers.map((movieMarker, index: number) => {
         return (
           <Marker
@@ -88,20 +109,31 @@ export default class MarkerComponent extends React.Component<Props, State> {
           />
         );
       }) : undefined;
-    return movieMarkerComponent;
   }
 
-  private createPublicFacilityMarkers() {
-    const publicFacilityMarkerComponent = this.state.currentPublicFacilityMarkers != undefined ?
-      this.state.currentPublicFacilityMarkers.map((publicFacilityMarker, index: number) => {
+  private createElevatorMarkers() {
+    return this.state.currentElevatorMarkers != undefined ?
+      this.state.currentElevatorMarkers.map((elevatorMarker, index: number) => {
         return (
           <Marker
-              key={`publicFacilityMarker_${index}`}
-              coordinate={{latitude: publicFacilityMarker.latitude, longitude: publicFacilityMarker.longitude}}
-              image={this.iconChange(publicFacilityMarker.type)}
+              key={`elevatorMarker_${index}`}
+              coordinate={{latitude: elevatorMarker.latitude, longitude: elevatorMarker.longitude}}
+              image={this.iconChange('elevator')}
           />
         );
       }) : undefined;
-    return publicFacilityMarkerComponent;
+  }
+
+  private createToiletMarkers() {
+    return this.state.currentToiletMarkers != undefined ?
+      this.state.currentToiletMarkers.map((toiletMarker, index: number) => {
+        return (
+          <Marker
+              key={`toiletMarker_${index}`}
+              coordinate={{latitude: toiletMarker.latitude, longitude: toiletMarker.longitude}}
+              image={this.iconChange('toilet')}
+          />
+        );
+      }) : undefined;
   }
 }

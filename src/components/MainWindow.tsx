@@ -1,14 +1,37 @@
 import * as React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import MapViewComponent from './mapComponents/MapViewComponent';
 
 interface Props {
   indoorLevel: string;
   initializedLocation: InitializedLocation;
+  movieMarkers?: MovieMarkers[];
+  toiletMarkers?: ToiletMarker[];
+  elevatorMarkers?: ElevatorMarker[];
   guideLines: guideLines[];
-  currentScreen: 'video' | 'map';
+  currentScreen: string;
   screenChange: any;
   changeIndoorLevel: any;
+}
+
+interface MovieMarkers {
+  floor: string;
+  movieId: number;
+  latitude: number;
+  longitude: number;
+}
+
+interface ToiletMarker {
+  floor: string;
+  latitude: number;
+  longitude: number;
+}
+
+interface ElevatorMarker {
+  floor: string;
+  capacity: 6 | 12;
+  latitude: number;
+  longitude: number;
 }
 
 interface InitializedLocation {
@@ -19,10 +42,10 @@ interface InitializedLocation {
 }
 
 interface guideLines {
-  floor: string;
-  latitude: number;
-  longitude: number;
-}
+    floor: string;
+    latitude: number;
+    longitude: number;
+  }
 
 export default class SubWindow extends React.Component<Props, {}> {
   constructor(props: Props) {
@@ -30,7 +53,7 @@ export default class SubWindow extends React.Component<Props, {}> {
   }
 
   public render() {
-    const currentScreen = this.props.currentScreen === 'video' ? this.mapScreen() : this.videoScreen();
+    const currentScreen = this.props.currentScreen === 'map' ? this.mapScreen() : this.videoScreen();
     return (
       <View style={style.container}>
         {currentScreen}
@@ -43,34 +66,28 @@ export default class SubWindow extends React.Component<Props, {}> {
       <MapViewComponent
         indoorLevel={this.props.indoorLevel}
         initializedLocation={this.props.initializedLocation}
+        movieMarkers={this.props.movieMarkers}
+        toiletMarkers={this.props.toiletMarkers}
+        elevatorMarkers={this.props.elevatorMarkers}
         guideLines={this.props.guideLines}
-        guideLinesColor={'#ddd'}
         changeIndoorLevel={this.props.changeIndoorLevel}
-        screenChange={this.props.screenChange}
-        currentScreen={this.props.currentScreen}
       />
     );
   }
 
   private videoScreen() {
     return (
-      <TouchableOpacity
-        onPress={() =>this.props.screenChange(this.screenChangeCheck())}
-        style={style.container}
-      >
-      </TouchableOpacity>
+      <View style={style.container}></View>
     );
-  }
-
-  private screenChangeCheck () {
-    return this.props.currentScreen === 'video' ? 'map' : 'video';
   }
 }
 
+const {width, height} = Dimensions.get('screen');
+
 const style = StyleSheet.create({
   container: {
-    width: 150,
-    height: 150,
+    width: width,
+    height: height,
     position: 'absolute',
     backgroundColor: '#000000',
   },

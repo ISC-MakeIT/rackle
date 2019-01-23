@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
-import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import SubWindow from '../components/SubWindow';
+import MainWindow from '../components/MainWindow';
 
 interface State {
   indoorLevel: string;
+  currentScreen: 'video' | 'map';
   initializedLocation: InitializedLocation;
   movieMarkers?: MovieMarkers[];
-  publicFacilityMarkers?: PublicFacilityMarkers[];
+  toiletMarkers?: ToiletMarker[];
+  elevatorMarkers?: ElevatorMarker[];
   guideLines: guideLines[];
 }
 
@@ -18,9 +20,15 @@ interface MovieMarkers {
   longitude: number;
 }
 
-interface PublicFacilityMarkers {
+interface ToiletMarker {
   floor: string;
-  type: 'toilet' | 'elevator';
+  latitude: number;
+  longitude: number;
+}
+
+interface ElevatorMarker {
+  floor: string;
+  capacity: 6 | 12;
   latitude: number;
   longitude: number;
 }
@@ -50,6 +58,7 @@ export default class MapScreen extends React.Component<{}, State> {
     super(props);
     this.state = {
       indoorLevel: '1',
+      currentScreen:'video',
       initializedLocation: {
         latitude: 35.46588771428577,
         longitude: 139.62227088041905,
@@ -97,28 +106,35 @@ export default class MapScreen extends React.Component<{}, State> {
         latitude: 35.46597258163476,
         longitude: 139.62195876985788,
       }],
-      publicFacilityMarkers: [{
+      toiletMarkers: [{
         floor: 'B1',
-        type: 'toilet',
         latitude: 35.46598896577774,
         longitude: 139.62186254560947,
       }, {
         floor: 'B2',
-        type: 'toilet',
         latitude: 35.46571562322217,
         longitude: 139.62188635021448,
-      }, {
+      }],
+      elevatorMarkers: [{
         floor: 'B2',
-        type: 'toilet',
+        capacity: 6,
         latitude: 35.466379726599,
         longitude: 139.6222296729684,
       }, {
         floor: 'B3',
-        type: 'toilet',
+        capacity: 12,
         latitude: 35.46599115032989,
         longitude: 139.62186221033335,
       }],
       guideLines:[{
+        floor: 'B2',
+        latitude: 35.46612386176152,
+        longitude: 139.62268766015768,
+      }, {
+        floor: 'B2',
+        latitude: 35.46605177162828,
+        longitude: 139.62281808257103,
+      }, {
         floor: 'B1',
         latitude: 35.465821301223436,
         longitude: 139.62295688688755,
@@ -168,24 +184,46 @@ export default class MapScreen extends React.Component<{}, State> {
 
   public render() {
     return (
-      <View style={styles.map}>
-        <MapViewComponent
-          indoorLevel={this.state.indoorLevel}
-          initializedLocation={this.state.initializedLocation}
-          movieMarkers={this.state.movieMarkers}
-          publicFacilityMarkers={this.state.publicFacilityMarkers}
-          guideLines={this.state.guideLines}
-        />
-        <View>
-          <SubWindow
-            currentScreen={'video'}
-            indoorLevel={this.state.indoorLevel}
+      <View>
+        <View style={styles.container}>
+          <MainWindow
             initializedLocation={this.state.initializedLocation}
+            indoorLevel={this.state.indoorLevel}
+            movieMarkers={this.state.movieMarkers}
+            toiletMarkers={this.state.toiletMarkers}
+            elevatorMarkers={this.state.elevatorMarkers}
             guideLines={this.state.guideLines}
+            screenChange={this.screenChange.bind(this)}
+            currentScreen={this.state.currentScreen}
+            changeIndoorLevel={this.changeIndoorLevel.bind(this)}
           />
+        </View>
+        <View>
+            <SubWindow
+              currentScreen={this.state.currentScreen}
+              indoorLevel={this.state.indoorLevel}
+              initializedLocation={this.state.initializedLocation}
+              guideLines={this.state.guideLines}
+              screenChange={this.screenChange.bind(this)}
+              changeIndoorLevel={this.changeIndoorLevel.bind(this)}
+            />
         </View>
       </View>
     );
+  }
+
+  private screenChange(currentScreen: 'video' | 'map') {
+    this.setState({
+      currentScreen: currentScreen,
+    });
+  }
+
+  private changeIndoorLevel(indoorLevel: string) {
+    const validatedIndoorLevel = indoorLevel.replace(/階/, '');
+    const currentFloor = validatedIndoorLevel.substr(-2);
+    this.setState({
+      indoorLevel: currentFloor,
+    });
   }
 }
 
@@ -193,5 +231,8 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
     backfaceVisibility: 'hidden',
+  },
+  container: {
+    marginTop: -44,
   },
 });
