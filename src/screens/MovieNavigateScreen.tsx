@@ -19,7 +19,7 @@ export default class MyComponent extends Component {
         rate={1.0}
         volume={1.0}
         isMuted={false}
-        resizeMode="cover"
+        resizeMode='cover'
         shouldPlay
         isLooping
         style={styles.content__movie}
