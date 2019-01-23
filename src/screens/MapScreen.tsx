@@ -8,7 +8,8 @@ interface State {
   currentScreen: 'video' | 'map';
   initializedLocation: InitializedLocation;
   movieMarkers?: MovieMarkers[];
-  publicFacilityMarkers?: PublicFacilityMarkers[];
+  toiletMarkers?: ToiletMarker[];
+  elevatorMarkers?: ElevatorMarker[];
   guideLines: guideLines[];
 }
 
@@ -19,9 +20,15 @@ interface MovieMarkers {
   longitude: number;
 }
 
-interface PublicFacilityMarkers {
+interface ToiletMarker {
   floor: string;
-  type: 'toilet' | 'elevator';
+  latitude: number;
+  longitude: number;
+}
+
+interface ElevatorMarker {
+  floor: string;
+  capacity: 6 | 12;
   latitude: number;
   longitude: number;
 }
@@ -99,24 +106,23 @@ export default class MapScreen extends React.Component<{}, State> {
         latitude: 35.46597258163476,
         longitude: 139.62195876985788,
       }],
-      publicFacilityMarkers: [{
+      toiletMarkers: [{
         floor: 'B1',
-        type: 'toilet',
         latitude: 35.46598896577774,
         longitude: 139.62186254560947,
       }, {
         floor: 'B2',
-        type: 'toilet',
         latitude: 35.46571562322217,
         longitude: 139.62188635021448,
-      }, {
+      }],
+      elevatorMarkers: [{
         floor: 'B2',
-        type: 'toilet',
+        capacity: 6,
         latitude: 35.466379726599,
         longitude: 139.6222296729684,
       }, {
         floor: 'B3',
-        type: 'toilet',
+        capacity: 12,
         latitude: 35.46599115032989,
         longitude: 139.62186221033335,
       }],
@@ -184,7 +190,8 @@ export default class MapScreen extends React.Component<{}, State> {
             initializedLocation={this.state.initializedLocation}
             indoorLevel={this.state.indoorLevel}
             movieMarkers={this.state.movieMarkers}
-            publicFacilityMarkers={this.state.publicFacilityMarkers}
+            toiletMarkers={this.state.toiletMarkers}
+            elevatorMarkers={this.state.elevatorMarkers}
             guideLines={this.state.guideLines}
             screenChange={this.screenChange.bind(this)}
             currentScreen={this.state.currentScreen}

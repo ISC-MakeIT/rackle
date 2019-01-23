@@ -6,7 +6,8 @@ interface Props {
   indoorLevel: string;
   initializedLocation: InitializedLocation;
   movieMarkers?: MovieMarkers[];
-  publicFacilityMarkers?: PublicFacilityMarkers[];
+  toiletMarkers?: ToiletMarker[];
+  elevatorMarkers?: ElevatorMarker[];
   guideLines: guideLines[];
   currentScreen: string;
   screenChange: any;
@@ -20,9 +21,15 @@ interface MovieMarkers {
   longitude: number;
 }
 
-interface PublicFacilityMarkers {
+interface ToiletMarker {
   floor: string;
-  type: 'toilet' | 'elevator';
+  latitude: number;
+  longitude: number;
+}
+
+interface ElevatorMarker {
+  floor: string;
+  capacity: 6 | 12;
   latitude: number;
   longitude: number;
 }
@@ -60,7 +67,8 @@ export default class SubWindow extends React.Component<Props, {}> {
         indoorLevel={this.props.indoorLevel}
         initializedLocation={this.props.initializedLocation}
         movieMarkers={this.props.movieMarkers}
-        publicFacilityMarkers={this.props.publicFacilityMarkers}
+        toiletMarkers={this.props.toiletMarkers}
+        elevatorMarkers={this.props.elevatorMarkers}
         guideLines={this.props.guideLines}
         changeIndoorLevel={this.props.changeIndoorLevel}
       />

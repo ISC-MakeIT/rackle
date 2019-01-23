@@ -9,7 +9,8 @@ interface Props {
   indoorLevel: string;
   initializedLocation: InitializedLocation;
   movieMarkers?: MovieMarkers[];
-  publicFacilityMarkers?: PublicFacilityMarkers[];
+  toiletMarkers?: ToiletMarker[];
+  elevatorMarkers?: ElevatorMarker[];
   guideLines?: guideLines[];
   guideLinesColor?: string;
   changeIndoorLevel: any;
@@ -35,9 +36,15 @@ interface MovieMarkers {
   longitude: number;
 }
 
-interface PublicFacilityMarkers {
+interface ToiletMarker {
   floor: string;
-  type: 'toilet' | 'elevator';
+  latitude: number;
+  longitude: number;
+}
+
+interface ElevatorMarker {
+  floor: string;
+  capacity: 6 | 12;
   latitude: number;
   longitude: number;
 }
@@ -70,8 +77,10 @@ export default class MapViewComponent extends React.Component<Props, State> {
   public render() {
     const movieMarker = this.props.movieMarkers ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} movieMarkers={this.props.movieMarkers} /> : null;
-    const publicFacilityMarker = this.props.publicFacilityMarkers ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} publicFacilityMarkers={this.props.publicFacilityMarkers} /> : null;
+    const toiletMarker = this.props.toiletMarkers ?
+      <MarkerComponent indoorLevel={this.props.indoorLevel} toiletMarkers={this.props.toiletMarkers} /> : null;
+    const elevatorMarker = this.props.elevatorMarkers ?
+      <MarkerComponent indoorLevel={this.props.indoorLevel} elevatorMarkers={this.props.elevatorMarkers} /> : null;
     const mainColorPolyline = this.props.guideLines ?
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} /> : null;
     const subColorPolyline = this.props.guideLinesColor && this.props.guideLines ?
@@ -95,7 +104,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
         rotateEnabled={!this.props.guideLinesColor ? true : false}
       >
         {movieMarker}
-        {publicFacilityMarker}
+        {toiletMarker}
+        {elevatorMarker}
         {mainColorPolyline}
         {subColorPolyline}
       </MapView>
