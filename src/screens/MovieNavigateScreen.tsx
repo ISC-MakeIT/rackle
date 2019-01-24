@@ -1,113 +1,172 @@
-import * as React from 'react';
-import { 
-  Animated,
-  AppRegistry,
-  Dimensions,
-  FlatList,
-  Image,
-  PanResponder,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  WebView,
-} from 'react-native';
+
+
+import React, { Component } from 'react';
+import {Dimensions, Text, View, TouchableOpacity } from 'react-native';
+import {Video } from 'expo';
 import EStyleSheet from 'react-native-extended-stylesheet';
-
-
-// ダミーデータ
-const playlistId = 'PLL4UBL_GFXMlMjpCQdOKEUw_GT7AFB-SX';
-const playlistYoutubeIds = [
-  'uS00Bd9ZVz4', '9iieMHXubJU', '_Hdk2vXESB0', 'X8p0y5KXdIk',
-  'yYbWPRuxK1U', '33Np_lJseBE', 'z3VW7TNklww', 'tNMatlAOOcs',
-  'EyT0uC1D1I8', 'bxG4LTsLThE',
-];
-
-export default class MovieNavigateScreen extends React.Component {
-
+import Color from '../constants/Colors';
+export default class MyComponent extends Component {
   public static navigationOptions = {
     headerStyle: {
       display: 'none',
     },
   };
-  
-  constructor (props) {
-    super(props);
-    this.state = {
-      // cacheはキャッシュしたhtmlを読み込ませないため、playlistIdはyoutubeプレイヤーの初期値を送る
-      youtubeURL: `https://haduki1208-app.firebaseapp.com/youtube.html?cache=${new Date().getTime()}&playlistId=${playlistId}`,
-    };
+
+  private movieItem = () => {
+    return(
+      <Video
+        source={{ uri: 'https://haduki1208-app.firebaseapp.com/tatenaga_4_3.mp4' }}
+        rate={1.0}
+        volume={1.0}
+        isMuted={false}
+        resizeMode='cover'
+        shouldPlay
+        isLooping
+        style={styles.content__movie}
+      />
+    );
   }
 
-  /**
-   * ListViewの内容を描画
-   */
-  private renderItem = ({item, index}) => (
-    <View style={{ padding: 4 }}>
-      <TouchableOpacity onPress={event => this.onPress(item, index)} >
-        <Image style={{height: 90, width: 120,}} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
-      </TouchableOpacity>
+  private guideHeader = ()=>{
+    return(
+      <View style={guideHeaderStyle.container}>
+        <View style={guideHeaderStyle.leftContainer}>
+          <Text style={guideHeaderStyle.stationName}>横浜駅</Text>
+          <View style={guideHeaderStyle.routeContainer}>
+            <TouchableOpacity style={guideHeaderStyle.gateNameContainer}>
+              <Text style={guideHeaderStyle.gateName}>JR/中央改札</Text>
+            </TouchableOpacity>
+            <View style={guideHeaderStyle.routeOptions}>
+              <Text style={guideHeaderStyle.routeOptionText}>▶︎▶︎▶︎</Text>
+            </View>
+            <TouchableOpacity style={guideHeaderStyle.gateNameContainer}>
+              <Text style={guideHeaderStyle.gateName}>相鉄線/2F改札</Text>
+            </TouchableOpacity>
+          </View>
+      </View>
     </View>
-  )
+    );
+  }
 
-  /**
-   * FlatViewを描画
-   */
-  private renderList = () => (
-    <FlatList
-      data={playlistYoutubeIds}
-      renderItem={this.renderItem}
-      horizontal={true}
-      keyExtractor={(item, index) => index.toString()}
-    />
-  )
 
   public render() {
-    return (
-      <View style={styles.test_area}>
-        <View style={styles.test_text_wrap}>
-          <Text style={styles.test_text}>show a list of all available commands.</Text>
+    return(
+      <View style={styles.content_wrap}>
+        <TouchableOpacity style={styles.header__controller_back_wrap} onPress={()=>alert('hoge')}>
+          <Text style={styles.header__controller_back_text}>＜案内終了</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.header__sub_window_circle} />
+        <View style={styles.content__movie_wrap}>
+            {this.movieItem()}
         </View>
-        <WebView source={{ uri: this.state.youtubeURL }} scrollEnabled={false} allowsInlineMediaPlayback={true} useWebKit={Platform.OS === 'ios'} onMessage={this.onMessage} />
-        <View>
-          {this.renderList()}
+        <View style={styles.content__navi}>
+          {this.guideHeader()}
         </View>
       </View>
     );
   }
 }
 
-EStyleSheet.build();
+
+EStyleSheet.build({});
+const {width, height} = Dimensions.get('screen');
 
 const styles = EStyleSheet.create({
-  container:{
-    width: '100%',
-    height: '66%',
-    // marginHorizontal: '10%',
-    marginTop: '20%',
-    backgroundColor: 'yellow',
-    flexDirection: 'column',
+  content_wrap: {
+    flex: 1, 
+    top: 0, 
+    position: 'relative',
+  },
+  header__sub_window_circle: {
+    width: '8rem', 
+    height: '8rem', 
+    borderRadius: '4rem', 
+    position: 'absolute', 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    right: 6, 
+    top: 20, 
+    elevation: 8, 
+    backgroundColor: 'skyblue',
+  },
+  header__controller_back_wrap: {
+    width:'40%', 
+    height: '10%', 
+    top: '5%', 
     justifyContent: 'center',
   },
-  movie_naviate_area:{
-    backgroundColor: '#ecf0f1',
-    height: '100%',
-    width: '100%',
+  header__controller_back_text: {
+    fontSize: '1.2rem', 
+    fontWeight: '600', 
+    top: 0, 
+    color: 'white',
+  },
+  content__movie_wrap: {
     flex: 1,
-    justifyContent: 'center',
+    position: 'absolute',
+    top: 0, 
+    height: '100%', 
+    width: '100%', 
+    zIndex: -1, 
+    backgroundColor: 'blue',
   },
-  test_area:{
+  content__movie: {
+    flex: 1, 
+    justifyContent: 'flex-start', 
+    margin: '-8rem',
+  },
+  content__navi: {
+    flex: 0.1, 
+    padding: 2, 
+    position: 'absolute', 
+    bottom: 0, 
+    width: '100%', 
+    opacity: 0.5, 
+    backgroundColor: 'black',
+  },
+});
+
+const guideHeaderStyle = EStyleSheet.create({
+  container: {
     flex: 1,
-    height: 'auto',
+    flexDirection: 'row',
+    height: 30,
+    justifyContent: 'flex-start',
+    backgroundColor: Color.black,
   },
-  test_text_wrap:{
-    width: '100%',
+  leftContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    height: 30,
   },
-  test_text:{
-    textAlign: 'center',
+  stationName: {
+    marginHorizontal: 10,
+    color: 'white',
     fontSize: '1rem',
-    color: 'red',
+    lineHeight: 30,
+  },
+  gateNameContainer: {
+    backgroundColor: 'white',
+    height: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginTop: 5,
+    borderRadius: 50,
+    marginHorizontal: 5,
+  },
+  gateName: {
+    lineHeight: 20,
+    fontSize: '0.7rem',
+  },
+  routeContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  routeOptionText: {
+    fontSize: '0.7rem',
+    color: Color.subColorRed,
+    lineHeight: 30,
+    paddingRight: 0.5,
   },
 });
