@@ -106,8 +106,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
         {movieMarker}
         {toiletMarker}
         {elevatorMarker}
-        {mainColorPolyline}
         {subColorPolyline}
+        {mainColorPolyline}
       </MapView>
     );
   }

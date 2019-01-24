@@ -108,33 +108,71 @@ export default class MapScreen extends React.Component<{}, State> {
       }],
       toiletMarkers: [{
         floor: 'B1',
+        latitude: 35.46549853231885,
+        longitude: 139.62226923555136,
+      }],
+      elevatorMarkers: [{
+        floor: 'B1',
+        capacity: 6,
         latitude: 35.46598896577774,
         longitude: 139.62186254560947,
       }, {
         floor: 'B2',
-        latitude: 35.46571562322217,
-        longitude: 139.62188635021448,
-      }],
-      elevatorMarkers: [{
-        floor: 'B2',
         capacity: 6,
-        latitude: 35.466379726599,
-        longitude: 139.6222296729684,
+        latitude: 35.466408671769514,
+        longitude: 139.62231114506721,
       }, {
         floor: 'B3',
         capacity: 12,
         latitude: 35.46599115032989,
         longitude: 139.62186221033335,
+      }, {
+        floor: 'B2',
+        capacity: 6,
+        latitude: 35.46600043467584,
+        longitude: 139.6218601986766,
+      }, {
+        floor: 'B2',
+        capacity: 6,
+        latitude: 35.467070038770146,
+        longitude: 139.62299410253763,
+      }, {
+        floor: 'B3',
+        capacity: 6,
+        latitude: 35.46662521408242,
+        longitude: 139.62260585278273,
+      }, {
+        floor: 'B3',
+        capacity: 6,
+        latitude: 35.46662521408242,
+        longitude: 139.62260585278273,
+      }, {
+        floor: 'B1',
+        capacity: 6,
+        latitude: 35.4662273546807,
+        longitude: 139.62275706231594,
+      }, {
+        floor: 'B1',
+        capacity: 12,
+        latitude: 35.46601927643347,
+        longitude: 139.62302025407553,
+      }, {
+        floor: 'B1',
+        capacity: 12,
+        latitude: 35.4659865081565,
+        longitude: 139.62323047220707,
+      }, {
+        floor: 'B1',
+        capacity: 12,
+        latitude: 35.46614024587368,
+        longitude: 139.62289653718472,
+      }, {
+        floor: 'B1',
+        capacity: 12,
+        latitude: 35.4663073636272,
+        longitude: 139.6226128935814,
       }],
       guideLines:[{
-        floor: 'B2',
-        latitude: 35.46612386176152,
-        longitude: 139.62268766015768,
-      }, {
-        floor: 'B2',
-        latitude: 35.46605177162828,
-        longitude: 139.62281808257103,
-      }, {
         floor: 'B1',
         latitude: 35.465821301223436,
         longitude: 139.62295688688755,
@@ -174,10 +212,6 @@ export default class MapScreen extends React.Component<{}, State> {
         floor: 'B3',
         latitude: 35.46597258163476,
         longitude: 139.62195876985788,
-      }, {
-        floor: 'B3',
-        latitude: 35.46622462399851,
-        longitude: 139.62239295244217,
       }],
     };
   }

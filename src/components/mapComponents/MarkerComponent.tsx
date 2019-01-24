@@ -70,12 +70,9 @@ export default class MarkerComponent extends React.Component<Props, State> {
   }
 
   public render() {
-    const movieMarker = this.createMovieMarkers();
-    const elevatorMarker = this.createElevatorMarkers();
-    const toiletMarker = this.createToiletMarkers();
-    if (movieMarker != undefined) return movieMarker;
-    if (toiletMarker != undefined) return toiletMarker;
-    if (elevatorMarker != undefined) return elevatorMarker;
+    if (this.state.currentMovieMarkers !== undefined)  return this.createMovieMarkers(this.state.currentMovieMarkers.length);
+    if (this.state.currentElevatorMarkers !== undefined) return this.createElevatorMarkers();
+    if (this.state.currentToiletMarkers !== undefined) return this.createToiletMarkers();
     return null;
   }
 
@@ -95,45 +92,49 @@ export default class MarkerComponent extends React.Component<Props, State> {
   }
 
   private iconChange(iconName: string) {
-    if (iconName === 'toilet') return require('../../../assets/images/toilet.jpg');
+    if (iconName === 'toilet') return require('../../../assets/images/toilet.png');
+    if (iconName === 'movie') return require('../../../assets/images/map-pointer.png');
+    if (iconName === 'elevator6seater') return require('../../../assets/images/elevator.png');
+    if (iconName === 'elevator12seater') return require('../../../assets/images/big_elevator.png');
   }
 
-  private createMovieMarkers() {
-    return this.state.currentMovieMarkers != undefined ?
-      this.state.currentMovieMarkers.map((movieMarker, index: number) => {
-        return (
-          <Marker
-              key={`movieMarker_${index}`}
-              coordinate={{latitude: movieMarker.latitude, longitude: movieMarker.longitude}}
-              pinColor={this.props.pinColor}
-          />
-        );
-      }) : undefined;
+  private createMovieMarkers(maxLength: number) {
+    if(this.state.currentMovieMarkers === undefined) return  null;
+    return this.state.currentMovieMarkers.map((movieMarker, index: number) => {
+      return (
+        <Marker
+          key={`movieMarker_${index}`}
+          coordinate={{latitude: movieMarker.latitude, longitude: movieMarker.longitude}}
+          image={maxLength === index || index === 0 ? this.iconChange('') : this.iconChange('movie')}
+        />
+      );
+    });
   }
 
   private createElevatorMarkers() {
-    return this.state.currentElevatorMarkers != undefined ?
-      this.state.currentElevatorMarkers.map((elevatorMarker, index: number) => {
-        return (
-          <Marker
-              key={`elevatorMarker_${index}`}
-              coordinate={{latitude: elevatorMarker.latitude, longitude: elevatorMarker.longitude}}
-              image={this.iconChange('elevator')}
-          />
-        );
-      }) : undefined;
+    if (this.state.currentElevatorMarkers === undefined) return null;
+    return this.state.currentElevatorMarkers.map((elevatorMarker, index: number) => {
+      return (
+        <Marker
+          key={`elevatorMarker_${index}`}
+          coordinate={{latitude: elevatorMarker.latitude, longitude: elevatorMarker.longitude}}
+          description={`最大${elevatorMarker.capacity}人まで乗れます`}
+          image={this.iconChange(`elevator${elevatorMarker.capacity}seater`)}
+        />
+      );
+    });
   }
 
   private createToiletMarkers() {
-    return this.state.currentToiletMarkers != undefined ?
-      this.state.currentToiletMarkers.map((toiletMarker, index: number) => {
-        return (
-          <Marker
-              key={`toiletMarker_${index}`}
-              coordinate={{latitude: toiletMarker.latitude, longitude: toiletMarker.longitude}}
-              image={this.iconChange('toilet')}
-          />
-        );
-      }) : undefined;
+    if (this.state.currentToiletMarkers === undefined) return null;
+    return this.state.currentToiletMarkers.map((toiletMarker, index: number) => {
+      return (
+        <Marker
+          key={`toiletMarker_${index}`}
+          coordinate={{latitude: toiletMarker.latitude, longitude: toiletMarker.longitude}}
+          image={this.iconChange('toilet')}
+        />
+      );
+    });
   }
 }
