@@ -56,7 +56,8 @@ const tabNavigator = createBottomTabNavigator({ HomeStack, MyPageStack, MapStack
 });
 
 export default createStackNavigator({
-  Main: { screen: tabNavigator },
+  // Main: { screen: tabNavigator },
+  Main: { screen: GuideStack },
   // Main: { screen: MapStack },
   // Main: { screen: MovieNavigateScreen },
   Guide: { screen: GuideStack },

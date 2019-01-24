@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, TouchableOpacity, TouchableHighlightComponent } from 'react-native';
+import { View, StyleSheet, TouchableOpacity} from 'react-native';
 import MapViewComponent from './mapComponents/MapViewComponent';
 import { GuideLine, Region } from 'src/domains/map';
 

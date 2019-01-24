@@ -1,11 +1,11 @@
-
-
-import React, { Component } from 'react';
+import * as React from 'react';
 import {Dimensions, Text, View, TouchableOpacity } from 'react-native';
 import {Video } from 'expo';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Color from '../constants/Colors';
-export default class MyComponent extends Component {
+import NavigationPlate from '../components/NavigationPlate';
+
+export default class MyComponent extends  React.Component<{}, {}> {
   public static navigationOptions = {
     headerStyle: {
       display: 'none',
@@ -27,40 +27,22 @@ export default class MyComponent extends Component {
     );
   }
 
-  private guideHeader = ()=>{
-    return(
-      <View style={guideHeaderStyle.container}>
-        <View style={guideHeaderStyle.leftContainer}>
-          <Text style={guideHeaderStyle.stationName}>横浜駅</Text>
-          <View style={guideHeaderStyle.routeContainer}>
-            <TouchableOpacity style={guideHeaderStyle.gateNameContainer}>
-              <Text style={guideHeaderStyle.gateName}>JR/中央改札</Text>
-            </TouchableOpacity>
-            <View style={guideHeaderStyle.routeOptions}>
-              <Text style={guideHeaderStyle.routeOptionText}>▶︎▶︎▶︎</Text>
-            </View>
-            <TouchableOpacity style={guideHeaderStyle.gateNameContainer}>
-              <Text style={guideHeaderStyle.gateName}>相鉄線/2F改札</Text>
-            </TouchableOpacity>
-          </View>
-      </View>
-    </View>
-    );
-  }
-
-
   public render() {
     return(
       <View style={styles.content_wrap}>
         <TouchableOpacity style={styles.header__controller_back_wrap} onPress={()=>alert('hoge')}>
           <Text style={styles.header__controller_back_text}>＜案内終了</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.header__sub_window_circle} />
+        <TouchableOpacity style={styles.header__sub_window_circle} ></TouchableOpacity>
         <View style={styles.content__movie_wrap}>
             {this.movieItem()}
         </View>
         <View style={styles.content__navi}>
-          {this.guideHeader()}
+          <NavigationPlate
+            stationName={'横浜駅'}
+            startGateName={'JR/中央改札'}
+            endGateName={'相鉄線/2F改札'}
+          />
         </View>
       </View>
     );
@@ -73,55 +55,55 @@ const {width, height} = Dimensions.get('screen');
 
 const styles = EStyleSheet.create({
   content_wrap: {
-    flex: 1, 
-    top: 0, 
+    flex: 1,
+    top: 0,
     position: 'relative',
   },
   header__sub_window_circle: {
-    width: '8rem', 
-    height: '8rem', 
-    borderRadius: '4rem', 
-    position: 'absolute', 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    right: 6, 
-    top: 20, 
-    elevation: 8, 
+    width: '8rem',
+    height: '8rem',
+    borderRadius: '4rem',
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 6,
+    top: 20,
+    elevation: 8,
     backgroundColor: 'skyblue',
   },
   header__controller_back_wrap: {
-    width:'40%', 
-    height: '10%', 
-    top: '5%', 
+    width:'40%',
+    height: '10%',
+    top: '5%',
     justifyContent: 'center',
   },
   header__controller_back_text: {
-    fontSize: '1.2rem', 
-    fontWeight: '600', 
-    top: 0, 
+    fontSize: '1.2rem',
+    fontWeight: '600',
+    top: 0,
     color: 'white',
   },
   content__movie_wrap: {
     flex: 1,
     position: 'absolute',
-    top: 0, 
-    height: '100%', 
-    width: '100%', 
-    zIndex: -1, 
+    top: 0,
+    height: '100%',
+    width: '100%',
+    zIndex: -1,
     backgroundColor: 'blue',
   },
   content__movie: {
-    flex: 1, 
-    justifyContent: 'flex-start', 
+    flex: 1,
+    justifyContent: 'flex-start',
     margin: '-8rem',
   },
   content__navi: {
-    flex: 0.1, 
-    padding: 2, 
-    position: 'absolute', 
-    bottom: 0, 
-    width: '100%', 
-    opacity: 0.5, 
+    flex: 0.1,
+    padding: 2,
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    opacity: 0.5,
     backgroundColor: 'black',
   },
 });
