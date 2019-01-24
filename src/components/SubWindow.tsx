@@ -1,39 +1,22 @@
 import * as React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import MapViewComponent from './mapComponents/MapViewComponent';
+import { GuideLine, Region } from 'src/domains/map';
 
 interface Props {
   indoorLevel: string;
-  initializedLocation: InitializedLocation;
-  guideLines: guideLines[];
+  initializedLocation: Region;
+  guideLines: GuideLine[];
   currentScreen: 'video' | 'map';
   screenChange: any;
   changeIndoorLevel: any;
 }
 
-interface InitializedLocation {
-  latitude: number;
-  longitude: number;
-  latitudeDelta: number;
-  longitudeDelta: number;
-}
-
-interface guideLines {
-  floor: string;
-  latitude: number;
-  longitude: number;
-}
-
 export default class SubWindow extends React.Component<Props, {}> {
-  constructor(props: Props) {
-    super(props);
-  }
-
   public render() {
-    const currentScreen = this.props.currentScreen === 'video' ? this.mapScreen() : this.videoScreen();
     return (
       <View style={style.container}>
-        {currentScreen}
+        {this.props.currentScreen === 'video' ? this.mapScreen() : this.videoScreen()}
       </View>
     );
   }

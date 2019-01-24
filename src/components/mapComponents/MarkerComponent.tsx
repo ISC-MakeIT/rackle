@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Marker } from 'react-native-maps';
+import { MovieMarker, ToiletMarker, ElevatorMarker }from '../../domains/map';
 
 interface Props {
   indoorLevel: string;
@@ -15,26 +16,6 @@ interface State {
   currentMovieMarkers?: MovieMarker[];
   currentToiletMarkers?: ToiletMarker[];
   currentElevatorMarkers?: ElevatorMarker[];
-}
-
-interface MovieMarker {
-  floor: string;
-  movieId: number;
-  latitude: number;
-  longitude: number;
-}
-
-interface ToiletMarker {
-  floor: string;
-  latitude: number;
-  longitude: number;
-}
-
-interface ElevatorMarker {
-  floor: string;
-  capacity: 6 | 12;
-  latitude: number;
-  longitude: number;
 }
 
 export default class MarkerComponent extends React.Component<Props, State> {

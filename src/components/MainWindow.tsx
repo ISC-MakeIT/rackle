@@ -1,86 +1,41 @@
 import * as React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import MapViewComponent from './mapComponents/MapViewComponent';
+import { MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, Region } from '../domains/map';
 
 interface Props {
   indoorLevel: string;
-  initializedLocation: InitializedLocation;
-  movieMarkers?: MovieMarkers[];
+  initializedLocation: Region;
+  movieMarkers?: MovieMarker[];
   toiletMarkers?: ToiletMarker[];
   elevatorMarkers?: ElevatorMarker[];
-  guideLines: guideLines[];
+  guideLines: GuideLine[];
   currentScreen: string;
   screenChange: any;
   changeIndoorLevel: any;
 }
 
-interface MovieMarkers {
-  floor: string;
-  movieId: number;
-  latitude: number;
-  longitude: number;
-}
+export const MainWindow: React.SFC<Props> = props => {
+  const mapScreen = () => (
+    <MapViewComponent
+      indoorLevel={props.indoorLevel}
+      initializedLocation={props.initializedLocation}
+      movieMarkers={props.movieMarkers}
+      toiletMarkers={props.toiletMarkers}
+      elevatorMarkers={props.elevatorMarkers}
+      guideLines={props.guideLines}
+      changeIndoorLevel={props.changeIndoorLevel}
+    />
+  );
 
-interface ToiletMarker {
-  floor: string;
-  latitude: number;
-  longitude: number;
-}
+  const videoScreen = () => (<View style={style.container} />);
 
-interface ElevatorMarker {
-  floor: string;
-  capacity: 6 | 12;
-  latitude: number;
-  longitude: number;
-}
-
-interface InitializedLocation {
-  latitude: number;
-  longitude: number;
-  latitudeDelta: number;
-  longitudeDelta: number;
-}
-
-interface guideLines {
-    floor: string;
-    latitude: number;
-    longitude: number;
-  }
-
-export default class SubWindow extends React.Component<Props, {}> {
-  constructor(props: Props) {
-    super(props);
-  }
-
-  public render() {
-    const currentScreen = this.props.currentScreen === 'map' ? this.mapScreen() : this.videoScreen();
-    return (
-      <View style={style.container}>
-        {currentScreen}
-      </View>
-    );
-  }
-
-  private mapScreen() {
-    return (
-      <MapViewComponent
-        indoorLevel={this.props.indoorLevel}
-        initializedLocation={this.props.initializedLocation}
-        movieMarkers={this.props.movieMarkers}
-        toiletMarkers={this.props.toiletMarkers}
-        elevatorMarkers={this.props.elevatorMarkers}
-        guideLines={this.props.guideLines}
-        changeIndoorLevel={this.props.changeIndoorLevel}
-      />
-    );
-  }
-
-  private videoScreen() {
-    return (
-      <View style={style.container}></View>
-    );
-  }
-}
+  return (
+    <View style={style.container}>
+      {props.currentScreen === 'map' ? mapScreen() : videoScreen()}
+    </View>
+  );
+};
 
 const {width, height} = Dimensions.get('screen');
 

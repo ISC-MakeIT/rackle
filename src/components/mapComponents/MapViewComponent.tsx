@@ -4,14 +4,15 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
 import CustomMap from '../mapComponents/CustomMap';
+import { MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, Region} from '../../domains/map';
 
 interface Props {
   indoorLevel: string;
-  initializedLocation: InitializedLocation;
-  movieMarkers?: MovieMarkers[];
+  initializedLocation: Region;
+  movieMarkers?: MovieMarker[];
   toiletMarkers?: ToiletMarker[];
   elevatorMarkers?: ElevatorMarker[];
-  guideLines?: guideLines[];
+  guideLines?: GuideLine[];
   guideLinesColor?: string;
   changeIndoorLevel: any;
   screenChange?: any;
@@ -19,58 +20,15 @@ interface Props {
 }
 
 interface State {
-  initializedLocation: InitializedLocation;
-}
-
-interface Region {
-  latitude: number;
-  longitude: number;
-  latitudeDelta: number;
-  longitudeDelta: number;
-}
-
-interface MovieMarkers {
-  floor: string;
-  movieId: number;
-  latitude: number;
-  longitude: number;
-}
-
-interface ToiletMarker {
-  floor: string;
-  latitude: number;
-  longitude: number;
-}
-
-interface ElevatorMarker {
-  floor: string;
-  capacity: 6 | 12;
-  latitude: number;
-  longitude: number;
-}
-
-interface InitializedLocation {
-  latitude: number;
-  longitude: number;
-  latitudeDelta: number;
-  longitudeDelta: number;
-}
-
-interface guideLines {
-  floor: string;
-  latitude: number;
-  longitude: number;
+  initializedLocation: Region;
 }
 
 export default class MapViewComponent extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      initializedLocation: this.props.initializedLocation,
-    };
-  }
+  readonly state = {
+    initializedLocation: this.props.initializedLocation,
+  };
 
-  public shouldComponentUpdate(nextProps: Props, nextState: State) {
+  public shouldComponentUpdate(nextProps: Props, _: State) {
     return this.props.indoorLevel === nextProps.indoorLevel ? false : true;
   }
 
