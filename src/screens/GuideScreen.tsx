@@ -31,8 +31,8 @@ export default class GuideScreen extends React.Component<Props, {}> {
   }
 
   public render() {
-    return (
-      <View style={guideStyle.container}>
+    return(
+      <View style={guideStyle.content_wrap}>
         <MainWindow
           initializedLocation={this.state.initializedLocation}
           indoorLevel={this.state.indoorLevel}
@@ -53,11 +53,6 @@ export default class GuideScreen extends React.Component<Props, {}> {
             changeIndoorLevel={this.changeIndoorLevel.bind(this)}
           />
         </TouchableOpacity>
-        <NavigationPlate
-          stationName={'横浜駅'}
-          startGateName={'JR/中央改札'}
-          endGateName={'相鉄線/2F改札'}
-        />
       </View>
     );
   }
@@ -77,17 +72,30 @@ export default class GuideScreen extends React.Component<Props, {}> {
   }
 }
 
-const { width, height } = Dimensions.get('window');
 EStyleSheet.build({});
+const { width, height } = Dimensions.get('window');
 
-const guideStyle = StyleSheet.create({
-  container: {
+const guideStyle = EStyleSheet.create({
+  content_wrap: {
     flex: 1,
-    backgroundColor: 'red',
+    top: 0,
+    position: 'relative',
+  },
+  subWindowCircle: {
+    width: '8rem',
+    height: '8rem',
+    borderRadius: '4rem',
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 6,
+    top: 20,
+    elevation: 8,
+    // backgroundColor: 'skyblue',
   },
 });
 
-const thumbnailStyle = StyleSheet.create({
+const thumbnailStyle = EStyleSheet.create({
   Image: {
     width: 120,
     height: 120,
@@ -97,7 +105,7 @@ const thumbnailStyle = StyleSheet.create({
   },
 });
 
-const guideHeaderStyle = StyleSheet.create({
+const guideHeaderStyle = EStyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',

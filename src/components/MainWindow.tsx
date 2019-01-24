@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Color from '../constants/Colors';
 import MapViewComponent from './mapComponents/MapViewComponent';
-import { MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, Region } from '../domains/map';
+import MovieNavigateComponent from './movieComponents/MovieNavigateComponent';
 
 interface Props {
-  indoorLevel: string;
   initializedLocation: Region;
   movieMarkers?: MovieMarker[];
   toiletMarkers?: ToiletMarker[];
@@ -37,13 +38,14 @@ export const MainWindow: React.SFC<Props> = props => {
   );
 };
 
+EStyleSheet.build({});
 const {width, height} = Dimensions.get('screen');
 
-const style = StyleSheet.create({
+const style = EStyleSheet.create({
   container: {
     width: width,
     height: height,
     position: 'absolute',
-    backgroundColor: '#000000',
+    backgroundColor: 'green',
   },
 });

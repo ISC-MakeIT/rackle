@@ -5,7 +5,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Color from '../constants/Colors';
 import NavigationPlate from '../components/NavigationPlate';
 
-export default class MyComponent extends  React.Component<{}, {}> {
+export default class MovieNavigate extends  React.Component<Props, {}> {
   public static navigationOptions = {
     headerStyle: {
       display: 'none',

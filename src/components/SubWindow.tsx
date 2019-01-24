@@ -3,6 +3,9 @@ import { View, StyleSheet, TouchableOpacity} from 'react-native';
 import MapViewComponent from './mapComponents/MapViewComponent';
 import { GuideLine, Region } from 'src/domains/map';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import Color from '../constants/Colors';
+import MovieNavigateComponent from './movieComponents/MovieNavigateComponent';
+
 
 interface Props {
   indoorLevel: string;
@@ -22,23 +25,21 @@ export default class SubWindow extends React.Component<Props, {}> {
     );
   }
 
+  
   private mapScreen() {
     return (
-      <MapViewComponent
-        indoorLevel={this.props.indoorLevel}
-        initializedLocation={this.props.initializedLocation}
-        guideLines={this.props.guideLines}
-        guideLinesColor={'#ddd'}
-      />
+        <MapViewComponent
+          indoorLevel={this.props.indoorLevel}
+          initializedLocation={this.props.initializedLocation}
+          guideLines={this.props.guideLines}
+          guideLinesColor={'#ddd'}
+        />
     );
   }
 
   private videoScreen() {
     return (
-      <View
-        style={style.container}
-      >
-      </View>
+        <MovieNavigateComponent />
     );
   }
 
@@ -47,18 +48,25 @@ export default class SubWindow extends React.Component<Props, {}> {
   }
 }
 
-const style = StyleSheet.create({
-  container: {
-    width: 150,
-    height: 150,
-    zIndex: 0,
+EStyleSheet.build({});
+const style = EStyleSheet.create({
+  window_circle: {
+    width: '8rem',
+    height: '8rem',
+    borderRadius: '4rem',
     position: 'absolute',
-    backgroundColor: '#000000',
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 6,
+    top: 20,
+    elevation: 8,
+    backgroundColor: 'skyblue',
   },
   touchContainer: {
     width: 150,
     height: 150,
     zIndex: 50,
     position: 'absolute',
+    backgroundColor: 'red',
   },
 });
