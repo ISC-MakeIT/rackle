@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, TouchableOpacity} from 'react-native';
 import MapViewComponent from './mapComponents/MapViewComponent';
 import { GuideLine, Region } from 'src/domains/map';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 interface Props {
   indoorLevel: string;
