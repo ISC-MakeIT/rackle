@@ -29,19 +29,17 @@ export default class SubWindow extends React.Component<Props, {}> {
         guideLines={this.props.guideLines}
         guideLinesColor={'#ddd'}
         changeIndoorLevel={this.props.changeIndoorLevel}
-        screenChange={this.props.screenChange}
-        currentScreen={this.props.currentScreen}
       />
     );
   }
 
   private videoScreen() {
     return (
-      <TouchableOpacity
+      <View>
         onPress={() =>this.props.screenChange(this.screenChangeCheck())}
         style={style.container}
       >
-      </TouchableOpacity>
+      </View>
     );
   }
 
@@ -54,6 +52,7 @@ const style = StyleSheet.create({
   container: {
     width: 150,
     height: 150,
+    zIndex: 50,
     position: 'absolute',
     backgroundColor: '#000000',
   },

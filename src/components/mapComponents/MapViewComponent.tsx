@@ -55,7 +55,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
         onRegionChange={(e: Region) => this.locationChange(e)}
         minZoomLevel={this.props.guideLinesColor ? 17 : 18}
         // onPress={(e: any) => console.log (e.nativeEvent.coordinate)} // debugのため
-        onPress={this.props.guideLinesColor ? () => this.props.screenChange(this.screenChangeCheck()) : undefined}
+        // onPress={this.props.guideLinesColor ? () => this.props.screenChange(this.screenChangeCheck()) : undefined}
         onIndoorLevelActivated={(e: any) => { this.props.changeIndoorLevel(e.nativeEvent.IndoorLevel.name); }}
         loadingEnabled={true}
         scrollEnabled={!this.props.guideLinesColor ? true : false}

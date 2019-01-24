@@ -23,7 +23,7 @@ export default class MapScreen extends React.Component<{}, State> {
     super(props);
     this.state = {
       indoorLevel: '1',
-      currentScreen:'video',
+      currentScreen:'map',
       initializedLocation: {
         latitude: 35.46588771428577,
         longitude: 139.62227088041905,
