@@ -1,7 +1,7 @@
 
 
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import {Dimensions, Text, View, TouchableOpacity } from 'react-native';
 import {Video } from 'expo';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Color from '../constants/Colors';
@@ -69,6 +69,7 @@ export default class MyComponent extends Component {
 
 
 EStyleSheet.build({});
+const {width, height} = Dimensions.get('screen');
 
 const styles = EStyleSheet.create({
   content_wrap: {
@@ -101,7 +102,8 @@ const styles = EStyleSheet.create({
     color: 'white',
   },
   content__movie_wrap: {
-    position: 'relative', 
+    flex: 1,
+    position: 'absolute',
     top: 0, 
     height: '100%', 
     width: '100%', 

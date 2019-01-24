@@ -56,11 +56,11 @@ const tabNavigator = createBottomTabNavigator({ HomeStack, MyPageStack, MapStack
 });
 
 export default createStackNavigator({
-  // Main: { screen: tabNavigator },
-  Main: { screen: MovieNavigateScreen },
+  Main: { screen: tabNavigator },
+  // Main: { screen: MovieNavigateScreen },
   Guide: { screen: GuideStack },
-  Map: { screen: MapStack },
-  MovieNavigate: { screen: MovieNavigateStack },
+  // Map: { screen: MapStack },
+  // MovieNavigate: { screen: MovieNavigateStack },
 }, {
     initialRouteName: 'Main',
     headerMode: 'none',
