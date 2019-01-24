@@ -14,9 +14,6 @@ interface Props {
   elevatorMarkers?: ElevatorMarker[];
   guideLines?: GuideLine[];
   guideLinesColor?: string;
-  changeIndoorLevel: any;
-  screenChange?: any;
-  currentScreen?: 'video' | 'map';
 }
 
 interface State {
@@ -58,8 +55,6 @@ export default class MapViewComponent extends React.Component<Props, State> {
         // onPress={this.props.guideLinesColor ? () => this.props.screenChange(this.screenChangeCheck()) : undefined}
         onIndoorLevelActivated={(e: any) => { this.props.changeIndoorLevel(e.nativeEvent.IndoorLevel.name); }}
         loadingEnabled={true}
-        scrollEnabled={!this.props.guideLinesColor ? true : false}
-        rotateEnabled={!this.props.guideLinesColor ? true : false}
       >
         {movieMarker}
         {toiletMarker}

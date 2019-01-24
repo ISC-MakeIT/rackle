@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, TouchableHighlightComponent } from 'react-native';
 import MapViewComponent from './mapComponents/MapViewComponent';
 import { GuideLine, Region } from 'src/domains/map';
 
@@ -28,15 +28,13 @@ export default class SubWindow extends React.Component<Props, {}> {
         initializedLocation={this.props.initializedLocation}
         guideLines={this.props.guideLines}
         guideLinesColor={'#ddd'}
-        changeIndoorLevel={this.props.changeIndoorLevel}
       />
     );
   }
 
   private videoScreen() {
     return (
-      <View>
-        onPress={() =>this.props.screenChange(this.screenChangeCheck())}
+      <View
         style={style.container}
       >
       </View>
@@ -52,8 +50,14 @@ const style = StyleSheet.create({
   container: {
     width: 150,
     height: 150,
-    zIndex: 50,
+    zIndex: 0,
     position: 'absolute',
     backgroundColor: '#000000',
+  },
+  touchContainer: {
+    width: 150,
+    height: 150,
+    zIndex: 50,
+    position: 'absolute',
   },
 });
