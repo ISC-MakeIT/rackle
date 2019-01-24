@@ -212,10 +212,6 @@ export default class MapScreen extends React.Component<{}, State> {
         floor: 'B3',
         latitude: 35.46597258163476,
         longitude: 139.62195876985788,
-      }, {
-        floor: 'B3',
-        latitude: 35.46622462399851,
-        longitude: 139.62239295244217,
       }],
     };
   }

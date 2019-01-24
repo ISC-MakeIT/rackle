@@ -1,7 +1,43 @@
 export default {
   mapStyle: [
     {
+      'featureType': 'poi',
+      'elementType': 'labels.icon',
+      'stylers': [
+        {
+          'visibility': 'off',
+        },
+      ],
+    },
+    {
       'featureType': 'administrative.neighborhood',
+      'stylers': [
+        {
+          'visibility': 'off',
+        },
+      ],
+    },
+    {
+      'featureType': 'administrative.locality',
+      'elementType': 'labels.icon',
+      'stylers': [
+        {
+          'visibility': 'off',
+        },
+      ],
+    },
+    {
+      'featureType': 'administrative.land_parcel',
+      'elementType': 'labels.icon',
+      'stylers': [
+        {
+          'visibility': 'off',
+        },
+      ],
+    },
+    {
+      'featureType': 'administrative.neighborhood',
+      'elementType': 'labels.icon',
       'stylers': [
         {
           'visibility': 'off',
