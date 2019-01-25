@@ -36,7 +36,7 @@ const SubWindow: React.SFC<Props> = props => {
       {props.currentScreen === 'video' ? mapScreen() : videoScreen()}
     </View>
   );
-}
+};
 
 EStyleSheet.build({});
 const style = EStyleSheet.create({
