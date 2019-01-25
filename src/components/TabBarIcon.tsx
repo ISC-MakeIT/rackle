@@ -7,14 +7,13 @@ interface Props {
   focused: boolean;
 }
 
-export default class TabBarIcon extends React.Component<Props, {}> {
-  constructor(props: Props) {
-    super(props);
-  }
+const TabBarIcon: React.SFC<Props> = props => (
+  <Ionicons
+    name={props.name}
+    size={26}
+    style={{ marginBottom: -3 }}
+    color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+  />
+);
 
-  public render() {
-    return (
-      <Ionicons name={this.props.name} size={26} style={{ marginBottom: -3 }} color={this.props.focused ? Colors.tabIconSelected : Colors.tabIconDefault} />
-    );
-  }
-}
+export default TabBarIcon;

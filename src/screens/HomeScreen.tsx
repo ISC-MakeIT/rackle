@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
 
 interface Props { navigation: any; }
+
 interface State {
   selectedFromValue: number;
   selectedToValue: number;

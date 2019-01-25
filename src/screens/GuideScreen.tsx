@@ -1,34 +1,26 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions } from 'react-native';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { View, TouchableOpacity } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Color from '../constants/Colors';
 import SubWindow from '../components/SubWindow';
 import MainWindow from '../components/MainWindow';
 import DummyData from '../components/mapComponents/DummyData';
-import NavigationPlate from '../components/NavigationPlate';
 
 interface Props { navigation: any; }
 
 export default class GuideScreen extends React.Component<Props, {}> {
   public static navigationOptions = {
-    headerStyle: {
-      display: 'none',
-    },
+    headerStyle: { display: 'none' },
   };
 
-  constructor(props: Props) {
-    super(props);
-    this.state= {
-      indoorLevel: DummyData.indoorLevel,
-      currentScreen: DummyData.currentScreen,
-      initializedLocation: DummyData.initializedLocation,
-      movieMarkers: DummyData.movieMarkers,
-      toiletMarkers: DummyData.toiletMarkers,
-      elevatorMarkers: DummyData.elevatorMarkers,
-      guideLines: DummyData.guideLines,
-    };
-  }
+  readonly state= {
+    indoorLevel: DummyData.indoorLevel,
+    currentScreen: DummyData.currentScreen,
+    initializedLocation: DummyData.initializedLocation,
+    movieMarkers: DummyData.movieMarkers,
+    toiletMarkers: DummyData.toiletMarkers,
+    elevatorMarkers: DummyData.elevatorMarkers,
+    guideLines: DummyData.guideLines,
+  };
 
   public render() {
     return(
@@ -73,7 +65,6 @@ export default class GuideScreen extends React.Component<Props, {}> {
 }
 
 EStyleSheet.build({});
-const { width, height } = Dimensions.get('window');
 
 const guideStyle = EStyleSheet.create({
   content_wrap: {
@@ -91,6 +82,5 @@ const guideStyle = EStyleSheet.create({
     right: 6,
     top: 20,
     elevation: 8,
-    // backgroundColor: 'skyblue',
   },
 });

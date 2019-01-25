@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { MonoText } from '../components/StyledText';
+import  MonoText from '../components/StyledText';
 
 export default class MyPageScreen extends React.Component {
   public static navigationOptions = { title: 'mypage' };
