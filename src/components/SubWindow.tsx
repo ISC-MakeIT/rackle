@@ -50,6 +50,7 @@ const style = EStyleSheet.create({
     top: 20,
     elevation: 8,
     backgroundColor: 'skyblue',
+    borderRadius: 100,
   },
   touchContainer: {
     width: 150,

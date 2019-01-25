@@ -107,6 +107,6 @@ export default class MapViewComponent extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
-    backfaceVisibility: 'hidden',
+    borderRadius: 70,
   },
 });
