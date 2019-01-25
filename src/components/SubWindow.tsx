@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity} from 'react-native';
 import MapViewComponent from './mapComponents/MapViewComponent';
 import { GuideLine, Region } from 'src/domains/map';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Color from '../constants/Colors';
+import MovieNavigateComponent from './movieComponents/MovieNavigateComponent';
+
 
 interface Props {
   indoorLevel: string;
@@ -12,49 +16,48 @@ interface Props {
   changeIndoorLevel: any;
 }
 
-export default class SubWindow extends React.Component<Props, {}> {
-  public render() {
-    return (
-      <View style={style.container}>
-        {this.props.currentScreen === 'video' ? this.mapScreen() : this.videoScreen()}
-      </View>
-    );
-  }
-
-  private mapScreen() {
-    return (
+const SubWindow: React.SFC<Props> = props => {
+  const mapScreen = () => (
       <MapViewComponent
-        indoorLevel={this.props.indoorLevel}
-        initializedLocation={this.props.initializedLocation}
-        guideLines={this.props.guideLines}
+        indoorLevel={props.indoorLevel}
+        initializedLocation={props.initializedLocation}
+        guideLines={props.guideLines}
         guideLinesColor={'#ddd'}
-        changeIndoorLevel={this.props.changeIndoorLevel}
-        screenChange={this.props.screenChange}
-        currentScreen={this.props.currentScreen}
+        changeIndoorLevel={props.changeIndoorLevel}
+        screenChange={props.screenChange}
+        currentScreen={props.currentScreen}
       />
-    );
-  }
+  );
 
-  private videoScreen() {
-    return (
-      <TouchableOpacity
-        onPress={() =>this.props.screenChange(this.screenChangeCheck())}
-        style={style.container}
-      >
-      </TouchableOpacity>
-    );
-  }
+  const videoScreen = () => ( <MovieNavigateComponent /> );
 
-  private screenChangeCheck () {
-    return this.props.currentScreen === 'video' ? 'map' : 'video';
-  }
-}
+  return (
+    <View style={style.container}>
+      {props.currentScreen === 'video' ? mapScreen() : videoScreen()}
+    </View>
+  );
+};
 
-const style = StyleSheet.create({
+EStyleSheet.build({});
+const style = EStyleSheet.create({
   container: {
+    width: '8rem',
+    height: '8rem',
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 6,
+    top: 20,
+    elevation: 8,
+    backgroundColor: 'skyblue',
+  },
+  touchContainer: {
     width: 150,
     height: 150,
+    zIndex: 50,
     position: 'absolute',
-    backgroundColor: '#000000',
+    backgroundColor: 'red',
   },
 });
+
+export default SubWindow;

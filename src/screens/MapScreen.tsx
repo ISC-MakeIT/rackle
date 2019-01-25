@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import SubWindow from '../components/SubWindow';
-import { MainWindow } from '../components/MainWindow';
+import MainWindow from '../components/MainWindow';
 import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
 
 interface State {
@@ -192,7 +192,6 @@ export default class MapScreen extends React.Component<{}, State> {
             toiletMarkers={this.state.toiletMarkers}
             elevatorMarkers={this.state.elevatorMarkers}
             guideLines={this.state.guideLines}
-            screenChange={this.screenChange.bind(this)}
             currentScreen={this.state.currentScreen}
             changeIndoorLevel={this.changeIndoorLevel.bind(this)}
           />

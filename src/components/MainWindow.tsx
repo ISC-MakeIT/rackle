@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Color from '../constants/Colors';
 import MapViewComponent from './mapComponents/MapViewComponent';
+import MovieNavigateComponent from './movieComponents/MovieNavigateComponent';
 import { MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, Region } from '../domains/map';
 
 interface Props {
@@ -15,7 +18,7 @@ interface Props {
   changeIndoorLevel: any;
 }
 
-export const MainWindow: React.SFC<Props> = props => {
+const MainWindow: React.SFC<Props> = props => {
   const mapScreen = () => (
     <MapViewComponent
       indoorLevel={props.indoorLevel}
@@ -28,7 +31,7 @@ export const MainWindow: React.SFC<Props> = props => {
     />
   );
 
-  const videoScreen = () => (<View style={style.container} />);
+  const videoScreen = () => (<MovieNavigateComponent />);
 
   return (
     <View style={style.container}>
@@ -37,13 +40,16 @@ export const MainWindow: React.SFC<Props> = props => {
   );
 };
 
+EStyleSheet.build({});
 const {width, height} = Dimensions.get('screen');
 
-const style = StyleSheet.create({
+const style = EStyleSheet.create({
   container: {
     width: width,
     height: height,
     position: 'absolute',
-    backgroundColor: '#000000',
+    backgroundColor: 'green',
   },
 });
+
+export default MainWindow;
