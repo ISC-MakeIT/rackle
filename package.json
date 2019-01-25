@@ -5,9 +5,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll",
-    "tslint": "./node_modules/.bin/tslint ./src/**/*.ts*",
-    "tslint-fix": "./node_modules/.bin/tslint ./src/**/*.ts* --fix"
+    "lint": "./node_modules/.bin/tslint ./src/**/*.ts*",
+    "lint:fix": "./node_modules/.bin/tslint ./src/**/*.ts* --fix"
   },
   "jest": {
     "preset": "jest-expo"
