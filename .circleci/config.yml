@@ -30,4 +30,4 @@ jobs:
           paths:
           - ~/workspace/node_modules
 
-      - run: yarn tslint
+      - run: yarn lint
