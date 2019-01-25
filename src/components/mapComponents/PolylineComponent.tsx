@@ -1,32 +1,25 @@
 import * as React from 'react';
 import { Polyline } from 'react-native-maps';
 import Colors from '../../constants/Colors';
+import { GuideLine } from '../../domains/map';
 
 interface Props {
   indoorLevel: string;
-  guideLines:guideLines[];
+  guideLines: GuideLine[];
   guideLinesColor?: string;
 }
 
 interface State {
   indoorLevel: string;
-  guideLines: guideLines[];
+  guideLines: GuideLine[];
 }
 
-interface guideLines {
-  floor: string;
-    latitude: number;
-    longitude: number;
-}
 
 export default class PolylineComponent extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      indoorLevel: this.props.indoorLevel,
-      guideLines: this.props.guideLines,
-    };
-  }
+  readonly state = {
+    indoorLevel: this.props.indoorLevel,
+    guideLines: this.props.guideLines,
+  };
 
   public componentWillReceiveProps(nextProps: Props) {
     this.setState({

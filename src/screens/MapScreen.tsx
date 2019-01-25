@@ -1,60 +1,25 @@
 import * as React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import SubWindow from '../components/SubWindow';
-import MainWindow from '../components/MainWindow';
+import { MainWindow } from '../components/MainWindow';
+import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
 
 interface State {
   indoorLevel: string;
   currentScreen: 'video' | 'map';
-  initializedLocation: InitializedLocation;
-  movieMarkers?: MovieMarkers[];
+  initializedLocation: Region;
+  movieMarkers?: MovieMarker[];
   toiletMarkers?: ToiletMarker[];
   elevatorMarkers?: ElevatorMarker[];
-  guideLines: guideLines[];
+  guideLines: GuideLine[];
 }
-
-interface MovieMarkers {
-  floor: string;
-  movieId: number;
-  latitude: number;
-  longitude: number;
-}
-
-interface ToiletMarker {
-  floor: string;
-  latitude: number;
-  longitude: number;
-}
-
-interface ElevatorMarker {
-  floor: string;
-  capacity: 6 | 12;
-  latitude: number;
-  longitude: number;
-}
-
-interface InitializedLocation {
-  latitude: number;
-  longitude: number;
-  latitudeDelta: number;
-  longitudeDelta: number;
-}
-
-interface guideLines {
-    floor: string;
-    latitude: number;
-    longitude: number;
-  }
-
 
 export default class MapScreen extends React.Component<{}, State> {
   public static navigationOptions = {
-    headerStyle: {
-      display: 'none',
-    },
+    headerStyle: { display: 'none' },
   };
 
-  constructor(props) {
+  constructor(props: {}) {
     super(props);
     this.state = {
       indoorLevel: '1',
@@ -247,17 +212,13 @@ export default class MapScreen extends React.Component<{}, State> {
   }
 
   private screenChange(currentScreen: 'video' | 'map') {
-    this.setState({
-      currentScreen: currentScreen,
-    });
+    this.setState({ currentScreen: currentScreen });
   }
 
   private changeIndoorLevel(indoorLevel: string) {
     const validatedIndoorLevel = indoorLevel.replace(/階/, '');
     const currentFloor = validatedIndoorLevel.substr(-2);
-    this.setState({
-      indoorLevel: currentFloor,
-    });
+    this.setState({ indoorLevel: currentFloor });
   }
 }
 
