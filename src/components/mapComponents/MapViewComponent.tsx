@@ -14,6 +14,9 @@ interface Props {
   elevatorMarkers?: ElevatorMarker[];
   guideLines?: GuideLine[];
   guideLinesColor?: string;
+  changeIndoorLevel: any;
+  screenChange?: any;
+  currentScreen?: 'video' | 'map';
 }
 
 interface State {
@@ -40,6 +43,29 @@ export default class MapViewComponent extends React.Component<Props, State> {
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} /> : null;
     const subColorPolyline = this.props.guideLinesColor && this.props.guideLines ?
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
+    // return (
+    //   <MapView
+    //     customMapStyle= {CustomMap.mapStyle}
+    //     showsIndoorLevelPicker={!this.props.guideLinesColor ? true : false}
+    //     showsTraffic={false}
+    //     showsBuildings={false}
+    //     provider={PROVIDER_GOOGLE}
+    //     style={styles.map}
+    //     region={this.state.initializedLocation}
+    //     onRegionChange={(e: Region) => this.locationChange(e)}
+    //     minZoomLevel={this.props.guideLinesColor ? 17 : 18}
+    //     // onPress={(e: any) => console.log (e.nativeEvent.coordinate)} // debugのため
+    //     // onPress={this.props.guideLinesColor ? () => this.props.screenChange(this.screenChangeCheck()) : undefined}
+    //     onIndoorLevelActivated={(e: any) => { this.props.changeIndoorLevel(e.nativeEvent.IndoorLevel.name); }}
+    //     loadingEnabled={true}
+    //   >
+    //     {movieMarker}
+    //     {toiletMarker}
+    //     {elevatorMarker}
+    //     {subColorPolyline}
+    //     {mainColorPolyline}
+    //   </MapView>
+    // );
     return (
       <MapView
         customMapStyle= {CustomMap.mapStyle}
@@ -52,9 +78,11 @@ export default class MapViewComponent extends React.Component<Props, State> {
         onRegionChange={(e: Region) => this.locationChange(e)}
         minZoomLevel={this.props.guideLinesColor ? 17 : 18}
         // onPress={(e: any) => console.log (e.nativeEvent.coordinate)} // debugのため
-        // onPress={this.props.guideLinesColor ? () => this.props.screenChange(this.screenChangeCheck()) : undefined}
+        onPress={this.props.guideLinesColor ? () => this.props.screenChange(this.screenChangeCheck()) : undefined}
         onIndoorLevelActivated={(e: any) => { this.props.changeIndoorLevel(e.nativeEvent.IndoorLevel.name); }}
         loadingEnabled={true}
+        scrollEnabled={!this.props.guideLinesColor ? true : false}
+        rotateEnabled={!this.props.guideLinesColor ? true : false}
       >
         {movieMarker}
         {toiletMarker}

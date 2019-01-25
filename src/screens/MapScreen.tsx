@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import SubWindow from '../components/SubWindow';
-import { MainWindow } from '../components/MainWindow';
+import MainWindow from '../components/MainWindow';
 import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
 
 interface State {

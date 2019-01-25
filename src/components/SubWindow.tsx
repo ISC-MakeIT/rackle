@@ -16,44 +16,33 @@ interface Props {
   changeIndoorLevel: any;
 }
 
-export default class SubWindow extends React.Component<Props, {}> {
-  public render() {
-    return (
-      <View style={style.container}>
-        {this.props.currentScreen === 'video' ? this.mapScreen() : this.videoScreen()}
-      </View>
-    );
-  }
+const SubWindow: React.SFC<Props> = props => {
+  const mapScreen = () => (
+      <MapViewComponent
+        indoorLevel={props.indoorLevel}
+        initializedLocation={props.initializedLocation}
+        guideLines={props.guideLines}
+        guideLinesColor={'#ddd'}
+        changeIndoorLevel={props.changeIndoorLevel}
+        screenChange={props.screenChange}
+        currentScreen={props.currentScreen}
+      />
+  );
 
-  
-  private mapScreen() {
-    return (
-        <MapViewComponent
-          indoorLevel={this.props.indoorLevel}
-          initializedLocation={this.props.initializedLocation}
-          guideLines={this.props.guideLines}
-          guideLinesColor={'#ddd'}
-        />
-    );
-  }
+  const videoScreen = () => ( <MovieNavigateComponent /> );
 
-  private videoScreen() {
-    return (
-        <MovieNavigateComponent />
-    );
-  }
-
-  private screenChangeCheck () {
-    return this.props.currentScreen === 'video' ? 'map' : 'video';
-  }
+  return (
+    <View style={style.container}>
+      {props.currentScreen === 'video' ? mapScreen() : videoScreen()}
+    </View>
+  );
 }
 
 EStyleSheet.build({});
 const style = EStyleSheet.create({
-  window_circle: {
+  container: {
     width: '8rem',
     height: '8rem',
-    borderRadius: '4rem',
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
@@ -70,3 +59,5 @@ const style = EStyleSheet.create({
     backgroundColor: 'red',
   },
 });
+
+export default SubWindow;
