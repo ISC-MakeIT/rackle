@@ -1,8 +1,10 @@
 import * as React from 'react';
-import {Dimensions, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import ExtButton from '../components/screenComponents/ExtButton';
 
 interface Props { navigation: any; }
 
@@ -16,6 +18,7 @@ export default class HomeScreen extends React.Component<Props, State> {
     title: 'rackle',
     headerStyle: {
       backgroundColor: '#63BF8E',
+      borderBottomWidth: 0,
     },
     headerTitleStyle: {
       color: '#ffffff',
@@ -41,14 +44,15 @@ export default class HomeScreen extends React.Component<Props, State> {
 
     return (
       <View style={styles.container}>
+      <ScrollView>
         <LinearGradient
-          colors={['rgba(99, 191, 142, 0.2)', '#F8F7F4', 'white']}
+          colors={[Color.mainColor, Color.subColorOffWhite, Color.subColorOffWhite]}
           style={{
             position: 'absolute',
             left: 0,
             right: 0,
             top: 0,
-            height: height,
+            minHeight: height,
           }}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
@@ -60,7 +64,7 @@ export default class HomeScreen extends React.Component<Props, State> {
         </View>
 
         <View style={containerStyles.searchFormContainer}>
-          <View>
+          <View style={containerStyles.inputSetContainer}>
             <View style={containerStyles.inputContainer}>
               <View style={containerStyles.selectContainer} >
                 <RNPickerSelect
@@ -127,13 +131,12 @@ export default class HomeScreen extends React.Component<Props, State> {
             <Text>■</Text>
           </View>
         </View>
-
-        <TouchableOpacity
-          style={rootButtonStyle.execBtn}
-          onPress={() => this.props.navigation.navigate('Guide')}
-        >
-          <Text style={rootButtonText.execText}>案内開始</Text>
-        </TouchableOpacity>
+          <ExtButton 
+            buttonText={'案内開始'}
+            navigate={this.props.navigation.navigate}
+            pageName={'Guide'}
+          />
+        </ScrollView>
       </View>
     );
   }
@@ -158,6 +161,8 @@ export default class HomeScreen extends React.Component<Props, State> {
   }
 }
 
+EStyleSheet.build();
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Color.mainColor,
@@ -166,19 +171,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const titleContainerStyle = StyleSheet.create( {
+const titleContainerStyle = EStyleSheet.create( {
   appTitleContainer: {
-    lineHeight: 20,
-    marginTop: 40,
-    marginBottom: 40,
+    lineHeight: '1.5rem',
+    marginTop: '3rem',
+    marginBottom: '3rem',
     marginLeft: 'auto',
     marginRight: 'auto',
     textAlign: 'center',
-    width: 200,
+    width: '100%',
   },
   appName: {
     color: 'white',
-    fontSize: 35,
+    fontSize: '2.2rem',
     textAlign: 'center',
     shadowColor: '#ffffff',
     shadowOffset: {width: 0, height: 0},
@@ -187,8 +192,8 @@ const titleContainerStyle = StyleSheet.create( {
   },
   appNameKana: {
     color: 'white',
-    fontSize: 20,
-    marginTop: 10,
+    fontSize: '1.3rem',
+    marginTop: '0.4rem',
     textAlign: 'center',
     shadowColor: '#ffffff',
     shadowOffset: {width: 0, height: 0},
@@ -198,38 +203,40 @@ const titleContainerStyle = StyleSheet.create( {
   },
 });
 
-const containerStyles = StyleSheet.create({
+const containerStyles = EStyleSheet.create({
   inputContainer: {
-    width:355,
     alignItems: 'center',
     justifyContent: 'center',
   },
   selectContainer: {
-    marginBottom: 10,
+    marginBottom: '0.5rem',
   },
   searchedListContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 30,
+    marginBottom: '1.8rem',
   },
   searchFormContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
+  inputSetContainer: {
+    width: '85%',
+  },
 });
 
-const rootSelectStyle = StyleSheet.create({
+const rootSelectStyle = EStyleSheet.create({
   titleLabelHere: {
     backgroundColor: Color.subColorRed,
     position: 'absolute',
-    width: 38,
-    height: 38,
+    width: '2.35rem',
+    height: '2.35rem',
     borderRadius: 50,
-    marginTop: 4,
-    marginLeft: 4,
+    marginTop: '0.24rem',
+    marginLeft: '0.26rem',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -237,11 +244,11 @@ const rootSelectStyle = StyleSheet.create({
   titleLabelDestination: {
     backgroundColor: Color.mainColor,
     position: 'absolute',
-    width: 38,
-    height: 38,
+    width: '2.35rem',
+    height: '2.35rem',
     borderRadius: 50,
-    marginTop: 4,
-    marginLeft: 4,
+    marginTop: '0.24rem',
+    marginLeft: '0.26rem',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -259,28 +266,28 @@ const rootTextStyle = StyleSheet.create({
   },
 });
 
-const rootButtonStyle = StyleSheet.create({
+const rootButtonStyle = EStyleSheet.create({
   searchedList: {
-    width: 150,
-    height: 44,
+    width: '43%',
+    height: '3rem',
     borderWidth: 2,
     borderColor: Color.mainColor,
-    borderRadius: 5,
+    borderRadius: '0.3rem',
     backgroundColor: Color.white,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 3,
-    marginBottom: 3,
-    marginLeft: 3,
-    marginRight: 3,
+    marginTop: '0.2rem',
+    marginBottom: '0.2rem',
+    marginLeft: '0.2rem',
+    marginRight: '0.2rem',
   },
   active: {
     backgroundColor: Color.mainColor,
   },
   execBtn: {
-    width: 300,
-    height: 52,
+    width: '80%',
+    height: '9%',
     backgroundColor: Color.mainColor,
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -288,17 +295,18 @@ const rootButtonStyle = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: '4.5rem',
   },
   switchButton: {
-    width: 20,
-    height: 20,
+    width: '7%',
+    height: '7%',
     backgroundColor: Color.mainColor,
   },
 });
 
-const rootButtonText = StyleSheet.create({
+const rootButtonText = EStyleSheet.create({
   searchedText: {
-    fontSize: 19,
+    fontSize: '1.2rem',
     fontWeight: '700',
     color: Color.mainColor,
   },
@@ -306,40 +314,40 @@ const rootButtonText = StyleSheet.create({
     color: Color.white,
   },
   execText: {
-    fontSize: 25,
+    fontSize: '1.5rem',
     fontWeight: '700',
     color: Color.white,
-    letterSpacing: 2,
+    letterSpacing: '0.2rem',
   },
 });
 
-const inputPickerStyle = StyleSheet.create({
+const inputPickerStyle = EStyleSheet.create({
   // https://snack.expo.io/HyOOnZymN
   inputIOS: {
-    fontSize: 16,
-    paddingTop: 13,
+    fontSize: '1.1rem',
+    paddingTop: '0.7rem',
     paddingHorizontal: 10,
-    paddingBottom: 12,
+    paddingBottom: '0.7rem',
     borderWidth: 1,
     borderColor: Color.subColorGray,
     borderRadius: 50,
     backgroundColor: 'white',
     color: 'black',
-    minWidth: 330,
+    minWidth: '93%',
     position: 'relative',
     paddingLeft: 50,
   },
   inputAndroid: {
-    fontSize: 16,
-    paddingTop: 13,
+    fontSize: '1rem',
+    paddingTop: '0.8rem',
     paddingHorizontal: 10,
-    paddingBottom: 12,
+    paddingBottom: '0.7rem',
     borderWidth: 1,
     borderColor: Color.subColorGray,
     borderRadius: 50,
     backgroundColor: 'white',
     color: 'black',
-    minWidth: 330,
+    minWidth: '93%',
     position: 'relative',
     paddingLeft: 50,
   },

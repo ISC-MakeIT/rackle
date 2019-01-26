@@ -1,0 +1,51 @@
+import * as React from 'react';
+import {Text, TouchableOpacity} from 'react-native';
+import Color from '../../constants/Colors';
+import EStyleSheet from 'react-native-extended-stylesheet';
+
+interface Props {
+  navigate: any;
+  buttonText: string;
+  pageName: string;
+}
+
+export default class ExtButton extends React.Component<Props, {}> {
+    constructor(props: Props) {
+        super(props);
+    }
+
+    render() {
+        return (
+        <TouchableOpacity
+          style={rootButtonStyle.execBtn}
+          onPress={() => this.props.navigate(this.props.pageName)}
+        >
+            <Text style={rootButtonStyle.execText}>{this.props.buttonText}</Text>
+        </TouchableOpacity>
+        );
+    }
+}   
+
+EStyleSheet.build();
+
+const rootButtonStyle = EStyleSheet.create({
+    execBtn: {
+      width: '80%',
+      height: '9.5%',
+      backgroundColor: Color.mainColor,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      borderRadius: 50,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: '4.5rem',
+    },
+    execText: {
+      fontSize: '1.5rem',
+      fontWeight: '700',
+      color: Color.white,
+      letterSpacing: '0.2rem',
+    },
+  });
+  

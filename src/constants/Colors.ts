@@ -9,6 +9,7 @@ export default {
   subColorOffWhite: '#FAFAFA',
   subColorRed: '#DF5656',
   subColorGray: '#EBEBEB',
+  subColorIvory: '#F8F7F4',
   white: '#ffffff',
-  black: '#000000',
+  black: '#312D2D',
 };

@@ -76,3 +76,50 @@ const guideHeaderStyle = EStyleSheet.create({
 });
 
 export default NavigationPlate;
+
+// FIXME css GuidePlateでつかえそう // BRANCH='user_page_screen'
+// const guideHeaderStyle = EStyleSheet.create({
+//   container: {
+//     flex: 1,
+//     flexDirection: 'row',
+//     height: 30,
+//     marginTop: getStatusBarHeight(),
+//     justifyContent: 'flex-start',
+//     backgroundColor: Color.black,
+//   },
+//   leftContainer: {
+//     flex: 1,
+//     flexDirection: 'row',
+//     height: 30,
+//   },
+//   stationName: {
+//     marginHorizontal: 10,
+//     color: 'white',
+//     fontSize: '1rem',
+//     lineHeight: 30,
+//   },
+//   gateNameContainer: {
+//     backgroundColor: 'white',
+//     height: 20,
+//     paddingLeft: 10,
+//     paddingRight: 10,
+//     marginTop: 5,
+//     borderRadius: 50,
+//     marginHorizontal: 5,
+//   },
+//   gateName: {
+//     lineHeight: 20,
+//     fontSize: '0.7rem',
+//   },
+//   routeContainer: {
+//     flex: 1,
+//     flexDirection: 'row',
+//     justifyContent: 'flex-start',
+//   },
+//   routeOptionText: {
+//     fontSize: '0.7rem',
+//     color: Color.subColorRed,
+//     lineHeight: 30,
+//     paddingRight: 0.5,
+//   },
+// });

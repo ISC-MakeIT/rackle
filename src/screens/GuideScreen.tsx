@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { DummyData } from '../components/mapComponents/DummyData';
 import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
@@ -57,7 +57,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     }
   }
 
-  public render() {
+  public render () {
     // NITS もう少し厳密に判断した方がいい説 :thiking:
     if (this.state.currentScreen == undefined) return null; // TODO loading animation
     if ((this.state.indoorLevel !== undefined) && (this.state.movieId !== undefined)) return null;
@@ -67,37 +67,37 @@ export default class GuideScreen extends React.Component<Props, State> {
       toiletMarkers, elevatorMarkers, guideLines,
     } = this.state;
 
-    return(
-      <View style={guideStyle.content_wrap}>
-        {
-          currentScreen === 'map' ? (
-            <MapViewComponent
-              indoorLevel={indoorLevel}
-              initializedLocation={initializedLocation!}
-              movieMarkers={movieMarkers}
-              toiletMarkers={toiletMarkers}
-              elevatorMarkers={elevatorMarkers}
-              guideLines={guideLines}
-              changeIndoorLevel={this.changeIndoorLevel}
-            />
-          ) : <MovieNavigateComponent />
-        }
+    return (
+      <View style={styles.content_wrap}>
+         {
+           currentScreen === 'map' ? (
+             <MapViewComponent
+               indoorLevel={indoorLevel}
+               initializedLocation={initializedLocation!}
+               movieMarkers={movieMarkers}
+               toiletMarkers={toiletMarkers}
+               elevatorMarkers={elevatorMarkers}
+               guideLines={guideLines}
+               changeIndoorLevel={this.changeIndoorLevel}
+             />
+           ) : <MovieNavigateComponent />
+         }
 
-        <TouchableOpacity style={guideStyle.subWindowCircle} >
-          {currentScreen === 'map' ? (
-            <SubMovieComponent onChangeActiveScreen={this.changeActiveScreen} />
-          ) : (
-            <MapViewComponent
-            indoorLevel={indoorLevel}
-            initializedLocation={initializedLocation!}
-            guideLines={guideLines}
-            guideLinesColor={'#ddd'}
-            currentScreen={currentScreen}
-            screenChange={this.changeActiveScreen}
-            changeIndoorLevel={this.changeIndoorLevel}
-          />
-          )}
-        </TouchableOpacity>
+         {
+           currentScreen === 'map' ? (
+             <SubMovieComponent onChangeActiveScreen={this.changeActiveScreen} />
+           ) : (
+             <MapViewComponent
+               indoorLevel={indoorLevel}
+               initializedLocation={initializedLocation!}
+               guideLines={guideLines}
+               guideLinesColor={'#ddd'}
+               currentScreen={currentScreen}
+               screenChange={this.changeActiveScreen}
+               changeIndoorLevel={this.changeIndoorLevel}
+             />
+           )
+         }
       </View>
     );
   }
@@ -114,23 +114,12 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 }
 
-EStyleSheet.build({});
+EStyleSheet.build();
 
-const guideStyle = EStyleSheet.create({
+const styles = EStyleSheet.create({
   content_wrap: {
     flex: 1,
     top: 0,
     position: 'relative',
-  },
-  subWindowCircle: {
-    width: '8rem',
-    height: '8rem',
-    borderRadius: '4rem',
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 6,
-    top: 20,
-    elevation: 8,
   },
 });
