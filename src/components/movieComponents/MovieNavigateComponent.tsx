@@ -21,6 +21,7 @@ interface Props {}
 interface State {
   visibleGuideHeader: boolean;
   paused : boolean;
+  positionMillis: number;
   durationMillis : number;
   progress: number;
   thumbnails: string[];
@@ -34,8 +35,10 @@ export default class MovieNavigateComponent extends  React.Component<Props, Stat
     this.state = {
       visibleGuideHeader: true,
       paused: true,
+      positionMillis: 0,
       durationMillis: 0,
       progress: 0,
+      // dummy data
       thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
     };
   }
@@ -113,6 +116,7 @@ export default class MovieNavigateComponent extends  React.Component<Props, Stat
               isMuted={false}
               resizeMode={Video.RESIZE_MODE_COVER}
               style={styles.content__movie}
+              positionMillis={this.state.progress}
               paused={this.state.paused}
               progressUpdateIntervalMillis={1000 / 30} // 30fps 
               onLoad={this.onLoadVideo.bind(this)}

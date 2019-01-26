@@ -13,21 +13,12 @@ import ProgressBar from 'react-native-progress/Bar';
 interface Props {
   paused : boolean;
   progress: number;
-  pressPlayPause: Function;
-}
-
-const pressPlayPause = props => {
-  this.setState({ paused: !this.state.paused });
-  if (this.state.paused) {
-    this.player.playAsync();
-  }else{
-    this.player.pauseAsync();
-  }
+  pressPlayPause: () => void;
 }
 
 const ControlBar: React.FC<Props> = props => (
   <View style={style.controls}>
-    <TouchableOpacity onPress={pressPlayPause}>
+    <TouchableOpacity onPress={props.pressPlayPause}>
       <Ionicons name={props.paused ? 'ios-play' : 'ios-pause' } size={40} color='#FFF' />
     </TouchableOpacity>
     <TouchableWithoutFeedback>
