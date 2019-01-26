@@ -50,7 +50,7 @@ export default createStackNavigator({
   Main: { screen: tabNavigator },
   Guide: { screen: GuideStack },
 }, {
-    initialRouteName: 'Main',
+    initialRouteName: 'Guide',
     headerMode: 'none',
   }
 );

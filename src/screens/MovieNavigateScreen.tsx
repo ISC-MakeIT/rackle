@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import {
   Video,
-  PlaybackStatus
+  PlaybackStatus,
+  Asset,
 } from 'expo';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Color from '../constants/Colors';
@@ -18,6 +19,8 @@ import { Ionicons } from '@expo/vector-icons';
 import ProgressBar from 'react-native-progress/Bar';
 
 const dummyThumbnails = ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'];
+
+interface Props {}
 
 interface State {
   visibleGuideHeader: boolean;
@@ -29,13 +32,7 @@ interface State {
 export default class MovieNavigate extends  React.Component<Props, State> {
   private player : Video;
 
-  public static navigationOptions = {
-    headerStyle: {
-      display: 'none',
-    },
-  };
-
-  constructor(props: Object) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       visibleGuideHeader: true,
@@ -69,27 +66,27 @@ export default class MovieNavigate extends  React.Component<Props, State> {
     );
   }
 
+  private pressPlayPause = () => {
+    this.setState({ paused: !this.state.paused });
+    if (this.state.paused) {
+      this.player.playAsync();
+    }else{
+      this.player.pauseAsync();
+    }
+  }
+
   private controlBar = () => {
     return (
       <View style={controlBarStyle.controls}>
-        <TouchableOpacity
-          onPress={() => {
-            this.setState({ paused: !this.state.paused });
-            if (this.state.paused) {
-              this.player.playAsync();
-            }else{
-              this.player.pauseAsync();
-            }
-          }}
-        >
+        <TouchableOpacity onPress={this.pressPlayPause.bind(this)}>
           <Ionicons name={this.state.paused ? 'ios-play' : 'ios-pause' } size={40} color='#FFF' />             
         </TouchableOpacity>
         <TouchableWithoutFeedback>
           <ProgressBar
             progress={this.state.progress}
-            color={'#FFF'}
+            color={Color.white}
             unfilledColor={'rgba(255, 255, 255, 0.5)'}
-            borderColor={'#FFF'}
+            borderColor={Color.white}
             height={16}
           />
         </TouchableWithoutFeedback>
@@ -100,28 +97,50 @@ export default class MovieNavigate extends  React.Component<Props, State> {
     );
   }
 
+  private thumbnailItem = ({item, index}) => {
+    return (
+      <TouchableOpacity>
+        <Image style={thumbnailsStyle.image} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
+      </TouchableOpacity>
+    );
+  }
+
+  private keyExtractor = (item: string, index: number) => index.toString();
+
   private thumbnailList = () => {
     return (
       <FlatList
         data={dummyThumbnails}
         horizontal={true}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <View style={index !== dummyThumbnails.length - 1 ? {paddingRight: 4}: {}}>
-            <TouchableOpacity>
-              <Image style={thumbnailsStyle.image} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
-            </TouchableOpacity>
-          </View>
-        )}
+        keyExtractor={this.keyExtractor.bind(this)}
+        renderItem={this.thumbnailItem.bind(this)}
         style={thumbnailsStyle.thumbnails}
       />
     );
   }
 
+  private onLoadVideo = (playbackStatus: PlaybackStatus) => this.setState({ durationMillis: playbackStatus.durationMillis });
+
+  private onPlaybackStatusUpdate = (playbackStatus: PlaybackStatus) => {
+    if (playbackStatus.didJustFinish) {
+      // 動画とシークバーの再初期化
+      this.setState({ paused: true });
+      this.player.setPositionAsync(0);
+      return;
+    }
+    const progress : number = playbackStatus.positionMillis / this.state.durationMillis;
+    if(progress){
+      this.setState({ progress });
+    }else if(progress === 0){
+      this.setState({ progress : 0 });
+    }
+  }
+
   private movieItem = () => {
     return(
       <Video
-        source={{ uri: 'https://haduki1208-app.firebaseapp.com/tatenaga_4_3.mp4' }}
+        // source={{ uri: 'https://haduki1208-app.firebaseapp.com/tatenaga_4_3.mp4' }}
+        source={{ uri: Asset.fromModule(require('../../assets/movie/kt01.mp4')).uri }}
         rate={1.0}
         volume={1.0}
         isMuted={false}
@@ -129,27 +148,14 @@ export default class MovieNavigate extends  React.Component<Props, State> {
         style={styles.content__movie}
         paused={this.state.paused}
         progressUpdateIntervalMillis={1000 / 30} // 30fps 
-        onLoad={(playbackStatus: PlaybackStatus) => {
-          this.setState({ durationMillis: playbackStatus.durationMillis });
-        }}
-        onPlaybackStatusUpdate={(playbackStatus: PlaybackStatus) => {
-          if (playbackStatus.didJustFinish) {
-            // 動画とシークバーの再初期化
-            this.setState({ paused: true });
-            this.player.setPositionAsync(0);
-            return;
-          }
-          const progress : number = playbackStatus.positionMillis / this.state.durationMillis;
-          if(progress){
-            this.setState({ progress });
-          }else if(progress === 0){
-            this.setState({ progress : 0 });
-          }
-        }}
+        onLoad={this.onLoadVideo.bind(this)}
+        onPlaybackStatusUpdate={this.onPlaybackStatusUpdate.bind(this)}
         ref={(ref: any) => { this.player = ref; }}
       />
     );
   }
+
+  private touchScreen = () => this.setState({ visibleGuideHeader : !this.state.visibleGuideHeader });
 
   public render() {
     return(
@@ -159,7 +165,7 @@ export default class MovieNavigate extends  React.Component<Props, State> {
         </TouchableOpacity>
         <TouchableOpacity style={styles.header__sub_window_circle} />
         <View style={styles.content__movie_wrap}>
-          <TouchableWithoutFeedback onPress={() => { this.setState({ visibleGuideHeader : !this.state.visibleGuideHeader }); }} style={styles.content__movie_wrap} >
+          <TouchableWithoutFeedback onPress={this.touchScreen.bind(this)} style={styles.content__movie_wrap} >
             {this.movieItem()}
           </TouchableWithoutFeedback>
         </View>
@@ -207,7 +213,7 @@ const styles = EStyleSheet.create({
     height: '100%', 
     width: '100%', 
     zIndex: -1, 
-    backgroundColor: 'blue',
+    backgroundColor: 'black',
   },
   content__movie: {
     flex: 1, 
