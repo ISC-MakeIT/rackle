@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import SubWindow from '../components/SubWindow';
-import MainWindow from '../components/MainWindow';
 import DummyData from '../components/mapComponents/DummyData';
 
 interface Props { navigation: any; }
@@ -25,24 +23,7 @@ export default class GuideScreen extends React.Component<Props, {}> {
   public render() {
     return(
       <View style={guideStyle.content_wrap}>
-        <MainWindow
-          initializedLocation={this.state.initializedLocation}
-          indoorLevel={this.state.indoorLevel}
-          movieMarkers={this.state.movieMarkers}
-          toiletMarkers={this.state.toiletMarkers}
-          elevatorMarkers={this.state.elevatorMarkers}
-          guideLines={this.state.guideLines}
-          currentScreen={this.state.currentScreen}
-          changeIndoorLevel={this.changeIndoorLevel.bind(this)}
-        />
         <TouchableOpacity style={guideStyle.subWindowCircle} >
-          <SubWindow
-            currentScreen={this.state.currentScreen}
-            indoorLevel={this.state.indoorLevel}
-            initializedLocation={this.state.initializedLocation}
-            guideLines={this.state.guideLines}
-            screenChange={this.screenChange.bind(this)}
-            changeIndoorLevel={this.changeIndoorLevel.bind(this)}
           />
         </TouchableOpacity>
       </View>
