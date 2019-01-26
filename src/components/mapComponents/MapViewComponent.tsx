@@ -16,8 +16,8 @@ interface Props {
   elevatorMarkers?: ElevatorMarker[];
   guideLines?: GuideLine[];
   guideLinesColor?: string;
-  changeIndoorLevel: any;
-  screenChange?: any;
+  changeIndoorLevel: (nextIndoorLevel: string) => void;
+  screenChange?: () => void;
   currentScreen?: ScreenNameType;
 }
 
