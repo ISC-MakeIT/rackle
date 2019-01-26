@@ -54,18 +54,6 @@ const styles = EStyleSheet.create({
     top: 0,
     position: 'relative',
   },
-  header__sub_window_circle: {
-    width: '8rem',
-    height: '8rem',
-    borderRadius: '4rem',
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 6,
-    top: 20,
-    elevation: 8,
-    backgroundColor: 'skyblue',
-  },
   header__controller_back_wrap: {
     width:'40%',
     height: '10%',
