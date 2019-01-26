@@ -15,9 +15,9 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Color from '../constants/Colors';
 import NavigationPlate from '../components/NavigationPlate';
 import { Ionicons } from '@expo/vector-icons';
-import ProgressBar from "react-native-progress/Bar";
+import ProgressBar from 'react-native-progress/Bar';
 
-const dummyThumbnails = ["OwSekWSe7NM", "OwSekWSe7NM", "OwSekWSe7NM", "OwSekWSe7NM", "OwSekWSe7NM"];
+const dummyThumbnails = ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'];
 
 interface State {
   visibleGuideHeader: boolean;
@@ -67,7 +67,7 @@ export default class MovieNavigate extends  React.Component<Props, State> {
         </View>
       </View>          
     );
-  };
+  }
 
   private controlBar = () => {
     return (
@@ -79,17 +79,17 @@ export default class MovieNavigate extends  React.Component<Props, State> {
               this.player.playAsync();
             }else{
               this.player.pauseAsync();
-            };
+            }
           }}
         >
-          <Ionicons name={this.state.paused ? "ios-play" : "ios-pause" } size={40} color="#FFF" />             
+          <Ionicons name={this.state.paused ? 'ios-play' : 'ios-pause' } size={40} color='#FFF' />             
         </TouchableOpacity>
         <TouchableWithoutFeedback>
           <ProgressBar
             progress={this.state.progress}
-            color={"#FFF"}
-            unfilledColor={"rgba(255, 255, 255, 0.5)"}
-            borderColor={"#FFF"}
+            color={'#FFF'}
+            unfilledColor={'rgba(255, 255, 255, 0.5)'}
+            borderColor={'#FFF'}
             height={16}
           />
         </TouchableWithoutFeedback>
@@ -146,7 +146,7 @@ export default class MovieNavigate extends  React.Component<Props, State> {
             this.setState({ progress : 0 });
           }
         }}
-        ref={(ref: any) => { this.player = ref }}
+        ref={(ref: any) => { this.player = ref; }}
       />
     );
   }
@@ -159,7 +159,7 @@ export default class MovieNavigate extends  React.Component<Props, State> {
         </TouchableOpacity>
         <TouchableOpacity style={styles.header__sub_window_circle} />
         <View style={styles.content__movie_wrap}>
-          <TouchableWithoutFeedback onPress={() => { this.setState({ visibleGuideHeader : !this.state.visibleGuideHeader }) }} style={styles.content__movie_wrap} >
+          <TouchableWithoutFeedback onPress={() => { this.setState({ visibleGuideHeader : !this.state.visibleGuideHeader }); }} style={styles.content__movie_wrap} >
             {this.movieItem()}
           </TouchableWithoutFeedback>
         </View>
@@ -240,32 +240,32 @@ const styles = EStyleSheet.create({
 
 const controlBarStyle = EStyleSheet.create({
   controls: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     height: 40,
     left: 0,
     right: 0,
     bottom: 90,
-    position: "absolute",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
+    position: 'absolute',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
   seekTime: {
-    color: Color.white
+    color: Color.white,
   },
 });
 
 const thumbnailsStyle = EStyleSheet.create({
   thumbnails: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     height: 90,
     left: 0,
     right: 0,
     bottom: 0,
-    position: "absolute",
+    position: 'absolute',
   },
   image: {
     width: 120,
-    height: 90
+    height: 90,
   },
 });
