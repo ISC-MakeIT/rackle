@@ -4,6 +4,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { DummyData } from '../components/mapComponents/DummyData';
 import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
+import SubMovieComponent from '../components/movieComponents/SubMovieComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 
 interface Props { navigation: any; }
@@ -84,7 +85,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
         <TouchableOpacity style={guideStyle.subWindowCircle} >
           {currentScreen === 'map' ? (
-            <MovieNavigateComponent />
+            <SubMovieComponent />
           ) : (
             <MapViewComponent
             indoorLevel={indoorLevel}
