@@ -11,7 +11,12 @@ interface Props {
   thumbnails: string[],
 }
 
-const thumbnailItem = ({item, index}) => {
+interface Item {
+  item: string;
+  index: number;
+}
+
+const renderItem = ({item, index} : Item) : JSX.Element => {
   return (
     <TouchableOpacity>
       <Image style={style.image} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
@@ -19,14 +24,14 @@ const thumbnailItem = ({item, index}) => {
   );
 }
 
-const keyExtractor = (item: string, index: number) => index.toString();
+const keyExtractor = (item: string, index: number) : string => index.toString();
 
 const ThumbnailList: React.FC<Props> = props => (
   <FlatList
     data={props.thumbnails}
     horizontal={true}
     keyExtractor={keyExtractor}
-    renderItem={thumbnailItem}
+    renderItem={renderItem}
     style={style.thumbnails}
   />
 );
