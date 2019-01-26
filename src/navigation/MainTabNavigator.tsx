@@ -4,13 +4,11 @@ import { createBottomTabNavigator, createStackNavigator, TabNavigator } from 're
 import TabBarIcon from '../components/TabBarIcon';
 import GuideScreen from '../screens/GuideScreen';
 import HomeScreen from '../screens/HomeScreen';
-import MapScreen from '../screens/MapScreen';
 import MovieNavigateScreen from '../screens/MovieNavigateScreen';
 import MyPageScreen from '../screens/MyPageScreen';
 
 const GuideStack = createStackNavigator({ Guide: { screen: GuideScreen } });
 const HomeStack = createStackNavigator({ Home: { screen: HomeScreen } });
-const MapStack = createStackNavigator({ Map: { screen: MapScreen } });
 const MovieNavigateStack = createStackNavigator({ MovieNavigate: { screen: MovieNavigateScreen } });
 const MyPageStack = createStackNavigator({ MyPage: { screen: MyPageScreen } });
 
@@ -31,13 +29,6 @@ MyPageStack.navigationOptions = {
   ),
 };
 
-MapStack.navigationOptions = {
-  tabBarLabel: 'Map',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'} />
-  ),
-};
-
 MovieNavigateStack.navigationOptions = {
   tabBarLabel: 'Movie',
   tabBarIcon: ({ focused }) => (
@@ -47,7 +38,7 @@ MovieNavigateStack.navigationOptions = {
 
 GuideStack.navigationOptions = { tabBarVisible: true };
 
-const tabNavigator = createBottomTabNavigator({ HomeStack, MyPageStack, MapStack, MovieNavigateStack }, {
+const tabNavigator = createBottomTabNavigator({ HomeStack, MyPageStack, MovieNavigateStack }, {
   tabBarOptions: {
     activeTintColor: '#312D2D',
     inactiveTintColor: '#312D2D',
@@ -59,7 +50,7 @@ export default createStackNavigator({
   Main: { screen: tabNavigator },
   Guide: { screen: GuideStack },
 }, {
-    initialRouteName: 'Main',
+    initialRouteName: 'Guide',
     headerMode: 'none',
   }
 );
