@@ -1,23 +1,23 @@
 import * as React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-const SubMovieComponent: React.FC<{}> = props => {
+interface Props { onChangeActiveScreen: () => void; }
+
+const SubMovieComponent: React.FC<Props> = props => {
   return (
-    <View style={[styles.container, styles.subWindowCircle]}>
-      <TouchableOpacity style={styles.thumbnailContainer}>
-        {/* TODO thumbnail */}
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity
+      style={styles.subWindowCircle}
+      onPress={props.onChangeActiveScreen}
+    >
+      {/* TODO thumbnail */}
+    </TouchableOpacity>
   );
 };
 
 const styles = EStyleSheet.create({
-  container: {
-    marginTop: 10,
-    width: 100,
-  },
   subWindowCircle: {
+    marginTop: 10,
     width: '8rem',
     height: '8rem',
     borderRadius: '4rem',
@@ -27,11 +27,8 @@ const styles = EStyleSheet.create({
     elevation: 8,
     backgroundColor: 'skyblue',
   },
-  thumbnailContainer: {
-    width: 10,
-    height: 10,
-  },
   thumnail: {
+    // TODO
     width: '8rem',
     height: '8rem',
   },

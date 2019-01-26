@@ -85,7 +85,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
         <TouchableOpacity style={guideStyle.subWindowCircle} >
           {currentScreen === 'map' ? (
-            <SubMovieComponent />
+            <SubMovieComponent onChangeActiveScreen={this.changeActiveScreen} />
           ) : (
             <MapViewComponent
             indoorLevel={indoorLevel}
