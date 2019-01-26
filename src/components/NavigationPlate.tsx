@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Dimensions, Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Color from '../constants/Colors';
 
@@ -9,32 +9,24 @@ interface Props {
   endGateName: string;
 }
 
-export default class NavigationPlate extends React.Component<Props, {}> {
-  constructor(props: Props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <View style={guideHeaderStyle.container}>
-        <View style={guideHeaderStyle.leftContainer}>
-          <Text style={guideHeaderStyle.stationName}>{this.props.stationName}</Text>
-          <View style={guideHeaderStyle.routeContainer}>
-            <TouchableOpacity style={guideHeaderStyle.gateNameContainer}>
-              <Text style={guideHeaderStyle.gateName}>{this.props.startGateName}</Text>
-            </TouchableOpacity>
-            <View style={guideHeaderStyle.routeOptions}>
-              <Text style={guideHeaderStyle.routeOptionText}>▶︎▶︎▶︎</Text>
-            </View>
-            <TouchableOpacity style={guideHeaderStyle.gateNameContainer}>
-              <Text style={guideHeaderStyle.gateName}>{this.props.endGateName}</Text>
-            </TouchableOpacity>
-          </View>
+const NavigationPlate: React.SFC<Props> = props => (
+  <View style={guideHeaderStyle.container}>
+    <View style={guideHeaderStyle.leftContainer}>
+      <Text style={guideHeaderStyle.stationName}>{props.stationName}</Text>
+      <View style={guideHeaderStyle.routeContainer}>
+        <TouchableOpacity style={guideHeaderStyle.gateNameContainer}>
+          <Text style={guideHeaderStyle.gateName}>{props.startGateName}</Text>
+        </TouchableOpacity>
+        <View style={guideHeaderStyle.routeOptions}>
+          <Text style={guideHeaderStyle.routeOptionText}>▶︎▶︎▶︎</Text>
+        </View>
+        <TouchableOpacity style={guideHeaderStyle.gateNameContainer}>
+          <Text style={guideHeaderStyle.gateName}>{props.endGateName}</Text>
+        </TouchableOpacity>
       </View>
     </View>
-    );
-  }
-}
+  </View>
+);
 
 EStyleSheet.build({});
 
@@ -82,3 +74,5 @@ const guideHeaderStyle = EStyleSheet.create({
     paddingRight: 0.5,
   },
 });
+
+export default NavigationPlate;

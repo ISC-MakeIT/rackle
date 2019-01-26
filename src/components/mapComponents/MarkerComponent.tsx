@@ -2,12 +2,18 @@ import * as React from 'react';
 import { Marker } from 'react-native-maps';
 import { MovieMarker, ToiletMarker, ElevatorMarker }from '../../domains/map';
 
+type IconNameType = 'default'
+  | 'toilet'
+  | 'movie'
+  | 'elevator6seater'
+  | 'elevator12seater'
+
 interface Props {
   indoorLevel: string;
   movieMarkers?: MovieMarker[];
   toiletMarkers?: ToiletMarker[];
   elevatorMarkers?: ElevatorMarker[];
-  iconName?: string;
+  iconName?: IconNameType;
   pinColor?: string;
 }
 
@@ -35,7 +41,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
     };
   }
 
-  public componentWillReceiveProps(nextProps: Props, nextState: State) {
+  public componentWillReceiveProps(nextProps: Props, _: State) {
     const currentMovieMarkers = nextProps.movieMarkers ?
       this.currentMovieMarkerGenerate(nextProps.indoorLevel, nextProps.movieMarkers) : undefined;
     const currentElevatorMarkers = nextProps.elevatorMarkers ?
@@ -58,49 +64,54 @@ export default class MarkerComponent extends React.Component<Props, State> {
   }
 
   private currentMovieMarkerGenerate(indoorLevel: string, movieMarkers: MovieMarker[]) {
-    const currentMovieMarkers = movieMarkers.filter(movieMarker => movieMarker.floor === indoorLevel);
-    return currentMovieMarkers;
+    return movieMarkers.filter(movieMarker => movieMarker.floor === indoorLevel);
   }
 
   private currentElevatorMarkerGenerate(indoorLevel: string, elevatorMarkers: ElevatorMarker[]) {
-    const currentElevatorMarkers = elevatorMarkers.filter(elevatorMarker => elevatorMarker.floor === indoorLevel);
-    return currentElevatorMarkers;
+    return elevatorMarkers.filter(elevatorMarker => elevatorMarker.floor === indoorLevel);
   }
 
   private currentToiletMarkerGenerate(indoorLevel: string, toiletMarkers: ToiletMarker[]) {
-    const currentToiletMarkers = toiletMarkers.filter(toiletMarker => toiletMarker.floor === indoorLevel);
-    return currentToiletMarkers;
+    return toiletMarkers.filter(toiletMarker => toiletMarker.floor === indoorLevel);
   }
 
-  private iconChange(iconName: string) {
-    if (iconName === 'toilet') return require('../../../assets/images/toilet.png');
-    if (iconName === 'movie') return require('../../../assets/images/map-pointer.png');
-    if (iconName === 'elevator6seater') return require('../../../assets/images/elevator.png');
-    if (iconName === 'elevator12seater') return require('../../../assets/images/big_elevator.png');
+  private iconChange(iconName: IconNameType) {
+    switch (iconName) {
+      case 'toilet':
+        return require('../../../assets/images/toilet.png');
+      case 'movie':
+        return require('../../../assets/images/map-pointer.png');
+      case 'elevator6seater':
+        return require('../../../assets/images/elevator.png'); // TODO 画像名を 'IconNameType'に合わせたい
+      case 'elevator12seater':
+        return require('../../../assets/images/big_elevator.png');
+      default:
+        return null
+    }
   }
 
   private createMovieMarkers(maxLength: number) {
-    if(this.state.currentMovieMarkers === undefined) return  null;
-    return this.state.currentMovieMarkers.map((movieMarker, index: number) => {
-      return (
-        <Marker
-          key={`movieMarker_${index}`}
-          coordinate={{latitude: movieMarker.latitude, longitude: movieMarker.longitude}}
-          image={maxLength === index || index === 0 ? this.iconChange('') : this.iconChange('movie')}
-        />
-      );
-    });
+    if(this.state.currentMovieMarkers === undefined) return null;
+
+    return this.state.currentMovieMarkers.map((movieMarker, index: number) =>  (
+      <Marker
+        key={`movieMarker_${index}`}
+        coordinate={{latitude: movieMarker.latitude, longitude: movieMarker.longitude}}
+        image={maxLength === index || index === 0 ? this.iconChange('default') : this.iconChange('movie')}
+      />
+    ));
   }
 
   private createElevatorMarkers() {
     if (this.state.currentElevatorMarkers === undefined) return null;
     return this.state.currentElevatorMarkers.map((elevatorMarker, index: number) => {
+      const icon: IconNameType = elevatorMarker.capacity === 6 ? 'elevator6seater' : 'elevator12seater' // TODO 流動性もたせたい
       return (
         <Marker
           key={`elevatorMarker_${index}`}
           coordinate={{latitude: elevatorMarker.latitude, longitude: elevatorMarker.longitude}}
           description={`最大${elevatorMarker.capacity}人まで乗れます`}
-          image={this.iconChange(`elevator${elevatorMarker.capacity}seater`)}
+          image={this.iconChange(icon)}
         />
       );
     });

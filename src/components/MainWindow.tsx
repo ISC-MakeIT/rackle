@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Color from '../constants/Colors';
 import MapViewComponent from './mapComponents/MapViewComponent';
 import MovieNavigateComponent from './movieComponents/MovieNavigateComponent';
 import { MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, Region } from '../domains/map';
@@ -19,23 +18,21 @@ interface Props {
 }
 
 const MainWindow: React.SFC<Props> = props => {
-  const mapScreen = () => (
-    <MapViewComponent
-      indoorLevel={props.indoorLevel}
-      initializedLocation={props.initializedLocation}
-      movieMarkers={props.movieMarkers}
-      toiletMarkers={props.toiletMarkers}
-      elevatorMarkers={props.elevatorMarkers}
-      guideLines={props.guideLines}
-      changeIndoorLevel={props.changeIndoorLevel}
-    />
-  );
-
-  const videoScreen = () => (<MovieNavigateComponent />);
-
   return (
     <View style={style.container}>
-      {props.currentScreen === 'map' ? mapScreen() : videoScreen()}
+      {
+        props.currentScreen === 'map' ? (
+          <MapViewComponent
+            indoorLevel={props.indoorLevel}
+            initializedLocation={props.initializedLocation}
+            movieMarkers={props.movieMarkers}
+            toiletMarkers={props.toiletMarkers}
+            elevatorMarkers={props.elevatorMarkers}
+            guideLines={props.guideLines}
+            changeIndoorLevel={props.changeIndoorLevel}
+          />
+        ) : (<MovieNavigateComponent />)
+      }
     </View>
   );
 };

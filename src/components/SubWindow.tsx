@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { View, StyleSheet, TouchableOpacity} from 'react-native';
+import { View } from 'react-native';
 import MapViewComponent from './mapComponents/MapViewComponent';
 import { GuideLine, Region } from 'src/domains/map';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Color from '../constants/Colors';
 import MovieNavigateComponent from './movieComponents/MovieNavigateComponent';
 
 
@@ -16,27 +15,23 @@ interface Props {
   changeIndoorLevel: any;
 }
 
-const SubWindow: React.SFC<Props> = props => {
-  const mapScreen = () => (
-      <MapViewComponent
-        indoorLevel={props.indoorLevel}
-        initializedLocation={props.initializedLocation}
-        guideLines={props.guideLines}
-        guideLinesColor={'#ddd'}
-        changeIndoorLevel={props.changeIndoorLevel}
-        screenChange={props.screenChange}
-        currentScreen={props.currentScreen}
-      />
-  );
-
-  const videoScreen = () => ( <MovieNavigateComponent /> );
-
-  return (
-    <View style={style.container}>
-      {props.currentScreen === 'video' ? mapScreen() : videoScreen()}
-    </View>
-  );
-};
+const SubWindow: React.SFC<Props> = props => (
+  <View style={style.container}>
+    {
+      props.currentScreen === 'video' ? (
+        <MapViewComponent
+          indoorLevel={props.indoorLevel}
+          initializedLocation={props.initializedLocation}
+          guideLines={props.guideLines}
+          guideLinesColor={'#ddd'}
+          changeIndoorLevel={props.changeIndoorLevel}
+          screenChange={props.screenChange}
+          currentScreen={props.currentScreen}
+        />
+      ) : ( <MovieNavigateComponent />)
+    }
+  </View>
+);
 
 EStyleSheet.build({});
 const style = EStyleSheet.create({

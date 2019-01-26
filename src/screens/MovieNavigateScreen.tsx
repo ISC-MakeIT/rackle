@@ -51,7 +51,6 @@ export default class MovieNavigate extends  React.Component<Props, {}> {
 
 
 EStyleSheet.build({});
-const {width, height} = Dimensions.get('screen');
 
 const styles = EStyleSheet.create({
   content_wrap: {

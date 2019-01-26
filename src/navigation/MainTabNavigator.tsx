@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Platform } from 'react-native';
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
+import { createBottomTabNavigator, createStackNavigator, TabNavigator } from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
 import GuideScreen from '../screens/GuideScreen';
 import HomeScreen from '../screens/HomeScreen';
@@ -56,13 +56,8 @@ const tabNavigator = createBottomTabNavigator({ HomeStack, MyPageStack, MapStack
 });
 
 export default createStackNavigator({
-  // Main: { screen: tabNavigator },
-  Main: { screen: GuideStack },
-  // Main: { screen: MapStack },
-  // Main: { screen: MovieNavigateScreen },
+  Main: { screen: tabNavigator },
   Guide: { screen: GuideStack },
-  // Map: { screen: MapStack },
-  // MovieNavigate: { screen: MovieNavigateStack },
 }, {
     initialRouteName: 'Main',
     headerMode: 'none',

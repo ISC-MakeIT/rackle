@@ -1,15 +1,12 @@
 import * as React from 'react';
-import {Dimensions, Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import {Video } from 'expo';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Color from '../../constants/Colors';
 import NavigationPlate from '../../components/NavigationPlate';
 
-export default class MovieNavigateComponent extends  React.Component<Props, {}> {
+export default class MovieNavigateComponent extends  React.Component<{}, {}> {
   public static navigationOptions = {
-    headerStyle: {
-      display: 'none',
-    },
+    headerStyle: { display: 'none' },
   };
 
   private movieItem = () => {
@@ -34,7 +31,7 @@ export default class MovieNavigateComponent extends  React.Component<Props, {}> 
           <Text style={styles.header__controller_back_text}>＜案内終了</Text>
         </TouchableOpacity>
         <View style={styles.content__movie_wrap}>
-            {this.movieItem()}
+          {this.movieItem()}
         </View>
         <View style={styles.content__navi}>
           <NavigationPlate
@@ -50,7 +47,6 @@ export default class MovieNavigateComponent extends  React.Component<Props, {}> 
 
 
 EStyleSheet.build({});
-const {width, height} = Dimensions.get('screen');
 
 const styles = EStyleSheet.create({
   content_wrap: {
@@ -104,50 +100,5 @@ const styles = EStyleSheet.create({
     width: '100%',
     opacity: 0.5,
     backgroundColor: 'black',
-  },
-});
-
-const guideHeaderStyle = EStyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    height: 30,
-    justifyContent: 'flex-start',
-    backgroundColor: Color.black,
-  },
-  leftContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    height: 30,
-  },
-  stationName: {
-    marginHorizontal: 10,
-    color: 'white',
-    fontSize: '1rem',
-    lineHeight: 30,
-  },
-  gateNameContainer: {
-    backgroundColor: 'white',
-    height: 20,
-    paddingLeft: 10,
-    paddingRight: 10,
-    marginTop: 5,
-    borderRadius: 50,
-    marginHorizontal: 5,
-  },
-  gateName: {
-    lineHeight: 20,
-    fontSize: '0.7rem',
-  },
-  routeContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-  },
-  routeOptionText: {
-    fontSize: '0.7rem',
-    color: Color.subColorRed,
-    lineHeight: 30,
-    paddingRight: 0.5,
   },
 });
