@@ -9,7 +9,7 @@ interface Props {
   endGateName: string;
 }
 
-const NavigationPlate: React.SFC<Props> = props => (
+const NavigationPlate: React.FC<Props> = props => (
   <View style={guideHeaderStyle.container}>
     <View style={guideHeaderStyle.leftContainer}>
       <Text style={guideHeaderStyle.stationName}>{props.stationName}</Text>

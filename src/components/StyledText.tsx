@@ -6,7 +6,7 @@ interface Props {
   style: StyleProp<TextStyle>;
 }
 
-const MonoText: React.SFC<Props> = props => (
+const MonoText: React.FC<Props> = props => (
   <Text {...props} style={[props.style, { fontFamily: 'space-mono' }]} />
 );
 

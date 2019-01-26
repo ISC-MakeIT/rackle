@@ -7,7 +7,7 @@ interface Props {
   focused: boolean;
 }
 
-const TabBarIcon: React.SFC<Props> = props => (
+const TabBarIcon: React.FC<Props> = props => (
   <Ionicons
     name={props.name}
     size={26}
