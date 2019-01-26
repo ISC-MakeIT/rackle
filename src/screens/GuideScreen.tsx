@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity} from 'react-native';
+import { View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { DummyData } from '../components/mapComponents/DummyData';
 import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
@@ -26,6 +26,7 @@ export interface ActiveMapState extends BaseState{
 
 interface ActiveMovieState extends BaseState {
   movieId: string;
+  thumbnails: string[];
   // FIXME 必要なものがわからん
 }
 
@@ -53,7 +54,11 @@ export default class GuideScreen extends React.Component<Props, State> {
       });
     } else {
       // TODO set movie states...
-      this.setState({ currentScreen, movieId: 'tmpState' });
+      this.setState({
+        currentScreen,
+        movieId: 'tmpState', // tmp
+        thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
+      });
     }
   }
 
@@ -71,33 +76,23 @@ export default class GuideScreen extends React.Component<Props, State> {
       <View style={styles.content_wrap}>
          {
            currentScreen === 'map' ? (
-             <MapViewComponent
-               indoorLevel={indoorLevel}
-               initializedLocation={initializedLocation!}
-               movieMarkers={movieMarkers}
-               toiletMarkers={toiletMarkers}
-               elevatorMarkers={elevatorMarkers}
-               guideLines={guideLines}
-               changeIndoorLevel={this.changeIndoorLevel}
-             />
-           ) : <MovieNavigateComponent />
+             <>
+              <MapViewComponent
+                indoorLevel={indoorLevel}
+                initializedLocation={initializedLocation!}
+                movieMarkers={movieMarkers}
+                toiletMarkers={toiletMarkers}
+                elevatorMarkers={elevatorMarkers}
+                guideLines={guideLines}
+                changeIndoorLevel={this.changeIndoorLevel}
+              />
+              <SubMovieComponent onChangeActiveScreen={this.changeActiveScreen} />
+             </>
+          ) : ( <MovieNavigateComponent />)
          }
-
-         {
-           currentScreen === 'map' ? (
-             <SubMovieComponent onChangeActiveScreen={this.changeActiveScreen} />
-           ) : (
-             <MapViewComponent
-               indoorLevel={indoorLevel}
-               initializedLocation={initializedLocation!}
-               guideLines={guideLines}
-               guideLinesColor={'#ddd'}
-               currentScreen={currentScreen}
-               screenChange={this.changeActiveScreen}
-               changeIndoorLevel={this.changeIndoorLevel}
-             />
-           )
-         }
+        {/* TODO
+          MapComponentは常に表示して、ビデオを出し分けるなどしたい
+        */}
       </View>
     );
   }
@@ -121,5 +116,17 @@ const styles = EStyleSheet.create({
     flex: 1,
     top: 0,
     position: 'relative',
+  },
+  thumbnails: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    height: 90,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    position: 'absolute',
+  },
+  thumbnailImage: {
+    width: 120,
+    height: 90,
   },
 });
