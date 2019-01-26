@@ -6,12 +6,8 @@ interface Props {
   style: StyleProp<TextStyle>;
 }
 
-export class MonoText extends React.Component<Props, {}> {
-  constructor(props: Props) {
-    super(props);
-  }
+const MonoText: React.SFC<Props> = props => (
+  <Text {...props} style={[props.style, { fontFamily: 'space-mono' }]} />
+);
 
-  public render() {
-    return <Text {...this.props} style={[this.props.style, { fontFamily: 'space-mono' }]} />;
-  }
-}
+export default MonoText;

@@ -7,6 +7,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import ExtButton from '../components/screenComponents/ExtButton';
 
 interface Props { navigation: any; }
+
 interface State {
   selectedFromValue: number;
   selectedToValue: number;

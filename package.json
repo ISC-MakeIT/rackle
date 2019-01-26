@@ -5,9 +5,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll",
-    "tslint": "./node_modules/.bin/tslint ./src/**/*.ts*",
-    "tslint-fix": "./node_modules/.bin/tslint ./src/**/*.ts* --fix"
+    "lint": "./node_modules/.bin/tslint ./src/**/*.ts*",
+    "lint:fix": "./node_modules/.bin/tslint ./src/**/*.ts* --fix"
   },
   "jest": {
     "preset": "jest-expo"
@@ -22,6 +21,7 @@
     "react-native-extended-stylesheet": "^0.11.1",
     "react-native-icons": "^0.7.1",
     "react-native-picker-select": "^5.2.2",
+    "react-native-progress": "^3.5.0",
     "react-native-status-bar-height": "^2.2.0",
     "react-navigation": "^3.0.9",
     "tslib": "1.9.3",

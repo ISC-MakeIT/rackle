@@ -1,172 +1,85 @@
 import * as React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
-import Colors from '../../constants/Colors';
 import CustomMap from '../mapComponents/CustomMap';
+import { MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, Region} from '../../domains/map';
+
+type ScreenNameType = 'video' | 'map';
 
 interface Props {
   indoorLevel: string;
-  initializedLocation: InitializedLocation;
-  markers: [{
-    movieMarkers: MovieMarkers[],
-  }, {
-    publicFacilityMarkers: PublicFacilityMarkers[]
-  }];
-  guideLines: guideLines[];
+  initializedLocation: Region;
+  movieMarkers?: MovieMarker[];
+  toiletMarkers?: ToiletMarker[];
+  elevatorMarkers?: ElevatorMarker[];
+  guideLines?: GuideLine[];
+  guideLinesColor?: string;
+  changeIndoorLevel: (nextIndoorLevel: string) => void;
+  screenChange?: () => void;
+  currentScreen?: ScreenNameType;
 }
 
-interface State {
-  indoorLevel: string;
-  initializedLocation: InitializedLocation;
-  currentStateMarkers: {
-    movieMarkers: MovieMarkers[],
-    publicFacilityMarkers: PublicFacilityMarkers[],
-  };
-}
-
-interface Region {
-  latitude: number;
-  longitude: number;
-  latitudeDelta: number;
-  longitudeDelta: number;
-}
-
-interface MovieMarkers {
-  floor: string;
-  movieId: number;
-  latitude: number;
-  longitude: number;
-}
-
-interface PublicFacilityMarkers {
-  floor: string;
-  type: 'toilet' | 'elevator';
-  latitude: number;
-  longitude: number;
-}
-
-interface InitializedLocation {
-  latitude: number;
-  longitude: number;
-  latitudeDelta: number;
-  longitudeDelta: number;
-}
-
-interface guideLines {
-  floor: string;
-  lineLatLng: LatLng[];
-}
-
-interface LatLng {
-  latitude: number;
-  longitude: number;
-}
+interface State { initializedLocation: Region }
 
 export default class MapViewComponent extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      indoorLevel: this.props.indoorLevel,
-      initializedLocation: this.props.initializedLocation,
-      currentStateMarkers: this.currentStateMarkersGenerate(this.props.indoorLevel),
-    };
-  }
+  readonly state = { initializedLocation: this.props.initializedLocation };
 
-  public shouldComponentUpdate(nextProps: Props, nextState: State) {
-    return this.state.indoorLevel === nextState.indoorLevel ? false : true;
+  public shouldComponentUpdate(nextProps: Props, _: State) {
+    return this.props.indoorLevel !== nextProps.indoorLevel ? true : false;
   }
 
   public render() {
-    const movieMarkers = this.state.currentStateMarkers.movieMarkers;
-    const currentMovieMarkers = movieMarkers.map((point, index: number) => {
-      const latLng = {
-        latitude: point.latitude,
-        longitude: point.longitude,
-      };
-      return (
-        <MarkerComponent key={`movieMarker_${index}`} latLng={latLng} iconName={'floor'} pinColor={Colors.subColorRed} />
-      );
-    });
-
-    const publicFacilityMarkers = this.state.currentStateMarkers.publicFacilityMarkers;
-    const currentPublicFacilityMarkers = publicFacilityMarkers.map((point, index: number) => {
-      const latLng = {
-        latitude: point.latitude,
-        longitude: point.longitude,
-      };
-      return (
-        <MarkerComponent key={`publicFacilityMarker_${index}`} latLng={latLng} iconName={point.type} />
-      );
-    });
+    const movieMarker = this.props.movieMarkers ?
+      <MarkerComponent indoorLevel={this.props.indoorLevel} movieMarkers={this.props.movieMarkers} /> : null;
+    const toiletMarker = this.props.toiletMarkers ?
+      <MarkerComponent indoorLevel={this.props.indoorLevel} toiletMarkers={this.props.toiletMarkers} /> : null;
+    const elevatorMarker = this.props.elevatorMarkers ?
+      <MarkerComponent indoorLevel={this.props.indoorLevel} elevatorMarkers={this.props.elevatorMarkers} /> : null;
+    const mainColorPolyline = this.props.guideLines ?
+      <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} /> : null;
+    const subColorPolyline = this.props.guideLinesColor && this.props.guideLines ?
+      <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
 
     return (
-      <View style={styles.container}>
-        <MapView
-          customMapStyle= {CustomMap.mapStyle}
-          showsIndoorLevelPicker={true}
-          showsTraffic={false}
-          showsBuildings={false}
-          provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          region={this.state.initializedLocation}
-          onRegionChange={(e: Region) => this.locationChange(e)}
-          minZoomLevel={18}
-          onPress={(e: any) => console.log (e.nativeEvent.coordinate)} // debugのため
-          onIndoorLevelActivated={(e: any) => { this.changeIndoorLevel(e.nativeEvent.IndoorLevel.name); }}
-          loadingEnabled={true}
-        >
-          {currentMovieMarkers}
-          {currentPublicFacilityMarkers}
-          <PolylineComponent
-            indoorLevel={this.state.indoorLevel}
-            guideLines={this.props.guideLines}
-          />
-        </MapView>
-      </View>
+      <MapView
+        customMapStyle= {CustomMap.mapStyle}
+        showsIndoorLevelPicker={!this.props.guideLinesColor ? true : false}
+        showsTraffic={false}
+        showsBuildings={false}
+        provider={PROVIDER_GOOGLE}
+        style={styles.map}
+        region={this.state.initializedLocation}
+        onRegionChange={(e: Region) => this.locationChange(e)}
+        minZoomLevel={this.props.guideLinesColor ? 17 : 18}
+        onPress={this.props.guideLinesColor ? () => this.props.screenChange(this.screenChangeCheck()) : undefined}
+        onIndoorLevelActivated={ (e: any) => { this.props.changeIndoorLevel(e.nativeEvent.IndoorLevel.name); }}
+        loadingEnabled={true}
+        scrollEnabled={!this.props.guideLinesColor}
+        rotateEnabled={!this.props.guideLinesColor}
+      >
+        {movieMarker}
+        {toiletMarker}
+        {elevatorMarker}
+        {subColorPolyline}
+        {mainColorPolyline}
+      </MapView>
     );
   }
 
-  private changeIndoorLevel(indoorLevel: string) {
-    const validatedIndoorLevel = indoorLevel.replace(/階/, '');
-    const currentFloor = validatedIndoorLevel.substr(-2);
-    const currentStateMarkers = this.currentStateMarkersGenerate(currentFloor);
-    this.setState({
-      indoorLevel: currentFloor,
-      currentStateMarkers,
-    });
-  }
-
   private locationChange(region: Region) {
-    this.setState({
-      initializedLocation: region,
-    });
+    this.setState({ initializedLocation: region });
   }
 
-  private currentStateMarkersGenerate(indoorLevel: string, markers = this.props.markers) {
-    const movieMarkers = markers[0].movieMarkers.filter(movieMarker => movieMarker.floor === indoorLevel);
-    const publicFacilityMarkers = markers[1].publicFacilityMarkers.filter(publicFacilityMarker => publicFacilityMarker.floor === indoorLevel);
-    return {
-      movieMarkers,
-      publicFacilityMarkers,
-    };
+  private screenChangeCheck () {
+    return this.props.currentScreen === 'video' ? 'map' : 'video';
   }
 }
 
-const {width, height} = Dimensions.get('screen');
 const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    height: height,
-    width: width,
-    marginTop: -44,
-    padding: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
   map: {
     ...StyleSheet.absoluteFillObject,
-    backfaceVisibility: 'hidden',
+    borderRadius: 70,
   },
 });

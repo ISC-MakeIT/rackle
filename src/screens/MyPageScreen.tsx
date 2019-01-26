@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ColorPropType } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Color from '../constants/Colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ExtButton from '../components/screenComponents/ExtButton';
+import MonoText from '../components/StyledText';
 
 interface Props { navigation: any; }
 
@@ -52,7 +53,7 @@ export default class MyPageScreen extends React.Component {
             </View>
           </View>
         </View>
-        <ExtButton 
+        <ExtButton
           buttonText={'情報登録'}
           navigate={this.props.navigation.navigate}
           pageName={'MyPage'}
