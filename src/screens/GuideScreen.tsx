@@ -39,8 +39,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   public componentDidMount () {
     // FIXME 2回目以降はAsyncStorageとか使って以前のScreenを参照するようにしたい
-    // const currentScreen = this.state.currentScreen === 'video' ? 'video' : 'map'; // defaultは'map'
-    const currentScreen = 'video';
+    const currentScreen = this.state.currentScreen === 'video' ? 'video' : 'map'; // defaultは'map'
 
     if (currentScreen === 'map') {
       this.setState({
