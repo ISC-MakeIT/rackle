@@ -41,7 +41,6 @@ export default class MapViewComponent extends React.Component<Props, State> {
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} /> : null;
     const subColorPolyline = this.props.guideLinesColor && this.props.guideLines ?
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
-
     return (
       <MapView
         customMapStyle= {CustomMap.mapStyle}

@@ -39,7 +39,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
                   <Tab
                     capacity={capacity.item}
                     changeCapacity={this.changeCapacity.bind(this)}
-                    key={`tab_${capacity.index}`}
+                    keyExtractor={`tab_${capacity.index}`}
                   />
                 );
               }}
@@ -54,7 +54,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
                   capacity={elevatorMarker.item.capacity}
                   initializedLocation={DummyData.initializedLocation}
                   elevatorMarkers={DummyData.elevatorMarkers}
-                  key={`elevatorMarker_${elevatorMarker.index}`}
+                  keyExtractor={`elevatorMarker_${elevatorMarker.index}`}
                 />
               );
             }}

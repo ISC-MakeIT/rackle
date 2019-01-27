@@ -2,7 +2,6 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
 import MapView from '../components/mapComponents/MapViewComponent';
-import {DummyData} from '../components/mapComponents/DummyData';
 
 interface Props {
   navigation: any;
@@ -20,7 +19,7 @@ export default class MapScreen extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      indoorLevel: DummyData.indoorLevel,
+      indoorLevel: this.props.navigation.state.params.indoorLevel,
     };
   }
 
@@ -29,10 +28,10 @@ export default class MapScreen extends React.Component<Props, State> {
     return (
       <View style={styles.map}>
         <MapView
-          indoorLevel={'1'}
+          indoorLevel={this.state.indoorLevel}
           initializedLocation={this.props.navigation.state.params.initializedLocation}
           elevatorMarkers={this.props.navigation.state.params.elevatorMarkers}
-          changeIndoorLevel={() => this.changeIndoorLevel}
+          changeIndoorLevel={this.changeIndoorLevel.bind(this)}
         />
       </View>
     );
