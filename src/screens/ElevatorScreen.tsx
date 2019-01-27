@@ -24,22 +24,22 @@ export default class MapViewComponent extends React.Component<Props, State> {
   }
 
   render() {
-    const capacities = this.sizeClipping();
-    const currentElevatorMarkers = this.currentElevatorMarkers();
     if (DummyData.elevatorMarkers == undefined) return null;
+    const capacities = this.sizeClipping();
+    const currentElevatorMarkers = this.currentElevatorMarkers(DummyData.elevatorMarkers);
     return (
       <View style={styles.body}>
         <View style={styles.container}>
           <View style={styles.containerView}>
             <FlatList
               data={capacities}
-              contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap'}}
+              contentContainerStyle={{ flexDirection: 'row'}}
               renderItem={capacity => {
                 return (
                   <Tab
                     capacity={capacity.item}
-                    changeIndoorLevel={() => this.changeIndoorLevel}
-                    key={`tab${capacity.index}`}
+                    changeCapacity={this.changeCapacity.bind(this)}
+                    key={`tab_${capacity.index}`}
                   />
                 );
               }}
@@ -50,9 +50,11 @@ export default class MapViewComponent extends React.Component<Props, State> {
             renderItem={elevatorMarker => {
               return (
                 <Elevator
-                  navigate={this.props.navigation.navigate}
+                  navigation={this.props.navigation}
                   capacity={elevatorMarker.item.capacity}
-                  key={elevatorMarker.item.latitude}
+                  initializedLocation={DummyData.initializedLocation}
+                  elevatorMarkers={DummyData.elevatorMarkers}
+                  key={`elevatorMarker_${elevatorMarker.index}`}
                 />
               );
             }}
@@ -62,7 +64,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
     );
   }
 
-  private changeIndoorLevel(capacity: number) {
+  private changeCapacity(capacity: number) {
     this.setState({
       currentCapacity: capacity,
     });
@@ -74,9 +76,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
     return capacity.filter((item, index, self) => self.indexOf(item) === index);
   }
 
-  private currentElevatorMarkers() {
-    if (DummyData.elevatorMarkers == undefined) return null;
-    return DummyData.elevatorMarkers.map(elevatorMarker => this.state.currentCapacity === elevatorMarker.capacity);
+  private currentElevatorMarkers(elevatorMarkers: ElevatorMarker[]) {
+    return elevatorMarkers.filter(elevatorMarker => this.state.currentCapacity === elevatorMarker.capacity);
   }
 }
 

@@ -4,44 +4,38 @@ import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'sr
 import MapView from '../components/mapComponents/MapViewComponent';
 import {DummyData} from '../components/mapComponents/DummyData';
 
-interface State {
-  indoorLevel: string;
-  currentScreen: 'video' | 'map';
-  initializedLocation: Region;
-  movieMarkers?: MovieMarker[];
-  toiletMarkers?: ToiletMarker[];
-  elevatorMarkers?: ElevatorMarker[];
-  guideLines: GuideLine[];
+interface Props {
+  navigation: any;
 }
 
-export default class MapScreen extends React.Component<{}, State> {
+interface State {
+  indoorLevel: string;
+}
+
+export default class MapScreen extends React.Component<Props, State> {
   public static navigationOptions = {
     headerStyle: { display: 'none' },
   };
 
-  constructor(props: {}) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       indoorLevel: DummyData.indoorLevel,
-      initializedLocation: DummyData.initializedLocation,
-      elevatorMarkers: DummyData.elevatorMarkers,
-      changeIndoorLevel: this.changeIndoorLevel,
     };
   }
 
   public render() {
+    //console.log(this.props.navigation.state.params.elevatorMarkers);
     return (
-      <View>
+      <View style={styles.map}>
         <MapView
           indoorLevel={'1'}
-          initializedLocation={this.props.initializedLocation}
+          initializedLocation={this.props.navigation.state.params.initializedLocation}
+          elevatorMarkers={this.props.navigation.state.params.elevatorMarkers}
+          changeIndoorLevel={() => this.changeIndoorLevel}
         />
       </View>
     );
-  }
-
-  private screenChange(currentScreen: 'video' | 'map') {
-    this.setState({ currentScreen: currentScreen });
   }
 
   private changeIndoorLevel(indoorLevel: string) {
@@ -58,5 +52,7 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: -44,
+    width: 100,
+    height: 100,
   },
 });

@@ -6,7 +6,7 @@ type IconNameType = 'default'
   | 'toilet'
   | 'movie'
   | 'elevator6seater'
-  | 'elevator12seater'
+  | 'elevator12seater';
 
 interface Props {
   indoorLevel: string;
@@ -86,7 +86,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
       case 'elevator12seater':
         return require('../../../assets/images/big_elevator.png');
       default:
-        return null
+        return null;
     }
   }
 

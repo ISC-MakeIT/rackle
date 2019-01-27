@@ -5,21 +5,25 @@ import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'sr
 
 interface Props {
   capacity: number;
-  navigate: any;
+  navigation: any;
+  elevatorMarkers: ElevatorMarker[];
+  initializedLocation: Region;
 }
 
 export const Elevator: React.SFC<Props> = props => {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => props.navigate('Map')}>
-      <View style={styles.leftContainer}></View>
-      <View style={styles.centerContainer}>
-        <Text style={styles.centerContainerTop}>JR横浜駅西口　階段隣</Text>
-        <Text>収容人数：{props.capacity}人（450kg）</Text>
-      </View>
-      <View style={styles.rightContainer}>
-        <Text style={styles.rightContainerTop}>○</Text>
-        <Text style={styles.rightContainerBottom}>使用可能</Text>
-      </View>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => props.navigation.navigate('Map', {elevatorMarkers: props.elevatorMarkers, initializedLocation: props.initializedLocation})}>
+        <View style={styles.leftContainer}></View>
+        <View style={styles.centerContainer}>
+          <Text style={styles.centerContainerTop}>JR横浜駅西口　階段隣</Text>
+          <Text>収容人数：{props.capacity}人（450kg）</Text>
+        </View>
+        <View style={styles.rightContainer}>
+          <Text style={styles.rightContainerTop}>○</Text>
+          <Text style={styles.rightContainerBottom}>使用可能</Text>
+        </View>
     </TouchableOpacity>
   );
 };

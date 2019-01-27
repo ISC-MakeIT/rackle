@@ -4,12 +4,12 @@ import EStyleSheet, { clearCache } from 'react-native-extended-stylesheet';
 
 interface Props {
   capacity: number;
-  changeIndoorLevel: any;
+  changeCapacity: any;
 }
 
 export const Tab: React.SFC<Props> = props => {
   return (
-    <TouchableOpacity style={styles.container} onPress={() => props.changeIndoorLevel(props.capacity)}>
+    <TouchableOpacity style={styles.container} onPress={() => props.changeCapacity(props.capacity)}>
       <Text style={styles.containerText}>{props.capacity}人乗り</Text>
     </TouchableOpacity>
   );
