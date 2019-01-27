@@ -4,6 +4,8 @@ import EStyleSheet, { clearCache } from 'react-native-extended-stylesheet';
 
 interface Props {
   elevatorMarkers?: ElevatorMarker[];
+  indoorLevel: string;
+  capacity: number;
 }
 
 type ElevatorCapacity = 6 | 12;
