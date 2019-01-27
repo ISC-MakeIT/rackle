@@ -27,7 +27,7 @@ const styles = EStyleSheet.create({
     elevation: 8,
     backgroundColor: 'skyblue',
   },
-  thumnail: {
+  thumbnail: {
     // TODO
     width: '8rem',
     height: '8rem',

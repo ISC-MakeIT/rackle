@@ -11,7 +11,6 @@ import {
   Asset,
 } from 'expo';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Color from '../constants/Colors';
 import NavigationPlate from '../../components/NavigationPlate';
 import ThumbnailList from './ThumbnailListComponent';
 import ControlBar from './ControlBarComponent';
@@ -95,7 +94,7 @@ export default class MovieNavigateComponent extends  React.Component<Props, Stat
         <View style={styles.content__thumbnails}>
           <ThumbnailList thumbnails={this.state.thumbnails} />
         </View>
-      </View>          
+      </View>
     );
   }
 
@@ -118,7 +117,7 @@ export default class MovieNavigateComponent extends  React.Component<Props, Stat
               style={styles.content__movie}
               positionMillis={this.state.progress}
               paused={this.state.paused}
-              progressUpdateIntervalMillis={1000 / 30} // 30fps 
+              progressUpdateIntervalMillis={1000 / 30} // 30fps
               onLoad={this.onLoadVideo.bind(this)}
               onPlaybackStatusUpdate={this.onPlaybackStatusUpdate.bind(this)}
               ref={(ref: any) => { this.player = ref; }}
@@ -175,16 +174,16 @@ const styles = EStyleSheet.create({
     backgroundColor: 'black',
   },
   content__video_footer: {
-    flex: 0.1, 
-    position: 'absolute', 
-    bottom: 0, 
-    width: '100%', 
+    flex: 0.1,
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
     backgroundColor: 'black',
   },
   content__control_bar: {
-    flex: 1, 
+    flex: 1,
   },
   content__thumbnails: {
-    flex: 1, 
+    flex: 1,
   },
 });
