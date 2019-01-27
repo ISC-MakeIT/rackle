@@ -7,12 +7,14 @@ import HomeScreen from '../screens/HomeScreen';
 import MovieNavigateScreen from '../screens/MovieNavigateScreen';
 import MyPageScreen from '../screens/MyPageScreen';
 import ElevatorScreen from '../screens/ElevatorScreen';
+import MapScreen from '../screens/MapScreen';
 
 const GuideStack = createStackNavigator({ Guide: { screen: GuideScreen } });
 const HomeStack = createStackNavigator({ Home: { screen: HomeScreen } });
 const MovieNavigateStack = createStackNavigator({ MovieNavigate: { screen: MovieNavigateScreen } });
 const MyPageStack = createStackNavigator({ MyPage: { screen: MyPageScreen } });
 const ElevatorStack = createStackNavigator({ Elevator: { screen: ElevatorScreen } });
+const MapStack = createStackNavigator({ Map: { screen: MapScreen } });
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
@@ -58,8 +60,10 @@ const tabNavigator = createBottomTabNavigator({ HomeStack, MyPageStack, MovieNav
 export default createStackNavigator({
   Main: { screen: tabNavigator },
   Guide: { screen: GuideStack },
+  Elevator: { screen: ElevatorStack },
+  Map: { screen: MapStack },
 }, {
-    initialRouteName: 'Guide',
+    initialRouteName: 'Main',
     headerMode: 'none',
   }
 );

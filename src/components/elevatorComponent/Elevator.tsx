@@ -1,28 +1,20 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import EStyleSheet, { clearCache } from 'react-native-extended-stylesheet';
+import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
 
 interface Props {
-  elevatorMarkers?: ElevatorMarker[];
-  indoorLevel: string;
   capacity: number;
-}
-
-type ElevatorCapacity = 6 | 12;
-export interface ElevatorMarker {
-  floor: string;
-  capacity: ElevatorCapacity;
-  latitude: number;
-  longitude: number;
+  navigate: any;
 }
 
 export const Elevator: React.SFC<Props> = props => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={() => props.navigate('Map')}>
       <View style={styles.leftContainer}></View>
       <View style={styles.centerContainer}>
         <Text style={styles.centerContainerTop}>JR横浜駅西口　階段隣</Text>
-        <Text>収容人数：６人（450kg）</Text>
+        <Text>収容人数：{props.capacity}人（450kg）</Text>
       </View>
       <View style={styles.rightContainer}>
         <Text style={styles.rightContainerTop}>○</Text>

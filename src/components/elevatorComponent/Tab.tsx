@@ -2,10 +2,15 @@ import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import EStyleSheet, { clearCache } from 'react-native-extended-stylesheet';
 
+interface Props {
+  capacity: number;
+  changeIndoorLevel: any;
+}
+
 export const Tab: React.SFC<Props> = props => {
   return (
-    <TouchableOpacity style={styles.container}>
-      <Text style={styles.containerText}>６人乗り</Text>
+    <TouchableOpacity style={styles.container} onPress={() => props.changeIndoorLevel(props.capacity)}>
+      <Text style={styles.containerText}>{props.capacity}人乗り</Text>
     </TouchableOpacity>
   );
 };
