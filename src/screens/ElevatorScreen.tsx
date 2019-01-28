@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions }
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {Elevator} from '../components/elevatorComponent/Elevator';
 import {Tab} from '../components/elevatorComponent/Tab';
-import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
+import { ElevatorMarker, ElevatorCapacity } from 'src/domains/map';
 import { DummyData } from '../components/mapComponents/DummyData';
+import Color from '../constants/Colors';
 
 
 interface Props {
@@ -15,7 +16,7 @@ interface State {
   currentCapacity: number;
 }
 
-export default class MapViewComponent extends React.Component<Props, State> {
+export default class ElevatorScreen extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -25,6 +26,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
 
   render() {
     if (DummyData.elevatorMarkers == undefined) return null;
+
     const capacities = this.sizeClipping();
     const currentElevatorMarkers = this.currentElevatorMarkers(DummyData.elevatorMarkers);
     return (
@@ -64,7 +66,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
     );
   }
 
-  private changeCapacity(capacity: number) {
+  private changeCapacity(capacity: ElevatorCapacity) {
     this.setState({
       currentCapacity: capacity,
     });
@@ -72,6 +74,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
 
   private sizeClipping() {
     if (DummyData.elevatorMarkers == undefined) return null;
+
     const capacity = DummyData.elevatorMarkers.map(elevatorMarker => elevatorMarker.capacity);
     return capacity.filter((item, index, self) => self.indexOf(item) === index);
   }
@@ -92,7 +95,7 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
   },
   body: {
-    backgroundColor: '#F8F7F4',
+    backgroundColor: Color.subColorIvory,
     height: height,
   },
   containerView: {

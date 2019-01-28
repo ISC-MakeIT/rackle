@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
-import EStyleSheet, { clearCache } from 'react-native-extended-stylesheet';
-import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import { Region, ElevatorMarker } from 'src/domains/map';
+import Color from '../../constants/Colors';
 
 interface Props {
   capacity: number;
@@ -10,11 +11,15 @@ interface Props {
   initializedLocation: Region;
 }
 
-export const Elevator: React.SFC<Props> = props => {
+export const Elevator: React.FC<Props> = props => {
+  const onPress = () => {
+    props.navigation.navigate('Map', {elevatorMarkers: props.elevatorMarkers, initializedLocation: props.initializedLocation});
+  };
+
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => props.navigation.navigate('Map', {elevatorMarkers: props.elevatorMarkers, initializedLocation: props.initializedLocation})}>
+      onPress={onPress}>
         <View style={styles.leftContainer}></View>
         <View style={styles.centerContainer}>
           <Text style={styles.centerContainerTop}>JR横浜駅西口　階段隣</Text>
@@ -40,12 +45,12 @@ const styles = EStyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     justifyContent: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: Color.white,
   },
   leftContainer: {
     width: `${width} * 0.14`,
     height: `${height} * 0.08`,
-    backgroundColor: '#63BF8E',
+    backgroundColor: Color.mainColor,
   },
   centerContainer: {
     marginLeft: 20,
@@ -65,12 +70,12 @@ const styles = EStyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
     marginTop: 'auto',
-    color: '#63BF8E',
+    color: Color.mainColor,
   },
   rightContainerBottom: {
     fontSize: 10,
     marginLeft: 'auto',
     marginRight: 'auto',
-    color: '#63BF8E',
+    color: Color.mainColor,
   },
 });

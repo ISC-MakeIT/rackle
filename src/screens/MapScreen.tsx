@@ -24,7 +24,6 @@ export default class MapScreen extends React.Component<Props, State> {
   }
 
   public render() {
-    //console.log(this.props.navigation.state.params.elevatorMarkers);
     return (
       <View style={styles.map}>
         <MapView

@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
-import EStyleSheet, { clearCache } from 'react-native-extended-stylesheet';
+import { Text, TouchableOpacity, Dimensions } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Color from '../../constants/Colors';
 
 interface Props {
   capacity: number;
   changeCapacity: any;
 }
 
-export const Tab: React.SFC<Props> = props => {
+export const Tab: React.FC<Props> = props => {
   return (
     <TouchableOpacity style={styles.container} onPress={() => props.changeCapacity(props.capacity)}>
       <Text style={styles.containerText}>{props.capacity}人乗り</Text>
@@ -22,15 +23,15 @@ const styles = EStyleSheet.create({
   container: {
     width: `${width} * 0.30`,
     height: `${height} * 0.04`,
-    borderColor: '#63BF8E',
+    borderColor: Color.mainColor,
     borderWidth: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: Color.white,
   },
   containerText: {
     marginLeft: 'auto',
     marginRight: 'auto',
     marginTop: 'auto',
     marginBottom: 'auto',
-    color: '#63BF8E',
+    color: Color.mainColor,
   },
 });
