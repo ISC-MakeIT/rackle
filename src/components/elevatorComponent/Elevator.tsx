@@ -1,29 +1,30 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { Region, ElevatorMarker } from 'src/domains/map';
+import { Region, ElevatorMarker, ElevatorCapacity } from 'src/domains/map';
 import Color from '../../constants/Colors';
 
 interface Props {
-  capacity: number;
+  capacity: ElevatorCapacity;
   navigation: any;
   elevatorMarkers: ElevatorMarker[];
   initializedLocation: Region;
 }
 
 export const Elevator: React.FC<Props> = props => {
-  const onPress = () => {
-    props.navigation.navigate('Map', {elevatorMarkers: props.elevatorMarkers, initializedLocation: props.initializedLocation});
+  const navigateMapScreen = () => {
+    return; // 一旦画面遷移はしない
+    // props.navigation.navigate('Map', {elevatorMarkers: props.elevatorMarkers, initializedLocation: props.initializedLocation});
   };
 
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={onPress}>
+      onPress={navigateMapScreen}>
         <View style={styles.leftContainer}></View>
         <View style={styles.centerContainer}>
           <Text style={styles.centerContainerTop}>JR横浜駅西口　階段隣</Text>
-          <Text>収容人数：{props.capacity}人（450kg）</Text>
+        <Text>収容人数：{props.capacity}人</Text>
         </View>
         <View style={styles.rightContainer}>
           <Text style={styles.rightContainerTop}>○</Text>

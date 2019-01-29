@@ -1,33 +1,28 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions } from 'react-native';
+import { View, FlatList, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {Elevator} from '../components/elevatorComponent/Elevator';
 import {Tab} from '../components/elevatorComponent/Tab';
 import { ElevatorMarker, ElevatorCapacity } from 'src/domains/map';
 import { DummyData } from '../components/mapComponents/DummyData';
 import Color from '../constants/Colors';
-
+import * as _ from 'lodash';
 
 interface Props {
   navigation: any;
 }
 
 interface State {
-  currentCapacity: number;
+  currentCapacity: ElevatorCapacity;
 }
 
 export default class ElevatorScreen extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      currentCapacity: this.sizeClipping()[0],
-    };
-  }
+  readonly state = { currentCapacity: 6 };
 
   render() {
     if (DummyData.elevatorMarkers == undefined) return null;
 
-    const capacities = this.sizeClipping();
+    const capacities = this.sizeClipping() || [];
     const currentElevatorMarkers = this.currentElevatorMarkers(DummyData.elevatorMarkers);
     return (
       <View style={styles.body}>
@@ -40,8 +35,8 @@ export default class ElevatorScreen extends React.Component<Props, State> {
                 return (
                   <Tab
                     capacity={capacity.item}
-                    changeCapacity={this.changeCapacity.bind(this)}
-                    keyExtractor={`tab_${capacity.index}`}
+                    changeCapacity={this.changeCapacity}
+                    key={`tab_${capacity.index}`}
                   />
                 );
               }}
@@ -54,9 +49,9 @@ export default class ElevatorScreen extends React.Component<Props, State> {
                 <Elevator
                   navigation={this.props.navigation}
                   capacity={elevatorMarker.item.capacity}
-                  initializedLocation={DummyData.initializedLocation}
-                  elevatorMarkers={DummyData.elevatorMarkers}
-                  keyExtractor={`elevatorMarker_${elevatorMarker.index}`}
+                  initializedLocation={DummyData.initializedLocation!}
+                  elevatorMarkers={DummyData.elevatorMarkers!}
+                  key={`elevatorMarker_${elevatorMarker.index}`}
                 />
               );
             }}
@@ -66,26 +61,24 @@ export default class ElevatorScreen extends React.Component<Props, State> {
     );
   }
 
-  private changeCapacity(capacity: ElevatorCapacity) {
-    this.setState({
-      currentCapacity: capacity,
-    });
+  private changeCapacity = (capacity: ElevatorCapacity) => {
+    this.setState({ currentCapacity: capacity });
   }
 
-  private sizeClipping() {
-    if (DummyData.elevatorMarkers == undefined) return null;
+  private sizeClipping = () => {
+    if (DummyData.elevatorMarkers == undefined) return;
 
-    const capacity = DummyData.elevatorMarkers.map(elevatorMarker => elevatorMarker.capacity);
-    return capacity.filter((item, index, self) => self.indexOf(item) === index);
+    const capacity = _.flatMap(DummyData.elevatorMarkers, (e => e.capacity));
+    return _.uniq(capacity);
   }
 
   private currentElevatorMarkers(elevatorMarkers: ElevatorMarker[]) {
-    return elevatorMarkers.filter(elevatorMarker => this.state.currentCapacity === elevatorMarker.capacity);
+    return _.filter(elevatorMarkers, e => this.state.currentCapacity === e.capacity);
   }
 }
 
 EStyleSheet.build({});
-const {width, height} = Dimensions.get('screen');
+const {height} = Dimensions.get('screen');
 
 const styles = EStyleSheet.create({
   container: {

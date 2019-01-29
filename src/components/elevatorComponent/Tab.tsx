@@ -2,15 +2,24 @@ import * as React from 'react';
 import { Text, TouchableOpacity, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Color from '../../constants/Colors';
+import { ElevatorCapacity } from 'src/domains/map';
 
 interface Props {
-  capacity: number;
-  changeCapacity: any;
+  capacity: ElevatorCapacity;
+  changeCapacity: (e: ElevatorCapacity) => void;
 }
 
 export const Tab: React.FC<Props> = props => {
+
+  const changeCapacity = () => {
+    props.changeCapacity(props.capacity);
+  };
+
   return (
-    <TouchableOpacity style={styles.container} onPress={() => props.changeCapacity(props.capacity)}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={changeCapacity}
+    >
       <Text style={styles.containerText}>{props.capacity}人乗り</Text>
     </TouchableOpacity>
   );
