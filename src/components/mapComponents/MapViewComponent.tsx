@@ -80,6 +80,5 @@ export default class MapViewComponent extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
-    borderRadius: 70,
-  },
+    },
 });

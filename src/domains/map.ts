@@ -11,7 +11,8 @@ export interface ToiletMarker {
   longitude: number;
 }
 
-type ElevatorCapacity = 6 | 12;
+export type ElevatorCapacity = 6 | 8 | 12;
+
 export interface ElevatorMarker {
   floor: string;
   capacity: ElevatorCapacity;
