@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { MapData } from '../dummydata/mapData';
 import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import SubMovieComponent from '../components/movieComponents/SubMovieComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
+import { AuthSession } from 'expo';
 
 interface Props { navigation: any; }
 
@@ -13,6 +14,7 @@ type ScreenName = 'video' | 'map';
 
 interface BaseState {
   currentScreen: ScreenName | undefined;
+  modalFlg: boolean;
 }
 
 export interface ActiveMapState extends BaseState{
@@ -37,7 +39,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     headerStyle: { display: 'none' },
   };
 
-  readonly state: State = { currentScreen: undefined };
+  readonly state: State = { currentScreen: undefined, modalFlg: false };
 
   public componentDidMount () {
     // FIXME 2回目以降はAsyncStorageとか使って以前のScreenを参照するようにしたい
@@ -86,13 +88,29 @@ export default class GuideScreen extends React.Component<Props, State> {
                 guideLines={guideLines}
                 changeIndoorLevel={this.changeIndoorLevel}
               />
-              <SubMovieComponent onChangeActiveScreen={this.changeActiveScreen} />
              </>
           ) : ( <MovieNavigateComponent />)
          }
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
         */}
+        {/* <View style={styles.modal}> */}
+            <Modal
+              visible={this.state.modalFlg}
+              animationType={'slide'}
+              transparent={true}
+            >
+              <View style={styles.modalInViewAround}>
+                <View style={styles.modalInView}></View>
+              </View>
+              <View style={styles.modalFlgBottomAround}>
+                <TouchableOpacity onPress={() => this.changeModalFlg()} style={styles.modalFlgBottom} />
+              </View>
+            </Modal>
+        {/* </View> */}
+          <View style={styles.modalFlgBottomAround}>
+            <TouchableOpacity onPress={() => this.changeModalFlg()} style={styles.modalFlgBottom} />
+          </View>
       </View>
     );
   }
@@ -107,15 +125,24 @@ export default class GuideScreen extends React.Component<Props, State> {
     const indoorLevel = validatedIndoorLevel.substr(-2);
     this.setState({ indoorLevel });
   }
+
+  private changeModalFlg() {
+    const nextModalFlg = !this.state.modalFlg;
+    this.setState({
+      modalFlg: nextModalFlg,
+    });
+  }
 }
 
 EStyleSheet.build();
+const {width, height} = Dimensions.get('screen');
 
 const styles = EStyleSheet.create({
   content_wrap: {
     flex: 1,
     top: 0,
     position: 'relative',
+    //marginBottom: height * 0.07,
   },
   thumbnails: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -128,5 +155,43 @@ const styles = EStyleSheet.create({
   thumbnailImage: {
     width: 120,
     height: 90,
+  },
+  modal: {
+    width: width * 0.79,
+    height: height * 0.48,
+    backgroundColor: 'red',
+    marginBottom: height * 0.1,
+  },
+  modalInView: {
+    width: width * 0.79,
+    height: height * 0.48,
+    position: 'absolute',
+    bottom: 0,
+    // marginRight: 'auto',
+    // marginLeft: 'auto',
+    backgroundColor: 'red',
+    justifyContent: 'center',
+  },
+  modalInViewAround: {
+    width: width,
+    height: height * 0.48,
+    position: 'absolute',
+    bottom: 0,
+    marginBottom: height * 0.1,
+    backgroundColor: '#ffffff',
+  },
+  modalFlgBottom: {
+    width: width * 0.42,
+    height: height * 0.06,
+    backgroundColor: 'red',
+  },
+  modalFlgBottomAround: {
+    width: width,
+    height: width * 0.07,
+    position: 'absolute',
+    bottom: 0,
+    //marginBottom:  height * 0.07,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });
