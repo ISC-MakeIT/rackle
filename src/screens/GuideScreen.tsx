@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { DummyData } from '../components/mapComponents/DummyData';
+import { MapData } from '../dummydata/mapData';
 import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import SubMovieComponent from '../components/movieComponents/SubMovieComponent';
@@ -46,11 +46,11 @@ export default class GuideScreen extends React.Component<Props, State> {
     if (currentScreen === 'map') {
       this.setState({
         currentScreen,
-        indoorLevel: DummyData.indoorLevel,
-        initializedLocation: DummyData.initializedLocation,
-        movieMarkers: DummyData.movieMarkers,
-        guideLines: DummyData.guideLines,
-        elevatorMarkers: DummyData.elevatorMarkers,
+        indoorLevel: MapData.indoorLevel,
+        initializedLocation: MapData.initializedLocation,
+        movieMarkers: MapData.movieMarkers,
+        guideLines: MapData.guideLines,
+        elevatorMarkers: MapData.elevatorMarkers,
       });
     } else {
       // TODO set movie states...

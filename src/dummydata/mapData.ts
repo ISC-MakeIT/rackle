@@ -1,6 +1,6 @@
 import { ActiveMapState } from 'src/screens/GuideScreen';
 
-export const DummyData: ActiveMapState = {
+export const MapData: ActiveMapState = {
   indoorLevel: '1',
   currentScreen:'video',
   initializedLocation: {
