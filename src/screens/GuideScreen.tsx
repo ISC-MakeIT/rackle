@@ -7,6 +7,8 @@ import MovieNavigateComponent from '../components/movieComponents/MovieNavigateC
 import SubMovieComponent from '../components/movieComponents/SubMovieComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import { AuthSession } from 'expo';
+import Carousel from 'react-native-snap-carousel';
+
 
 interface Props { navigation: any; }
 
@@ -39,7 +41,11 @@ export default class GuideScreen extends React.Component<Props, State> {
     headerStyle: { display: 'none' },
   };
 
-  readonly state: State = { currentScreen: undefined, modalFlg: false };
+  readonly state: State = {
+    currentScreen: undefined,
+    modalFlg: false,
+    carouselData: [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+  };
 
   public componentDidMount () {
     // FIXME 2回目以降はAsyncStorageとか使って以前のScreenを参照するようにしたい
@@ -65,7 +71,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   public render () {
-    // NITS もう少し厳密に判断した方がいい説 :thiking:
+    // NITS もう少し厳密に判断した方がいい説 :thinking:
     if (this.state.currentScreen == undefined) return null; // TODO loading animation
     if ((this.state.indoorLevel !== undefined) && (this.state.movieId !== undefined)) return null;
 
@@ -94,22 +100,34 @@ export default class GuideScreen extends React.Component<Props, State> {
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
         */}
-        {/* <View style={styles.modal}> */}
-            <Modal
-              visible={this.state.modalFlg}
-              animationType={'slide'}
-              transparent={true}
-            >
-              <View style={styles.modalInViewAround}>
-                <View style={styles.modalInView}></View>
-              </View>
-              <View style={styles.modalFlgBottomAround}>
-                <TouchableOpacity onPress={() => this.changeModalFlg()} style={styles.modalFlgBottom} />
-              </View>
-            </Modal>
-        {/* </View> */}
+          <Modal
+            visible={this.state.modalFlg}
+            animationType={'slide'}
+            transparent={true}
+          >
+            <View style={styles.modalInViewAround}>
+              <Carousel
+                data={this.state.carouselData}
+                itemWidth={Dimensions.get('screen').width}
+                sliderWidth={Dimensions.get('screen').width}
+                sliderHeight={Dimensions.get('screen').height}
+                renderItem={(data) => {
+                  return (
+                    <View style={styles.carousel}></View>
+                  );
+                }}
+              />
+            </View>
+            <View style={styles.modalFlgBottomAround}>
+              <TouchableOpacity onPress={() => this.changeModalFlg()} style={styles.modalFlgBottom} >
+                <Text style={styles.modalFlgBottomText}>OPEN</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
           <View style={styles.modalFlgBottomAround}>
-            <TouchableOpacity onPress={() => this.changeModalFlg()} style={styles.modalFlgBottom} />
+            <TouchableOpacity onPress={() => this.changeModalFlg()} style={styles.modalFlgBottom} >
+              <Text>OPEN</Text>
+            </TouchableOpacity>
           </View>
       </View>
     );
@@ -167,8 +185,6 @@ const styles = EStyleSheet.create({
     height: height * 0.48,
     position: 'absolute',
     bottom: 0,
-    // marginRight: 'auto',
-    // marginLeft: 'auto',
     backgroundColor: 'red',
     justifyContent: 'center',
   },
@@ -178,12 +194,18 @@ const styles = EStyleSheet.create({
     position: 'absolute',
     bottom: 0,
     marginBottom: height * 0.1,
-    backgroundColor: '#ffffff',
+    justifyContent: 'center',
   },
   modalFlgBottom: {
     width: width * 0.42,
     height: height * 0.06,
     backgroundColor: 'red',
+  },
+  modalFlgBottomText: {
+    bottom: 0,
+    position: 'absolute',
+    justifyContent: 'center',
+    backgroundColor: '#000',
   },
   modalFlgBottomAround: {
     width: width,
@@ -193,5 +215,14 @@ const styles = EStyleSheet.create({
     //marginBottom:  height * 0.07,
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  carousel: {
+    width: width * 0.79,
+    height: height * 0.33,
+    backgroundColor: 'red',
+    position: 'absolute',
+    justifyContent: 'center',
+    bottom: 0,
+    marginLeft: width * 0.1,
   },
 });
