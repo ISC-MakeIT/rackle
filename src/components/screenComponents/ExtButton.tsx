@@ -9,43 +9,38 @@ interface Props {
   pageName: string;
 }
 
-export default class ExtButton extends React.Component<Props, {}> {
-    constructor(props: Props) {
-        super(props);
-    }
+export const ExtButton: React.FC<Props> = props => {
+  const navigate = () => props.navigate(props.pageName);
 
-    render() {
-        return (
-        <TouchableOpacity
-          style={rootButtonStyle.execBtn}
-          onPress={() => this.props.navigate(this.props.pageName)}
-        >
-            <Text style={rootButtonStyle.execText}>{this.props.buttonText}</Text>
-        </TouchableOpacity>
-        );
-    }
-}   
+  return (
+    <TouchableOpacity
+      style={rootButtonStyle.execBtn}
+      onPress={navigate}
+    >
+        <Text style={rootButtonStyle.execText}>{props.buttonText}</Text>
+    </TouchableOpacity>
+  );
+};
 
 EStyleSheet.build();
 
 const rootButtonStyle = EStyleSheet.create({
-    execBtn: {
-      width: '80%',
-      height: '9.5%',
-      backgroundColor: Color.mainColor,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      borderRadius: 50,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: '4.5rem',
-    },
-    execText: {
-      fontSize: '1.5rem',
-      fontWeight: '700',
-      color: Color.white,
-      letterSpacing: '0.2rem',
-    },
-  });
-  
+  execBtn: {
+    width: '80%',
+    height: '9.5%',
+    backgroundColor: Color.mainColor,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    borderRadius: 50,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: '4.5rem',
+  },
+  execText: {
+    fontSize: '1.5rem',
+    fontWeight: '700',
+    color: Color.white,
+    letterSpacing: '0.2rem',
+  },
+});

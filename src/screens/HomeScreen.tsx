@@ -4,7 +4,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import ExtButton from '../components/screenComponents/ExtButton';
+import { ExtButton } from '../components/screenComponents/ExtButton';
 
 interface Props { navigation: any; }
 
