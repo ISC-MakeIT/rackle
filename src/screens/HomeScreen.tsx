@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Dimensions, StyleSheet, Text, View, ScrollView} from 'react-native';
+import {Dimensions, StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
@@ -132,9 +132,9 @@ export default class HomeScreen extends React.Component<Props, State> {
               </View>
             </View>
           </View>
-          <View style={ButtonStyle.switchButton}>
+          <TouchableOpacity style={ButtonStyle.switchButton} onPress={this.switchDestination}>
             <Text>■</Text>
-          </View>
+          </TouchableOpacity>
         </View>
           <ExtButton
             buttonText={'案内開始'}
@@ -146,6 +146,14 @@ export default class HomeScreen extends React.Component<Props, State> {
     );
   }
 
+  private switchDestination = () => {
+    const currentState = this.state;
+
+    this.setState({
+      selectedFromLineId: currentState.selectedToLineId,
+      selectedToLineId: currentState.selectedFromLineId,
+    });
+  }
   private castLineTypeToPickerItemType = () => {
     if (_.isEmpty(this.state.lines)) return [];
 
