@@ -16,7 +16,7 @@ interface Item {
   index: number;
 }
 
-const renderItem = ({item, index} : Item) : JSX.Element => {
+const renderItem = ({item, index} : Item) => {
   return (
     <TouchableOpacity>
       <Image style={style.image} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
@@ -24,7 +24,7 @@ const renderItem = ({item, index} : Item) : JSX.Element => {
   );
 }
 
-const keyExtractor = (item: string, index: number) : string => index.toString();
+const keyExtractor = (item: string, index: number) => index.toString();
 
 const ThumbnailList: React.FC<Props> = props => (
   <FlatList
