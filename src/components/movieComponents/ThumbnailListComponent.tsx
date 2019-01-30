@@ -11,7 +11,12 @@ interface Props {
   thumbnails: string[],
 }
 
-const thumbnailItem = ({item, index}) => {
+interface Item {
+  item: string;
+  index: number;
+}
+
+const renderItem = ({item, index} : Item) => {
   return (
     <TouchableOpacity>
       <Image style={style.image} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
@@ -26,7 +31,7 @@ const ThumbnailList: React.FC<Props> = props => (
     data={props.thumbnails}
     horizontal={true}
     keyExtractor={keyExtractor}
-    renderItem={thumbnailItem}
+    renderItem={renderItem}
     style={style.thumbnails}
   />
 );

@@ -9,6 +9,7 @@ import {
   Video,
   PlaybackStatus,
   Asset,
+  PlaybackObject,
 } from 'expo';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import NavigationPlate from '../../components/NavigationPlate';
@@ -22,12 +23,11 @@ interface State {
   paused : boolean;
   positionMillis: number;
   durationMillis : number;
-  progress: number;
   thumbnails: string[];
 }
 
 export default class MovieNavigateComponent extends  React.Component<Props, State> {
-  private player : Video;
+  private videoRef : Video;
 
   constructor(props: Props) {
     super(props);
@@ -36,7 +36,6 @@ export default class MovieNavigateComponent extends  React.Component<Props, Stat
       paused: true,
       positionMillis: 0,
       durationMillis: 0,
-      progress: 0,
       // dummy data
       thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
     };
@@ -47,27 +46,22 @@ export default class MovieNavigateComponent extends  React.Component<Props, Stat
   private onLoadVideo = (playbackStatus: PlaybackStatus) => this.setState({ durationMillis: playbackStatus.durationMillis });
 
   private onPlaybackStatusUpdate = (playbackStatus: PlaybackStatus) => {
+    this.setState({ positionMillis: playbackStatus.positionMillis });
     if (playbackStatus.didJustFinish) {
       // 動画とシークバーの再初期化
+      this.videoRef.stopAsync();
       this.setState({ paused: true });
-      this.player.setPositionAsync(0);
       return;
-    }
-    const progress : number = playbackStatus.positionMillis / this.state.durationMillis;
-    if(progress){
-      this.setState({ progress });
-    }else if(progress === 0){
-      this.setState({ progress : 0 });
     }
   }
 
   private pressPlayPause = () => {
-    this.setState({ paused: !this.state.paused });
     if (this.state.paused) {
-      this.player.playAsync();
+      this.videoRef.playAsync();
     }else{
-      this.player.pauseAsync();
+      this.videoRef.pauseAsync();
     }
+    this.setState({ paused: !this.state.paused });
   }
 
   private greeting = (visibleGuideHeader: boolean) => {
@@ -87,7 +81,8 @@ export default class MovieNavigateComponent extends  React.Component<Props, Stat
         <View style={styles.content__control_bar}>
           <ControlBar
             paused={this.state.paused}
-            progress={this.state.progress}
+            positionMillis={this.state.positionMillis}
+            progress={this.state.positionMillis / this.state.durationMillis ? this.state.positionMillis / this.state.durationMillis : 0}
             pressPlayPause={this.pressPlayPause.bind(this)}
           />
         </View>
@@ -115,12 +110,10 @@ export default class MovieNavigateComponent extends  React.Component<Props, Stat
               isMuted={false}
               resizeMode={Video.RESIZE_MODE_COVER}
               style={styles.content__movie}
-              positionMillis={this.state.progress}
-              paused={this.state.paused}
-              progressUpdateIntervalMillis={1000 / 30} // 30fps
+              progressUpdateIntervalMillis={1000 / 20} // 20fps 
               onLoad={this.onLoadVideo.bind(this)}
               onPlaybackStatusUpdate={this.onPlaybackStatusUpdate.bind(this)}
-              ref={(ref: any) => { this.player = ref; }}
+              ref={(ref: any) => { this.videoRef = ref; }}
             />
           </TouchableWithoutFeedback>
         </View>
@@ -129,7 +122,6 @@ export default class MovieNavigateComponent extends  React.Component<Props, Stat
     );
   }
 }
-
 
 EStyleSheet.build({});
 const styles = EStyleSheet.create({

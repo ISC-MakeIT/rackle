@@ -12,8 +12,15 @@ import ProgressBar from 'react-native-progress/Bar';
 
 interface Props {
   paused : boolean;
+  positionMillis: number;
   progress: number;
   pressPlayPause: () => void;
+}
+
+const secondsToTimeString = (seconds: number) : string => {
+  const mm = ("0" + Math.floor(seconds / 60)).slice(-2);
+  const ss = ("0" + (seconds % 60)).slice(-2);
+  return `${mm}:${ss}`;
 }
 
 const ControlBar: React.FC<Props> = props => (
@@ -30,8 +37,8 @@ const ControlBar: React.FC<Props> = props => (
         height={16}
       />
     </TouchableWithoutFeedback>
-    <Text style={style.seekTime}>
-      00:00
+    <Text style={style.time}>
+      {secondsToTimeString(Math.floor(props.positionMillis / 1000))}
     </Text>
   </View>
 );
@@ -48,7 +55,7 @@ const style = EStyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
-  seekTime: {
+  time: {
     color: Color.white,
   },
 });
