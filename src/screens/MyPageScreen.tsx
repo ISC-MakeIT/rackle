@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import Color from '../constants/Colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import ExtButton from '../components/screenComponents/ExtButton';
+import { ExtButton } from '../components/screenComponents/ExtButton';
 
 interface Props { navigation: any; }
 

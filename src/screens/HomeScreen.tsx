@@ -1,45 +1,48 @@
 import * as React from 'react';
-import {Dimensions, StyleSheet, Text, View, TouchableOpacity, ScrollView} from 'react-native';
+import {Dimensions, StyleSheet, Text, View, ScrollView} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import ExtButton from '../components/screenComponents/ExtButton';
+import { ExtButton } from '../components/screenComponents/ExtButton';
+import { StationData } from '../dummydata/stations';
+import { StationType, LineType } from '../domains/station';
+import * as _ from 'lodash';
+import { GateSelector } from '../components/GateSelector';
 
 interface Props { navigation: any; }
 
 interface State {
-  selectedFromValue: number;
-  selectedToValue: number;
+  station: StationType;
+  lines: LineType;
+  selectedFromLineId: number;
+  selectedToLineId: number;
+  selectedFromGateId: number | undefined;
+  selectedToGateId: number | undefined;
 }
 
 export default class HomeScreen extends React.Component<Props, State> {
   public static navigationOptions = {
     title: 'rackle',
     headerStyle: {
-      backgroundColor: '#63BF8E',
+      backgroundColor: Color.mainColor,
       borderBottomWidth: 0,
     },
     headerTitleStyle: {
-      color: '#ffffff',
+      color: Color.white,
     },
   };
 
-  inputRefs: any;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = { selectedFromValue: 0, selectedToValue: 0, };
-  }
+  readonly state = {
+    station: StationData.station,
+    lines: StationData.train_lines,
+    selectedFromLineId: 0,
+    selectedToLineId: 0,
+    selectedFromGateId: undefined,
+    selectedToGateId: undefined,
+  };
 
   public render() {
-    const options = [
-      { value: 1, label: 'JR' },
-      { value: 2, label: '東横' },
-      { value: 3, label: '相鉄' },
-      { value: 4, label: 'blueline' },
-    ];
-
     const { height } = Dimensions.get('window');
 
     return (
@@ -69,10 +72,10 @@ export default class HomeScreen extends React.Component<Props, State> {
               <View style={containerStyles.selectContainer} >
                 <RNPickerSelect
                   placeholder={{ label: '駅を選択してください', value: null, color: '#9EA0A4', }}
-                  items={options}
-                  onValueChange={(value: number) => { this.setState({ selectedFromValue: value }); }}
+                  items={this.castLineTypeToPickerItemType()}
+                  onValueChange={(value: number) => { this.setState({ selectedFromLineId: value }); }}
                   style={{...inputPickerStyle}}
-                  value={this.state.selectedFromValue}
+                  value={this.state.selectedFromLineId}
                   useNativeAndroidPickerStyle={false}
                 />
                 <View style={rootSelectStyle.titleLabelHere}>
@@ -82,18 +85,19 @@ export default class HomeScreen extends React.Component<Props, State> {
               </View>
 
             <View style={containerStyles.searchedListContainer}>
-              <TouchableOpacity style={[rootButtonStyle.searchedList, rootButtonStyle.active]} onPress={() => alert('hoge')}>
-              <Text style={[rootButtonText.searchedText, rootButtonText.active]}>中央北</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[rootButtonStyle.searchedList]} onPress={() => alert('fuga')}>
-                <Text style={rootButtonText.searchedText}>中央南</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[rootButtonStyle.searchedList]} onPress={() => alert('foo')}>
-                <Text style={rootButtonText.searchedText}>中央東</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[rootButtonStyle.searchedList]} onPress={() => alert('var')}>
-                <Text style={rootButtonText.searchedText}>中央西</Text>
-              </TouchableOpacity>
+              {this.state.lines.map((line, index) => {
+                const isActive = this.state.selectedFromGateId && ( this.state.selectedFromGateId === line.id);
+
+                return (
+                  <GateSelector
+                    key={`fromSelector_${index}`}
+                    active={isActive}
+                    gateName={line.name}
+                    value={line.id}
+                    updateActiveSelector={this.updateFromSelecter}
+                  />
+                );
+              })}
             </View>
 
           </View>
@@ -101,10 +105,10 @@ export default class HomeScreen extends React.Component<Props, State> {
               <View style={containerStyles.selectContainer}>
                 <RNPickerSelect
                   placeholder={{ label: '駅を選択してください', value: null, color: '#9EA0A4', }}
-                  items={options}
-                  onValueChange={(value: number) => { this.setState({ selectedToValue: value }); }}
+                  items={this.castLineTypeToPickerItemType()}
+                  onValueChange={(value: number) => { this.setState({ selectedToLineId: value }); }}
                   style={{...inputPickerStyle}}
-                  value={this.state.selectedToValue}
+                  value={this.state.selectedToLineId}
                   useNativeAndroidPickerStyle={false}
                 />
                 <View style={rootSelectStyle.titleLabelDestination}>
@@ -112,26 +116,27 @@ export default class HomeScreen extends React.Component<Props, State> {
                 </View>
               </View>
               <View style={containerStyles.searchedListContainer}>
-                <TouchableOpacity style={[rootButtonStyle.searchedList, rootButtonStyle.active]} onPress={() => alert('hoge')}>
-                  <Text style={[rootButtonText.searchedText, rootButtonText.active]}>中央北</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[rootButtonStyle.searchedList]} onPress={() => alert('fuga')}>
-                  <Text style={rootButtonText.searchedText}>中央南</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[rootButtonStyle.searchedList]} onPress={() => alert('foo')}>
-                  <Text style={rootButtonText.searchedText}>中央東</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[rootButtonStyle.searchedList]} onPress={() => alert('var')}>
-                  <Text style={rootButtonText.searchedText}>中央西</Text>
-                </TouchableOpacity>
+              {this.state.lines.map((line, index) => {
+                const isActive = this.state.selectedToGateId && (this.state.selectedToGateId === line.id);
+
+                return (
+                  <GateSelector
+                    key={`fromSelector_${index}`}
+                    active={isActive}
+                    gateName={line.name}
+                    value={line.id}
+                    updateActiveSelector={this.updateToSelector}
+                  />
+                );
+              })}
               </View>
             </View>
           </View>
-          <View style={rootButtonStyle.switchButton}>
+          <View style={ButtonStyle.switchButton}>
             <Text>■</Text>
           </View>
         </View>
-          <ExtButton 
+          <ExtButton
             buttonText={'案内開始'}
             navigate={this.props.navigation.navigate}
             pageName={'Guide'}
@@ -141,24 +146,25 @@ export default class HomeScreen extends React.Component<Props, State> {
     );
   }
 
-  public _maybeRenderDevelopmentModeWarning () {
-    if (__DEV__) {
-      const learnMoreButton = (<Text> Learn more </Text>);
+  private castLineTypeToPickerItemType = () => {
+    if (_.isEmpty(this.state.lines)) return [];
 
-      return (
-        <Text>
-          Development mode is enabled, your app will be slower but you can use useful
-          development tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
+    // 毎回やってるのなんか嫌い
+    return this.state.lines.map(line => {
+      return _.mapKeys(line, (_, key) => {
+        return key === 'id' ? 'value' : key === 'name' ? 'label' : key;
+      });
+    });
   }
+
+  private updateFromSelecter = (e: number) => {
+    this.setState({selectedFromGateId: e});
+  }
+
+  private updateToSelector = (e: number) => {
+    this.setState({selectedToGateId: e});
+  }
+
 }
 
 EStyleSheet.build();
@@ -266,60 +272,6 @@ const rootTextStyle = StyleSheet.create({
   },
 });
 
-const rootButtonStyle = EStyleSheet.create({
-  searchedList: {
-    width: '43%',
-    height: '3rem',
-    borderWidth: 2,
-    borderColor: Color.mainColor,
-    borderRadius: '0.3rem',
-    backgroundColor: Color.white,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '0.2rem',
-    marginBottom: '0.2rem',
-    marginLeft: '0.2rem',
-    marginRight: '0.2rem',
-  },
-  active: {
-    backgroundColor: Color.mainColor,
-  },
-  execBtn: {
-    width: '80%',
-    height: '9%',
-    backgroundColor: Color.mainColor,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    borderRadius: 50,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: '4.5rem',
-  },
-  switchButton: {
-    width: '7%',
-    height: '7%',
-    backgroundColor: Color.mainColor,
-  },
-});
-
-const rootButtonText = EStyleSheet.create({
-  searchedText: {
-    fontSize: '1.2rem',
-    fontWeight: '700',
-    color: Color.mainColor,
-  },
-  active: {
-    color: Color.white,
-  },
-  execText: {
-    fontSize: '1.5rem',
-    fontWeight: '700',
-    color: Color.white,
-    letterSpacing: '0.2rem',
-  },
-});
 
 const inputPickerStyle = EStyleSheet.create({
   // https://snack.expo.io/HyOOnZymN
@@ -350,5 +302,13 @@ const inputPickerStyle = EStyleSheet.create({
     minWidth: '93%',
     position: 'relative',
     paddingLeft: 50,
+  },
+});
+
+const ButtonStyle = EStyleSheet.create({
+  switchButton: {
+    width: '7%',
+    height: '7%',
+    backgroundColor: Color.mainColor,
   },
 });
