@@ -99,7 +99,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
         */}
-        <Modal modalView={this.state.modalFlg} >
+        <Modal modalView={this.state.showModal} >
           <Carousel
             data={this.state.carouselData}
             itemWidth={Dimensions.get('screen').width}
@@ -166,47 +166,22 @@ const styles = EStyleSheet.create({
     backgroundColor: 'red',
     justifyContent: 'center',
   },
-<<<<<<< HEAD
-  modalInViewAround: {
-    width: width,
-    height: height * 0.48,
-    position: 'absolute',
-    bottom: 0,
-    marginBottom: height * 0.1,
-    justifyContent: 'center',
-  },
-  modalFlgBottom: {
-    width: width * 0.42,
-    height: height * 0.06,
-    backgroundColor: 'red',
-  },
-  modalFlgBottomText: {
-=======
   showModalBottom: {
     width: width * 0.42,
     height: height * 0.1,
     backgroundColor: 'red',
   },
   showModalBottomText: {
->>>>>>> d1c704b6a97d3bc666f690904eb6a4a96b7f5242
     bottom: 0,
     position: 'absolute',
     justifyContent: 'center',
     backgroundColor: '#000',
   },
-<<<<<<< HEAD
-  modalFlgBottomAround: {
-=======
   showModalBottomAround: {
->>>>>>> d1c704b6a97d3bc666f690904eb6a4a96b7f5242
     width: width,
     height: width * 0.07,
     position: 'absolute',
     bottom: 0,
-<<<<<<< HEAD
-    //marginBottom:  height * 0.07,
-=======
->>>>>>> d1c704b6a97d3bc666f690904eb6a4a96b7f5242
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -219,12 +194,9 @@ const styles = EStyleSheet.create({
     bottom: 0,
     marginLeft: width * 0.1,
   },
-<<<<<<< HEAD
-=======
   view: {
     width: width,
     height: '50%',
     backgroundColor: 'rgba(50, 50, 50, 1)',
   },
->>>>>>> d1c704b6a97d3bc666f690904eb6a4a96b7f5242
 });
