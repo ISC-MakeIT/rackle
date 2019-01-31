@@ -154,13 +154,6 @@ export default class GuideScreen extends React.Component<Props, State> {
     const indoorLevel = validatedIndoorLevel.substr(-2);
     this.setState({ indoorLevel });
   }
-
-  private changeshowModal() {
-    const nextshowModal = !this.state.showModal;
-    this.setState({
-      showModal: nextshowModal,
-    });
-  }
 }
 
 EStyleSheet.build();
@@ -214,7 +207,6 @@ const styles = EStyleSheet.create({
     height: width * 0.07,
     position: 'absolute',
     bottom: 0,
-    //marginBottom:  height * 0.07,
     flexDirection: 'row',
     justifyContent: 'center',
   },
