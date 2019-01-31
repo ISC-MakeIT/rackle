@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { MapData } from '../dummydata/mapData';
 import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
-import SubMovieComponent from '../components/movieComponents/SubMovieComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
+import Carousel from 'react-native-snap-carousel';
+import {Modal} from '../components/Modal';
+
 
 interface Props { navigation: any; }
 
@@ -13,6 +15,7 @@ type ScreenName = 'video' | 'map';
 
 interface BaseState {
   currentScreen: ScreenName | undefined;
+  showModal: boolean;
 }
 
 export interface ActiveMapState extends BaseState{
@@ -37,7 +40,11 @@ export default class GuideScreen extends React.Component<Props, State> {
     headerStyle: { display: 'none' },
   };
 
-  readonly state: State = { currentScreen: undefined };
+  readonly state: State = {
+    currentScreen: undefined,
+    showModal: false,
+    carouselData: [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+  };
 
   public componentDidMount () {
     // FIXME 2回目以降はAsyncStorageとか使って以前のScreenを参照するようにしたい
@@ -63,7 +70,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   public render () {
-    // NITS もう少し厳密に判断した方がいい説 :thiking:
+    // NITS もう少し厳密に判断した方がいい説 :thinking:
     if (this.state.currentScreen == undefined) return null; // TODO loading animation
     if ((this.state.indoorLevel !== undefined) && (this.state.movieId !== undefined)) return null;
 
@@ -86,20 +93,34 @@ export default class GuideScreen extends React.Component<Props, State> {
                 guideLines={guideLines}
                 changeIndoorLevel={this.changeIndoorLevel}
               />
-              <SubMovieComponent onChangeActiveScreen={this.changeActiveScreen} />
              </>
           ) : ( <MovieNavigateComponent />)
          }
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
         */}
+        <Modal modalView={this.state.showModal} >
+          <Carousel
+            data={this.state.carouselData}
+            itemWidth={Dimensions.get('screen').width}
+            sliderWidth={Dimensions.get('screen').width}
+            sliderHeight={Dimensions.get('screen').height}
+            renderItem={() => ( <View style={styles.carousel} />)}
+          />
+        </Modal>
+          <View style={styles.showModalBottomAround}>
+            <TouchableOpacity onPress={this.changeModal} style={styles.showModalBottom} >
+              <Text style={styles.showModalBottomText}>OPEN</Text>
+            </TouchableOpacity>
+          </View>
       </View>
     );
   }
 
-  private changeActiveScreen = () => {
-    const currentScreen = this.state.currentScreen === 'map' ? 'video' : 'map';
-    this.setState({ currentScreen });
+  private changeModal = () => {
+    this.setState({
+      showModal: this.state.showModal ? false : true,
+    });
   }
 
   private changeIndoorLevel = (nextIndoorLevel: string) => {
@@ -110,12 +131,14 @@ export default class GuideScreen extends React.Component<Props, State> {
 }
 
 EStyleSheet.build();
+const {width, height} = Dimensions.get('screen');
 
 const styles = EStyleSheet.create({
   content_wrap: {
     flex: 1,
     top: 0,
     position: 'relative',
+    //marginBottom: height * 0.07,
   },
   thumbnails: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -128,5 +151,52 @@ const styles = EStyleSheet.create({
   thumbnailImage: {
     width: 120,
     height: 90,
+  },
+  modal: {
+    width: width * 0.79,
+    height: height * 0.48,
+    backgroundColor: 'red',
+    marginBottom: height * 0.1,
+  },
+  modalInView: {
+    width: width * 0.79,
+    height: height * 0.48,
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+  },
+  showModalBottom: {
+    width: width * 0.42,
+    height: height * 0.1,
+    backgroundColor: 'red',
+  },
+  showModalBottomText: {
+    bottom: 0,
+    position: 'absolute',
+    justifyContent: 'center',
+    backgroundColor: '#000',
+  },
+  showModalBottomAround: {
+    width: width,
+    height: width * 0.07,
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  carousel: {
+    width: width * 0.79,
+    height: height * 0.33,
+    backgroundColor: 'red',
+    position: 'absolute',
+    justifyContent: 'center',
+    bottom: 0,
+    marginLeft: width * 0.1,
+  },
+  view: {
+    width: width,
+    height: '50%',
+    backgroundColor: 'rgba(50, 50, 50, 1)',
   },
 });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
-import Color from '../../constants/Colors';
+import Color from '../constants/Colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 interface Props {
