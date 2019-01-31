@@ -8,7 +8,7 @@ import SubMovieComponent from '../components/movieComponents/SubMovieComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import { AuthSession } from 'expo';
 import Carousel from 'react-native-snap-carousel';
-import Modal from '../components/screenComponents/Modal';
+import {Modal} from '../components/screenComponents/Modal';
 
 
 interface Props { navigation: any; }
@@ -17,7 +17,7 @@ type ScreenName = 'video' | 'map';
 
 interface BaseState {
   currentScreen: ScreenName | undefined;
-  modalFlg: boolean;
+  showModal: boolean;
 }
 
 export interface ActiveMapState extends BaseState{
@@ -44,7 +44,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   readonly state: State = {
     currentScreen: undefined,
-    modalFlg: false,
+    showModal: false,
     carouselData: [{}, {}, {}, {}, {}, {}, {}, {}, {}],
   };
 
@@ -113,8 +113,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         </Modal>
 =======
           <Modal
-            modalView={this.state.modalFlg}
-            style={styles.modalInViewAround}
+            modalView={this.state.showModal}
           >
             <Carousel
               data={this.state.carouselData}
@@ -128,10 +127,16 @@ export default class GuideScreen extends React.Component<Props, State> {
               }}
             />
           </Modal>
+<<<<<<< HEAD
 >>>>>>> 4da6e19... 一度モーダル製作終了
           <View style={styles.modalFlgBottomAround}>
             <TouchableOpacity onPress={this.changeModal} style={styles.modalFlgBottom} >
               <Text style={styles.modalFlgBottomText}>OPEN</Text>
+=======
+          <View style={styles.showModalBottomAround}>
+            <TouchableOpacity onPress={() => this.changeModal()} style={styles.showModalBottom} >
+              <Text style={styles.showModalBottomText}>OPEN</Text>
+>>>>>>> 2e5fd99... MOdal.tsxのpropsを削除
             </TouchableOpacity>
           </View>
       </View>
@@ -140,7 +145,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   private changeModal = () => {
     this.setState({
-      modalFlg: this.state.modalFlg ? false : true,
+      showModal: this.state.showModal ? false : true,
     });
   }
 
@@ -150,10 +155,10 @@ export default class GuideScreen extends React.Component<Props, State> {
     this.setState({ indoorLevel });
   }
 
-  private changeModalFlg() {
-    const nextModalFlg = !this.state.modalFlg;
+  private changeshowModal() {
+    const nextshowModal = !this.state.showModal;
     this.setState({
-      modalFlg: nextModalFlg,
+      showModal: nextshowModal,
     });
   }
 }
@@ -193,26 +198,18 @@ const styles = EStyleSheet.create({
     backgroundColor: 'red',
     justifyContent: 'center',
   },
-  modalInViewAround: {
-    width: width,
-    height: height * 0.48,
-    position: 'absolute',
-    bottom: 0,
-    marginBottom: height * 0.1,
-    justifyContent: 'center',
-  },
-  modalFlgBottom: {
+  showModalBottom: {
     width: width * 0.42,
     height: height * 0.1,
     backgroundColor: 'red',
   },
-  modalFlgBottomText: {
+  showModalBottomText: {
     bottom: 0,
     position: 'absolute',
     justifyContent: 'center',
     backgroundColor: '#000',
   },
-  modalFlgBottomAround: {
+  showModalBottomAround: {
     width: width,
     height: width * 0.07,
     position: 'absolute',
