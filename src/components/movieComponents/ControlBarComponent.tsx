@@ -18,8 +18,8 @@ interface Props {
 }
 
 const secondsToTimeString = (seconds: number) : string => {
-  const mm = ("0" + Math.floor(seconds / 60)).slice(-2);
-  const ss = ("0" + (seconds % 60)).slice(-2);
+  const mm = ('0' + Math.floor(seconds / 60)).slice(-2);
+  const ss = ('0' + (seconds % 60)).slice(-2);
   return `${mm}:${ss}`;
 }
 
