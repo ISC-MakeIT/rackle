@@ -4,11 +4,9 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { MapData } from '../dummydata/mapData';
 import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
-import SubMovieComponent from '../components/movieComponents/SubMovieComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
-import { AuthSession } from 'expo';
 import Carousel from 'react-native-snap-carousel';
-import {Modal} from '../components/screenComponents/Modal';
+import {Modal} from '../components/Modal';
 
 
 interface Props { navigation: any; }
@@ -134,7 +132,7 @@ export default class GuideScreen extends React.Component<Props, State> {
               <Text style={styles.modalFlgBottomText}>OPEN</Text>
 =======
           <View style={styles.showModalBottomAround}>
-            <TouchableOpacity onPress={() => this.changeModal()} style={styles.showModalBottom} >
+            <TouchableOpacity onPress={this.changeModal} style={styles.showModalBottom} >
               <Text style={styles.showModalBottomText}>OPEN</Text>
 >>>>>>> 2e5fd99... MOdal.tsxのpropsを削除
             </TouchableOpacity>
