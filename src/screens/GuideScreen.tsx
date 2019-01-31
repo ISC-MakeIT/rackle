@@ -101,6 +101,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
         */}
+<<<<<<< HEAD
         <Modal modalView={this.state.modalFlg} >
           <Carousel
             data={this.state.carouselData}
@@ -110,6 +111,24 @@ export default class GuideScreen extends React.Component<Props, State> {
             renderItem={() => ( <View style={styles.carousel} />)}
           />
         </Modal>
+=======
+          <Modal
+            modalView={this.state.modalFlg}
+            style={styles.modalInViewAround}
+          >
+            <Carousel
+              data={this.state.carouselData}
+              itemWidth={Dimensions.get('screen').width}
+              sliderWidth={Dimensions.get('screen').width}
+              sliderHeight={Dimensions.get('screen').height}
+              renderItem={() => {
+                return (
+                  <View style={styles.carousel}></View>
+                  );
+              }}
+            />
+          </Modal>
+>>>>>>> 4da6e19... 一度モーダル製作終了
           <View style={styles.modalFlgBottomAround}>
             <TouchableOpacity onPress={this.changeModal} style={styles.modalFlgBottom} >
               <Text style={styles.modalFlgBottomText}>OPEN</Text>
@@ -147,7 +166,6 @@ const styles = EStyleSheet.create({
     flex: 1,
     top: 0,
     position: 'relative',
-    //marginBottom: height * 0.07,
   },
   thumbnails: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',

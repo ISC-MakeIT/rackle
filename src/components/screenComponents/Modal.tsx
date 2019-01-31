@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Text, View, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Color from '../../constants/Colors';
-import { ElevatorCapacity } from 'src/domains/map';
 
 interface Props {
   modalView: boolean;

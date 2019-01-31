@@ -8,7 +8,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Color from '../constants/Colors';
 
 interface Props {
-  thumbnails: string[],
+  thumbnails: string[];
 }
 
 interface Item {
@@ -22,7 +22,7 @@ const renderItem = ({item, index} : Item) => {
       <Image style={style.image} source={{ uri: `http://i.ytimg.com/vi/${item}/default.jpg` }} />
     </TouchableOpacity>
   );
-}
+};
 
 const keyExtractor = (item: string, index: number) => index.toString();
 

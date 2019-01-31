@@ -105,7 +105,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
   private createElevatorMarkers() {
     if (this.state.currentElevatorMarkers === undefined) return null;
     return this.state.currentElevatorMarkers.map((elevatorMarker, index: number) => {
-      const icon: IconNameType = elevatorMarker.capacity === 6 ? 'elevator6seater' : 'elevator12seater' // TODO 流動性もたせたい
+      const icon: IconNameType = elevatorMarker.capacity === 6 ? 'elevator6seater' : 'elevator12seater'; // TODO 流動性もたせたい
       return (
         <Marker
           key={`elevatorMarker_${index}`}
