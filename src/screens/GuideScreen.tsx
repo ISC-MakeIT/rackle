@@ -101,62 +101,27 @@ export default class GuideScreen extends React.Component<Props, State> {
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
         */}
-          <Modal
-            modalView={this.state.modalFlg}
-            style={styles.modalInViewAround}
-          >
-            <Carousel
-              data={this.state.carouselData}
-              itemWidth={Dimensions.get('screen').width}
-              sliderWidth={Dimensions.get('screen').width}
-              sliderHeight={Dimensions.get('screen').height}
-              renderItem={(data) => {
-                return (
-                  <View style={styles.carousel}></View>
-                  );
-              }}
-            />
-          </Modal>
+        <Modal modalView={this.state.modalFlg} >
+          <Carousel
+            data={this.state.carouselData}
+            itemWidth={Dimensions.get('screen').width}
+            sliderWidth={Dimensions.get('screen').width}
+            sliderHeight={Dimensions.get('screen').height}
+            renderItem={() => ( <View style={styles.carousel} />)}
+          />
+        </Modal>
           <View style={styles.modalFlgBottomAround}>
-            <TouchableOpacity onPress={() => this.changeModal()} style={styles.modalFlgBottom} >
+            <TouchableOpacity onPress={this.changeModal} style={styles.modalFlgBottom} >
               <Text style={styles.modalFlgBottomText}>OPEN</Text>
-          <View style={styles.modalInViewAround}>
-            <Modal modalView={this.state.modalFlg}>
-                <Carousel
-                  data={this.state.carouselData}
-                  itemWidth={Dimensions.get('screen').width}
-                  sliderWidth={Dimensions.get('screen').width}
-                  sliderHeight={Dimensions.get('screen').height}
-                  renderItem={(data) => {
-                    return (
-                      <View style={styles.carousel}></View>
-                      );
-                  }}
-                />
-            </Modal>
-          </View>
-            <View style={styles.modalFlgBottomAround}>
-              <TouchableOpacity onPress={() => this.changeModal()} style={styles.modalFlgBottom} >
-                <Text style={styles.modalFlgBottomText}>OPEN</Text>
-              </TouchableOpacity>
-            </View>
-          {/* <View style={styles.modalFlgBottomAround}>
-            <TouchableOpacity onPress={() => this.changeModal()} >
-              <Text>OPEN</Text>
             </TouchableOpacity>
-          </View> */}
+          </View>
       </View>
     );
   }
 
-  private changeActiveScreen = () => {
-    const currentScreen = this.state.currentScreen === 'map' ? 'video' : 'map';
-    this.setState({ currentScreen });
-  }
-
   private changeModal = () => {
     this.setState({
-      modalFlg: this.state.modalFlg? false : true,
+      modalFlg: this.state.modalFlg ? false : true,
     });
   }
 
@@ -220,7 +185,7 @@ const styles = EStyleSheet.create({
   },
   modalFlgBottom: {
     width: width * 0.42,
-    height: height * 0.06,
+    height: height * 0.1,
     backgroundColor: 'red',
   },
   modalFlgBottomText: {

@@ -14,8 +14,12 @@ export default class ExtButton extends React.Component<Props, {}> {
   }
 
   render() {
-    return(
-      <View style={this.props.modalView? styles.appearModal : styles.hiddenModal}></View>
+    const style = this.props.modalView ? styles.appearModal : styles.hiddenModal;
+
+    return (
+      <View style={style} >
+        {this.props.children}
+      </View>
     );
   }
 }
