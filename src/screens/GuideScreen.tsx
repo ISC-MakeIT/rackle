@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { View, Text, Modal, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { DummyData } from '../components/mapComponents/DummyData';
+import { MapData } from '../dummydata/mapData';
 import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
-import SubMovieComponent from '../components/movieComponents/SubMovieComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
-import { AuthSession } from 'expo';
 import Carousel from 'react-native-snap-carousel';
+import {Modal} from '../components/Modal';
 
 
 interface Props { navigation: any; }
@@ -16,7 +15,7 @@ type ScreenName = 'video' | 'map';
 
 interface BaseState {
   currentScreen: ScreenName | undefined;
-  modalFlg: boolean;
+  showModal: boolean;
 }
 
 export interface ActiveMapState extends BaseState{
@@ -43,7 +42,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   readonly state: State = {
     currentScreen: undefined,
-    modalFlg: false,
+    showModal: false,
     carouselData: [{}, {}, {}, {}, {}, {}, {}, {}, {}],
   };
 
@@ -54,11 +53,11 @@ export default class GuideScreen extends React.Component<Props, State> {
     if (currentScreen === 'map') {
       this.setState({
         currentScreen,
-        indoorLevel: DummyData.indoorLevel,
-        initializedLocation: DummyData.initializedLocation,
-        movieMarkers: DummyData.movieMarkers,
-        guideLines: DummyData.guideLines,
-        elevatorMarkers: DummyData.elevatorMarkers,
+        indoorLevel: MapData.indoorLevel,
+        initializedLocation: MapData.initializedLocation,
+        movieMarkers: MapData.movieMarkers,
+        guideLines: MapData.guideLines,
+        elevatorMarkers: MapData.elevatorMarkers,
       });
     } else {
       // TODO set movie states...
@@ -100,55 +99,34 @@ export default class GuideScreen extends React.Component<Props, State> {
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
         */}
-          <Modal
-            visible={this.state.modalFlg}
-            animationType={'slide'}
-            transparent={true}
-          >
-            <View style={styles.modalInViewAround}>
-              <Carousel
-                data={this.state.carouselData}
-                itemWidth={Dimensions.get('screen').width}
-                sliderWidth={Dimensions.get('screen').width}
-                sliderHeight={Dimensions.get('screen').height}
-                renderItem={(data) => {
-                  return (
-                    <View style={styles.carousel}></View>
-                  );
-                }}
-              />
-            </View>
-            <View style={styles.modalFlgBottomAround}>
-              <TouchableOpacity onPress={() => this.changeModalFlg()} style={styles.modalFlgBottom} >
-                <Text style={styles.modalFlgBottomText}>OPEN</Text>
-              </TouchableOpacity>
-            </View>
-          </Modal>
-          <View style={styles.modalFlgBottomAround}>
-            <TouchableOpacity onPress={() => this.changeModalFlg()} style={styles.modalFlgBottom} >
-              <Text>OPEN</Text>
+        <Modal modalView={this.state.modalFlg} >
+          <Carousel
+            data={this.state.carouselData}
+            itemWidth={Dimensions.get('screen').width}
+            sliderWidth={Dimensions.get('screen').width}
+            sliderHeight={Dimensions.get('screen').height}
+            renderItem={() => ( <View style={styles.carousel} />)}
+          />
+        </Modal>
+          <View style={styles.showModalBottomAround}>
+            <TouchableOpacity onPress={this.changeModal} style={styles.showModalBottom} >
+              <Text style={styles.showModalBottomText}>OPEN</Text>
             </TouchableOpacity>
           </View>
       </View>
     );
   }
 
-  private changeActiveScreen = () => {
-    const currentScreen = this.state.currentScreen === 'map' ? 'video' : 'map';
-    this.setState({ currentScreen });
+  private changeModal = () => {
+    this.setState({
+      showModal: this.state.showModal ? false : true,
+    });
   }
 
   private changeIndoorLevel = (nextIndoorLevel: string) => {
     const validatedIndoorLevel = nextIndoorLevel.replace(/階/, '');
     const indoorLevel = validatedIndoorLevel.substr(-2);
     this.setState({ indoorLevel });
-  }
-
-  private changeModalFlg() {
-    const nextModalFlg = !this.state.modalFlg;
-    this.setState({
-      modalFlg: nextModalFlg,
-    });
   }
 }
 
@@ -188,6 +166,7 @@ const styles = EStyleSheet.create({
     backgroundColor: 'red',
     justifyContent: 'center',
   },
+<<<<<<< HEAD
   modalInViewAround: {
     width: width,
     height: height * 0.48,
@@ -202,17 +181,32 @@ const styles = EStyleSheet.create({
     backgroundColor: 'red',
   },
   modalFlgBottomText: {
+=======
+  showModalBottom: {
+    width: width * 0.42,
+    height: height * 0.1,
+    backgroundColor: 'red',
+  },
+  showModalBottomText: {
+>>>>>>> d1c704b6a97d3bc666f690904eb6a4a96b7f5242
     bottom: 0,
     position: 'absolute',
     justifyContent: 'center',
     backgroundColor: '#000',
   },
+<<<<<<< HEAD
   modalFlgBottomAround: {
+=======
+  showModalBottomAround: {
+>>>>>>> d1c704b6a97d3bc666f690904eb6a4a96b7f5242
     width: width,
     height: width * 0.07,
     position: 'absolute',
     bottom: 0,
+<<<<<<< HEAD
     //marginBottom:  height * 0.07,
+=======
+>>>>>>> d1c704b6a97d3bc666f690904eb6a4a96b7f5242
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -225,4 +219,12 @@ const styles = EStyleSheet.create({
     bottom: 0,
     marginLeft: width * 0.1,
   },
+<<<<<<< HEAD
+=======
+  view: {
+    width: width,
+    height: '50%',
+    backgroundColor: 'rgba(50, 50, 50, 1)',
+  },
+>>>>>>> d1c704b6a97d3bc666f690904eb6a4a96b7f5242
 });

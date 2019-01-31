@@ -21,7 +21,7 @@ interface Props {
   currentScreen?: ScreenNameType;
 }
 
-interface State { initializedLocation: Region }
+interface State { initializedLocation: Region; }
 
 export default class MapViewComponent extends React.Component<Props, State> {
   readonly state = { initializedLocation: this.props.initializedLocation };

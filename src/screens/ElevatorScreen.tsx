@@ -4,7 +4,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import {Elevator} from '../components/elevatorComponent/Elevator';
 import {Tab} from '../components/elevatorComponent/Tab';
 import { ElevatorMarker, ElevatorCapacity } from 'src/domains/map';
-import { DummyData } from '../components/mapComponents/DummyData';
+import { MapData} from '../dummydata/mapData';
 import Color from '../constants/Colors';
 import * as _ from 'lodash';
 
@@ -20,10 +20,10 @@ export default class ElevatorScreen extends React.Component<Props, State> {
   readonly state = { currentCapacity: 6 };
 
   render() {
-    if (DummyData.elevatorMarkers == undefined) return null;
+    if (MapData.elevatorMarkers == undefined) return null;
 
     const capacities = this.sizeClipping() || [];
-    const currentElevatorMarkers = this.currentElevatorMarkers(DummyData.elevatorMarkers);
+    const currentElevatorMarkers = this.currentElevatorMarkers(MapData.elevatorMarkers);
     return (
       <View style={styles.body}>
         <View style={styles.container}>
@@ -49,8 +49,8 @@ export default class ElevatorScreen extends React.Component<Props, State> {
                 <Elevator
                   navigation={this.props.navigation}
                   capacity={elevatorMarker.item.capacity}
-                  initializedLocation={DummyData.initializedLocation!}
-                  elevatorMarkers={DummyData.elevatorMarkers!}
+                  initializedLocation={MapData.initializedLocation!}
+                  elevatorMarkers={MapData.elevatorMarkers!}
                   key={`elevatorMarker_${elevatorMarker.index}`}
                 />
               );
@@ -66,9 +66,9 @@ export default class ElevatorScreen extends React.Component<Props, State> {
   }
 
   private sizeClipping = () => {
-    if (DummyData.elevatorMarkers == undefined) return;
+    if (MapData.elevatorMarkers == undefined) return;
 
-    const capacity = _.flatMap(DummyData.elevatorMarkers, (e => e.capacity));
+    const capacity = _.flatMap(MapData.elevatorMarkers, (e => e.capacity));
     return _.uniq(capacity);
   }
 
