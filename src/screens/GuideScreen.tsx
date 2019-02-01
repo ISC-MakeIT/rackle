@@ -150,10 +150,12 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private createMovieMarkers() {
-    if (this.state.movieMarkers == undefined) return;
+    if (this.state.movieMarkers == undefined) return undefined;
 
-    const movieMarkerFilter = this.state.carouselMarker == undefined ? 0 : this.state.carouselMarker.id;
-    return this.state.movieMarkers.filter(movieMarker => movieMarker.movieId !== movieMarkerFilter);
+    if (this.state.carouselMarker == undefined) return this.state.movieMarkers;
+
+    const carouselMarkerId = this.state.carouselMarker.id;
+    return this.state.movieMarkers.filter(movieMarker => movieMarker.movieId !== carouselMarkerId);
   }
 }
 
