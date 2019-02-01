@@ -18,7 +18,7 @@ const {width, height} = Dimensions.get('screen');
 
 const styles = EStyleSheet.create({
   appear: {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(0,0,0,0)',
     flex: 1,
     width: width,
     height: height * 0.48,

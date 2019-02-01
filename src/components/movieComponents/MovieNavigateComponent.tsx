@@ -34,8 +34,8 @@ export default class MovieNavigateComponent extends React.Component<Props, State
     }
   }
 
-  private playIcon = () => ( <Ionicons name={'ios-play'} size={36} color={"#FFFFFF"} style={{ textAlign: 'center' }} /> );
-  private pauseIcon = () => ( <Ionicons name={'ios-pause'} size={36} color={"#FFFFFF"} style={{ textAlign: 'center' }} /> );
+  private playIcon = () => ( <Ionicons name={'ios-play'} size={36} color={'#FFFFFF'} style={{ textAlign: 'center' }} /> );
+  private pauseIcon = () => ( <Ionicons name={'ios-pause'} size={36} color={'#FFFFFF'} style={{ textAlign: 'center' }} /> );
 
   public render() {
     return(
@@ -55,7 +55,7 @@ export default class MovieNavigateComponent extends React.Component<Props, State
             thumbImage={require('../../../assets/images/thumb.png')}
             trackImage={require('../../../assets/images/track.png')}
             textStyle={{
-              color: "#FFFFFF",
+              color: '#FFFFFF',
               fontSize: 12,
             }}
             showFullscreenButton={false}

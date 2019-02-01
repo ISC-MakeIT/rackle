@@ -2,11 +2,12 @@ import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { MapData } from '../dummydata/mapData';
-import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
+import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, movie } from 'src/domains/map';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import Carousel from 'react-native-snap-carousel';
 import {Modal} from '../components/Modal';
+import { number } from 'prop-types';
 
 
 interface Props { navigation: any; }
@@ -25,6 +26,8 @@ export interface ActiveMapState extends BaseState{
   toiletMarkers: ToiletMarker[] | undefined;
   elevatorMarkers: ElevatorMarker[] | undefined;
   guideLines: GuideLine[] | undefined;
+  movies: movie[];
+  carouselMarker?: movie;
 }
 
 interface ActiveMovieState extends BaseState {
@@ -43,7 +46,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   readonly state: State = {
     currentScreen: undefined,
     showModal: false,
-    carouselData: [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+    carouselMarker: undefined,
   };
 
   public componentDidMount () {
@@ -58,6 +61,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         movieMarkers: MapData.movieMarkers,
         guideLines: MapData.guideLines,
         elevatorMarkers: MapData.elevatorMarkers,
+        movies: MapData.movies,
       });
     } else {
       // TODO set movie states...
@@ -69,43 +73,46 @@ export default class GuideScreen extends React.Component<Props, State> {
     }
   }
 
+  public componentWillUpdate (nextProps: Props, nextState: State) {
+    if (this.state.indoorLevel !== nextState.indoorLevel) this.setState({carouselMarker: undefined});
+  }
+
   public render () {
     // NITS もう少し厳密に判断した方がいい説 :thinking:
     if (this.state.currentScreen == undefined) return null; // TODO loading animation
     if ((this.state.indoorLevel !== undefined) && (this.state.movieId !== undefined)) return null;
 
     const {
-      currentScreen, indoorLevel, initializedLocation, movieMarkers,
-      toiletMarkers, elevatorMarkers, guideLines,
+      indoorLevel, initializedLocation,
+      toiletMarkers, elevatorMarkers, guideLines, movies,
     } = this.state;
+
+    let currentCarousel = movies.filter(movie => movie.floor === this.state.indoorLevel);
 
     return (
       <View style={styles.content_wrap}>
-         {
-           currentScreen === 'map' ? (
-             <>
-              <MapViewComponent
-                indoorLevel={indoorLevel}
-                initializedLocation={initializedLocation!}
-                movieMarkers={movieMarkers}
-                toiletMarkers={toiletMarkers}
-                elevatorMarkers={elevatorMarkers}
-                guideLines={guideLines}
-                changeIndoorLevel={this.changeIndoorLevel}
-              />
-             </>
-          ) : ( <MovieNavigateComponent />)
-         }
+        <MapViewComponent
+          indoorLevel={indoorLevel}
+          initializedLocation={initializedLocation!}
+          movieMarkers={this.createMovieMarkers()}
+          toiletMarkers={toiletMarkers}
+          elevatorMarkers={elevatorMarkers}
+          guideLines={guideLines}
+          changeIndoorLevel={this.changeIndoorLevel}
+          carouselMarker={this.state.carouselMarker}
+        />
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
         */}
-        <Modal modalView={this.state.showModal} >
+        <Modal modalView={this.state.showModal}>
           <Carousel
-            data={this.state.carouselData}
+            data={currentCarousel}
             itemWidth={Dimensions.get('screen').width}
             sliderWidth={Dimensions.get('screen').width}
             sliderHeight={Dimensions.get('screen').height}
-            renderItem={() => ( <View style={styles.carousel} />)}
+            renderItem={() => ( <View style={styles.carousel}></View>)}
+            lockScrollWhileSnapping={true}
+            onSnapToItem = {index => this.changeInitializedLocation(currentCarousel[index])}
           />
         </Modal>
           <View style={styles.showModalBottomAround}>
@@ -127,6 +134,25 @@ export default class GuideScreen extends React.Component<Props, State> {
     const validatedIndoorLevel = nextIndoorLevel.replace(/階/, '');
     const indoorLevel = validatedIndoorLevel.substr(-2);
     this.setState({ indoorLevel });
+  }
+
+  private changeInitializedLocation(movie: movie) {
+    const latitude = movie.latitude + -0.0006;
+    this.setState({
+      initializedLocation: {
+        latitude: latitude,
+        longitude: movie.longitude,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
+      },
+      carouselMarker: movie,
+    });
+  }
+
+  private createMovieMarkers() {
+    if (this.state.movieMarkers == undefined) return;
+    const movieMarkerFilter = this.state.carouselMarker == undefined ? 0 : this.state.carouselMarker.id;
+    return this.state.movieMarkers.filter(movieMarker => movieMarker.movieId !== movieMarkerFilter);
   }
 }
 

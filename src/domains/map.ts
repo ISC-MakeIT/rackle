@@ -32,3 +32,13 @@ export interface Region {
   latitudeDelta: number;
   longitudeDelta: number;
 }
+
+export interface movie {
+  id: number;
+  name: string;
+  file_path: string;
+  thumbnail_path: string;
+  latitude: number;
+  longitude: number;
+  floor: string;
+}
