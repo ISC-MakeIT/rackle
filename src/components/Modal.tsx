@@ -21,7 +21,7 @@ const styles = EStyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0)',
     flex: 1,
     width: width,
-    height: height * 0.48,
+    height: height * 0.3,
     position: 'absolute',
     bottom: 0,
     marginBottom: height * 0.1,

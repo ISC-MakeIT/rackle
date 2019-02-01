@@ -33,7 +33,7 @@ export interface Region {
   longitudeDelta: number;
 }
 
-export interface movie {
+export interface Movie {
   id: number;
   name: string;
   file_path: string;

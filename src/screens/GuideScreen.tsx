@@ -2,12 +2,11 @@ import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { MapData } from '../dummydata/mapData';
-import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, movie } from 'src/domains/map';
+import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, Movie } from 'src/domains/map';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import Carousel from 'react-native-snap-carousel';
 import {Modal} from '../components/Modal';
-import { number } from 'prop-types';
 
 
 interface Props { navigation: any; }
@@ -26,8 +25,8 @@ export interface ActiveMapState extends BaseState{
   toiletMarkers: ToiletMarker[] | undefined;
   elevatorMarkers: ElevatorMarker[] | undefined;
   guideLines: GuideLine[] | undefined;
-  movies: movie[];
-  carouselMarker?: movie;
+  movies: Movie[];
+  carouselMarker?: Movie;
 }
 
 interface ActiveMovieState extends BaseState {
@@ -113,6 +112,7 @@ export default class GuideScreen extends React.Component<Props, State> {
             renderItem={() => ( <View style={styles.carousel}></View>)}
             lockScrollWhileSnapping={true}
             onSnapToItem = {index => this.changeInitializedLocation(currentCarousel[index])}
+            inactiveSlideShift={0.1}
           />
         </Modal>
           <View style={styles.showModalBottomAround}>
