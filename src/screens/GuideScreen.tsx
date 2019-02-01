@@ -136,8 +136,9 @@ export default class GuideScreen extends React.Component<Props, State> {
     this.setState({ indoorLevel });
   }
 
-  private changeInitializedLocation(movie: movie) {
-    const latitude = movie.latitude + -0.0006;
+  private changeInitializedLocation(movie: Movie) {
+    const centerLatitude = -0.0006;
+    const latitude = movie.latitude + centerLatitude;
     this.setState({
       initializedLocation: {
         latitude: latitude,
