@@ -28,8 +28,9 @@ export default class MapViewComponent extends React.Component<Props, State> {
   readonly state = { initializedLocation: this.props.initializedLocation };
 
   public shouldComponentUpdate(nextProps: Props, nextState: State) {
-    if (this.props.carouselMarker !== nextProps.carouselMarker && nextProps.carouselMarker != undefined
-      || nextProps.carouselMarker == undefined && this.props.carouselMarker !== nextProps.carouselMarker) return true;
+    const moveCarousel = this.props.carouselMarker !== nextProps.carouselMarker && nextProps.carouselMarker != undefined;
+    const changeIndoorLevelCarousel = nextProps.carouselMarker == undefined && this.props.carouselMarker !== nextProps.carouselMarker;
+    if (moveCarousel || changeIndoorLevelCarousel) return true;
     return this.props.indoorLevel !== nextProps.indoorLevel ? true : false;
   }
 
