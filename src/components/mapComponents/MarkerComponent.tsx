@@ -136,6 +136,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
   }
   private createCarouselMarker(carousel: movie) {
     if (carousel === undefined) return null;
+
     return(
       <Marker
         key={'carouselMarker'}
