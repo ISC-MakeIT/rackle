@@ -1,8 +1,10 @@
-import { ActiveMapState } from 'src/screens/GuideScreen';
+import {
+  ActiveMapState
+} from 'src/screens/GuideScreen';
 
 export const MapData: ActiveMapState = {
   indoorLevel: '1',
-  currentScreen:'video',
+  currentScreen: 'video',
   initializedLocation: {
     latitude: 35.46588771428577,
     longitude: 139.62227088041905,
@@ -116,7 +118,7 @@ export const MapData: ActiveMapState = {
     latitude: 35.4663073636272,
     longitude: 139.6226128935814,
   }],
-  guideLines:[{
+  guideLines: [{
     floor: 'B1',
     latitude: 35.465821301223436,
     longitude: 139.62295688688755,
@@ -157,4 +159,44 @@ export const MapData: ActiveMapState = {
     latitude: 35.46597258163476,
     longitude: 139.62195876985788,
   }],
+  movies: [{
+    id: 1,
+    name: '1メートル先',
+    file_path: 'hoge1.mp4',
+    thumbnail_path: 'hoge1.jpg',
+    latitude: 35.46571343866254,
+    longitude: 139.62286870926619,
+    floor: 'B1',
+  }, {
+    id: 2,
+    name: '2メートル先',
+    file_path: 'hoge1.mp4',
+    thumbnail_path: 'hoge2.jpg',
+    latitude: 35.466141611216216,
+    longitude: 139.6222035214305,
+    floor: 'B1',
+  }, {
+    id: 3,
+    name: '3メートル先',
+    file_path: 'hoge1.mp4',
+    thumbnail_path: 'hoge3.jpg',
+    latitude: 35.46594281709978,
+    longitude: 139.62197788059711,
+    floor: 'B1',
+  }, {
+    id: 4,
+    name: '4メートル先',
+    file_path: 'hoge1.mp4',
+    thumbnail_path: 'hoge4.jpg',
+    latitude: 35.465954286004475,
+    longitude: 139.6219688281417,
+    floor: 'B3',
+  }],
+  // 'toilets': [{
+  //   'id': 1,
+  //   'name': '横浜駅中央改札付近',
+  //   'latitude': 35.465481875005196,
+  //   'longitude': 139.62215926498175,
+  //   'floor': -1
+  // }],
 };

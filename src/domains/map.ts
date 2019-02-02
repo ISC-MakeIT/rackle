@@ -32,3 +32,4 @@ export interface Region {
   latitudeDelta: number;
   longitudeDelta: number;
 }
+

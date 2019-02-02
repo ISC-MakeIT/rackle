@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { Marker } from 'react-native-maps';
+import { Marker, Callout } from 'react-native-maps';
 import { MovieMarker, ToiletMarker, ElevatorMarker }from '../../domains/map';
+import { Movie }from '../../domains/movie';
 
 type IconNameType = 'default'
   | 'toilet'
   | 'movie'
   | 'elevator6seater'
-  | 'elevator12seater';
+  | 'elevator12seater'
+  | 'carousel';
 
 interface Props {
   indoorLevel: string;
@@ -15,6 +17,7 @@ interface Props {
   elevatorMarkers?: ElevatorMarker[];
   iconName?: IconNameType;
   pinColor?: string;
+  carouselMarker?: Movie;
 }
 
 interface State {
@@ -22,6 +25,7 @@ interface State {
   currentMovieMarkers?: MovieMarker[];
   currentToiletMarkers?: ToiletMarker[];
   currentElevatorMarkers?: ElevatorMarker[];
+  currentCarouselMarker?: Movie;
 }
 
 export default class MarkerComponent extends React.Component<Props, State> {
@@ -31,7 +35,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
       this.currentMovieMarkerGenerate(this.props.indoorLevel, this.props.movieMarkers) : undefined;
     const currentElevatorMarkers = this.props.elevatorMarkers ?
       this.currentElevatorMarkerGenerate(this.props.indoorLevel, this.props.elevatorMarkers) : undefined;
-      const currentToiletMarkers = this.props.toiletMarkers ?
+    const currentToiletMarkers = this.props.toiletMarkers ?
       this.currentToiletMarkerGenerate(this.props.indoorLevel, this.props.toiletMarkers) : undefined;
     this.state = {
       indoorLevel: this.props.indoorLevel,
@@ -60,6 +64,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
     if (this.state.currentMovieMarkers !== undefined)  return this.createMovieMarkers(this.state.currentMovieMarkers.length);
     if (this.state.currentElevatorMarkers !== undefined) return this.createElevatorMarkers();
     if (this.state.currentToiletMarkers !== undefined) return this.createToiletMarkers();
+    if (this.props.carouselMarker !== undefined) return this.createCarouselMarker(this.props.carouselMarker);
     return null;
   }
 
@@ -128,5 +133,17 @@ export default class MarkerComponent extends React.Component<Props, State> {
         />
       );
     });
+
+  }
+  private createCarouselMarker(carousel: movie) {
+    if (carousel === undefined) return null;
+
+    return(
+      <Marker
+        key={'carouselMarker'}
+        coordinate={{latitude: carousel.latitude, longitude: carousel.longitude}}
+        image={this.iconChange('carousel')}
+      />
+    );
   }
 }
