@@ -4,7 +4,8 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
 import CustomMap from '../mapComponents/CustomMap';
-import { MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, Region, movie} from '../../domains/map';
+import { MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, Region } from '../../domains/map';
+import { Movie } from '../../domains/movie';
 
 type ScreenNameType = 'video' | 'map';
 
@@ -19,7 +20,7 @@ interface Props {
   changeIndoorLevel: (nextIndoorLevel: string) => void;
   screenChange?: () => void;
   currentScreen?: ScreenNameType;
-  carouselMarker?: movie;
+  carouselMarker?: Movie;
 }
 
 interface State { initializedLocation: Region; }

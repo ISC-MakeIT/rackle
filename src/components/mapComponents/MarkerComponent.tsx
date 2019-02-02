@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Marker, Callout } from 'react-native-maps';
-import { MovieMarker, ToiletMarker, ElevatorMarker, movie }from '../../domains/map';
+import { MovieMarker, ToiletMarker, ElevatorMarker }from '../../domains/map';
+import { Movie }from '../../domains/movie';
 
 type IconNameType = 'default'
   | 'toilet'
@@ -16,7 +17,7 @@ interface Props {
   elevatorMarkers?: ElevatorMarker[];
   iconName?: IconNameType;
   pinColor?: string;
-  carouselMarker?: movie;
+  carouselMarker?: Movie;
 }
 
 interface State {
@@ -24,7 +25,7 @@ interface State {
   currentMovieMarkers?: MovieMarker[];
   currentToiletMarkers?: ToiletMarker[];
   currentElevatorMarkers?: ElevatorMarker[];
-  currentCarouselMarker?: movie;
+  currentCarouselMarker?: Movie;
 }
 
 export default class MarkerComponent extends React.Component<Props, State> {
