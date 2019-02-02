@@ -13,6 +13,8 @@ interface Props { navigation: any; }
 
 type ScreenName = 'video' | 'map';
 
+type CarouselMarker = Movie;
+
 interface BaseState {
   currentScreen: ScreenName | undefined;
   showModal: boolean;
@@ -26,7 +28,7 @@ export interface ActiveMapState extends BaseState{
   elevatorMarkers: ElevatorMarker[] | undefined;
   guideLines: GuideLine[] | undefined;
   movies: Movie[];
-  carouselMarker?: Movie;
+  carouselMarker?: CarouselMarker;
 }
 
 interface ActiveMovieState extends BaseState {
