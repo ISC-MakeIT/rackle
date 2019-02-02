@@ -109,19 +109,30 @@ export default class GuideScreen extends React.Component<Props, State> {
             itemWidth={Dimensions.get('screen').width}
             sliderWidth={Dimensions.get('screen').width}
             sliderHeight={Dimensions.get('screen').height}
-            renderItem={() => ( <View style={styles.carousel}></View>)}
+            renderItem={this.carouselRenderItem}
             lockScrollWhileSnapping={true}
-            onSnapToItem = {index => this.changeInitializedLocation(currentCarousel[index])}
+            onSnapToItem = {this.carouselOnSnapToItem}
             inactiveSlideShift={0.1}
           />
         </Modal>
           <View style={styles.showModalBottomAround}>
-            <TouchableOpacity onPress={this.changeModal} style={styles.showModalBottom} >
+            <TouchableOpacity onPress={this.changeModal.bind(this, Carousel)} style={styles.showModalBottom} >
               <Text style={styles.showModalBottomText}>OPEN</Text>
             </TouchableOpacity>
           </View>
       </View>
     );
+  }
+
+  private carouselRenderItem = () => {
+    return <View style={styles.carousel}></View>;
+  }
+
+  private carouselOnSnapToItem = (index: number) => {
+    if (this.state.movies == undefined) return undefined;
+
+    let currentCarousel = this.state.movies.filter(movie => movie.floor === this.state.indoorLevel);
+    return this.changeInitializedLocation(currentCarousel[index]);
   }
 
   private changeModal = () => {
