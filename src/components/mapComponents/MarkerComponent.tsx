@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Marker, Callout } from 'react-native-maps';
-import { MovieMarker, ToiletMarker, ElevatorMarker }from '../../domains/map';
+import { Marker } from 'react-native-maps';
+import {ToiletMarker, ElevatorMarker }from '../../domains/map';
 import { Movie }from '../../domains/movie';
 
 type IconNameType = 'default'
@@ -12,17 +12,18 @@ type IconNameType = 'default'
 
 interface Props {
   indoorLevel: string;
-  movieMarkers?: MovieMarker[];
+  movieMarkers?: Movie[];
   toiletMarkers?: ToiletMarker[];
   elevatorMarkers?: ElevatorMarker[];
   iconName?: IconNameType;
   pinColor?: string;
   carouselMarker?: Movie;
+  changeCarousel?: any;
 }
 
 interface State {
   indoorLevel: string;
-  currentMovieMarkers?: MovieMarker[];
+  currentMovieMarkers?: Movie[];
   currentToiletMarkers?: ToiletMarker[];
   currentElevatorMarkers?: ElevatorMarker[];
   currentCarouselMarker?: Movie;
@@ -68,7 +69,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
     return null;
   }
 
-  private currentMovieMarkerGenerate(indoorLevel: string, movieMarkers: MovieMarker[]) {
+  private currentMovieMarkerGenerate(indoorLevel: string, movieMarkers: Movie[]) {
     return movieMarkers.filter(movieMarker => movieMarker.floor === indoorLevel);
   }
 
@@ -103,6 +104,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
         key={`movieMarker_${index}`}
         coordinate={{latitude: movieMarker.latitude, longitude: movieMarker.longitude}}
         image={maxLength === index || index === 0 ? this.iconChange('default') : this.iconChange('movie')}
+        onPress={() => this.props.changeCarousel(movieMarker)}
       />
     ));
   }
@@ -135,7 +137,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
     });
 
   }
-  private createCarouselMarker(carousel: movie) {
+  private createCarouselMarker(carousel: Movie) {
     if (carousel === undefined) return null;
 
     return(

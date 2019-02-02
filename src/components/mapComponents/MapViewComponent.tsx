@@ -4,7 +4,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
 import CustomMap from '../mapComponents/CustomMap';
-import { MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, Region } from '../../domains/map';
+import { ToiletMarker, ElevatorMarker, GuideLine, Region } from '../../domains/map';
 import { Movie } from '../../domains/movie';
 
 type ScreenNameType = 'video' | 'map';
@@ -12,7 +12,7 @@ type ScreenNameType = 'video' | 'map';
 interface Props {
   indoorLevel: string;
   initializedLocation: Region;
-  movieMarkers?: MovieMarker[];
+  movieMarkers?: Movie[];
   toiletMarkers?: ToiletMarker[];
   elevatorMarkers?: ElevatorMarker[];
   guideLines?: GuideLine[];
@@ -21,6 +21,7 @@ interface Props {
   screenChange?: () => void;
   currentScreen?: ScreenNameType;
   carouselMarker?: Movie;
+  changeCarousel?: any;
 }
 
 interface State { initializedLocation: Region; }
@@ -43,7 +44,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
 
   public render() {
     const movieMarker = this.props.movieMarkers ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} movieMarkers={this.props.movieMarkers} /> : null;
+      <MarkerComponent indoorLevel={this.props.indoorLevel} movieMarkers={this.props.movieMarkers} changeCarousel={this.props.changeCarousel}/> : null;
     const toiletMarker = this.props.toiletMarkers ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} toiletMarkers={this.props.toiletMarkers} /> : null;
     const elevatorMarker = this.props.elevatorMarkers ?
