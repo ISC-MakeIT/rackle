@@ -4,7 +4,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
 import CustomMap from '../mapComponents/CustomMap';
-import { ToiletMarker, ElevatorMarker, GuideLine, Region } from '../../domains/map';
+import { ToiletMarker, ElevatorMarker, GuideLine, Region, Gate } from '../../domains/map';
 import { Movie } from '../../domains/movie';
 
 type ScreenNameType = 'video' | 'map';
@@ -22,6 +22,8 @@ interface Props {
   currentScreen?: ScreenNameType;
   carouselMarker?: Movie;
   changeCarousel?: any;
+  start_gate?: Gate;
+  end_gate?: Gate;
 }
 
 interface State { initializedLocation: Region; }
@@ -54,7 +56,11 @@ export default class MapViewComponent extends React.Component<Props, State> {
     const subColorPolyline = this.props.guideLinesColor && this.props.guideLines ?
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
     const carouselMarker = this.props.carouselMarker ?
-    <MarkerComponent indoorLevel={this.props.indoorLevel} carouselMarker={this.props.carouselMarker} /> : null;
+      <MarkerComponent indoorLevel={this.props.indoorLevel} carouselMarker={this.props.carouselMarker} /> : null;
+    const startGateMarker = this.props.start_gate != undefined ?
+      <MarkerComponent indoorLevel={this.props.indoorLevel} start_gate={this.props.start_gate} /> : null;
+    const endGateMarker = this.props.end_gate != undefined ?
+      <MarkerComponent indoorLevel={this.props.indoorLevel} end_gate={this.props.end_gate} /> : null;
 
     return (
       <MapView
@@ -78,6 +84,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
         {subColorPolyline}
         {mainColorPolyline}
         {carouselMarker}
+        {startGateMarker}
+        {endGateMarker}
       </MapView>
     );
   }

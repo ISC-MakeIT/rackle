@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { MapData } from '../dummydata/mapData';
-import { Region, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
+import { Region, ToiletMarker, ElevatorMarker, GuideLine, Gate } from 'src/domains/map';
 import { Movie } from 'src/domains/movie';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
@@ -29,6 +29,8 @@ export interface ActiveMapState extends BaseState{
   movies: Movie[];
   carouselMarker?: CarouselMarker;
   firstItem: number;
+  start_gate: Gate;
+  end_gate: Gate;
 }
 
 interface ActiveMovieState extends BaseState {
@@ -63,6 +65,8 @@ export default class GuideScreen extends React.Component<Props, State> {
         guideLines: MapData.guideLines,
         elevatorMarkers: MapData.elevatorMarkers,
         movies: MapData.movies,
+        start_gate: MapData.start_gate,
+        end_gate: MapData.end_gate,
       });
     } else {
       // TODO set movie states...
@@ -102,6 +106,8 @@ export default class GuideScreen extends React.Component<Props, State> {
           changeIndoorLevel={this.changeIndoorLevel}
           carouselMarker={this.state.carouselMarker}
           changeCarousel={this.changeCarousel.bind(this)}
+          start_gate={this.state.start_gate}
+          end_gate={this.state.end_gate}
         />
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
@@ -175,8 +181,6 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private changeCarousel = (movieMarker: Movie) => {
-    console.log("call changeCarousel");
-
     const centerLatitude = -0.0006;
     const latitude = movieMarker.latitude + centerLatitude;
     this.setState({
