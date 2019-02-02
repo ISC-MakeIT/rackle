@@ -149,7 +149,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     this.setState({ indoorLevel });
   }
 
-  private changeInitializedLocation(movie: Movie) {
+  private changeInitializedLocation = (movie: Movie) => {
     const centerLatitude = -0.0006;
     const latitude = movie.latitude + centerLatitude;
     this.setState({
@@ -163,8 +163,8 @@ export default class GuideScreen extends React.Component<Props, State> {
     });
   }
 
-  private createMovieMarkers() {
-    if (this.state.movieMarkers == undefined) return undefined;
+  private createMovieMarkers = () => {
+    if (this.state.movieMarkers == undefined) return;
 
     if (this.state.carouselMarker == undefined) return this.state.movieMarkers;
 
