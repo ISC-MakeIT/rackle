@@ -2,7 +2,8 @@ import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { MapData } from '../dummydata/mapData';
-import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine, Movie } from 'src/domains/map';
+import { Region, MovieMarker, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
+import { Movie } from 'src/domains/movie';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import Carousel from 'react-native-snap-carousel';
@@ -12,7 +13,6 @@ import {Modal} from '../components/Modal';
 interface Props { navigation: any; }
 
 type ScreenName = 'video' | 'map';
-
 type CarouselMarker = Movie;
 
 interface BaseState {
@@ -131,9 +131,9 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private carouselOnSnapToItem = (index: number) => {
-    if (this.state.movies == undefined) return undefined;
+    if (this.state.movies == undefined) return;
 
-    let currentCarousel = this.state.movies.filter(movie => movie.floor === this.state.indoorLevel);
+    const currentCarousel = this.state.movies.filter(movie => movie.floor === this.state.indoorLevel);
     return this.changeInitializedLocation(currentCarousel[index]);
   }
 
