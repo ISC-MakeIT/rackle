@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Dimensions, StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, Text, View, ScrollView, TouchableOpacity, Image} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
@@ -9,6 +9,10 @@ import { StationData } from '../dummydata/stations';
 import { StationType, LineType } from '../domains/station';
 import * as _ from 'lodash';
 import { GateSelector } from '../components/GateSelector';
+import SvgUri from 'react-native-svg-uri';
+import img from '../../assets/images/change-icon.svg';
+
+// const changeIcon = require('../../assets/images/change-icon.svg');
 
 interface Props { navigation: any; }
 
@@ -133,7 +137,10 @@ export default class HomeScreen extends React.Component<Props, State> {
             </View>
           </View>
           <TouchableOpacity style={ButtonStyle.switchButton} onPress={this.switchDestination}>
-            <Text>■</Text>
+            {/* <SvgUri source={changeIcon} /> */}
+            {/* <Image
+              source={img}/> */}
+              <SvgUri source={img}/>
           </TouchableOpacity>
         </View>
           <ExtButton

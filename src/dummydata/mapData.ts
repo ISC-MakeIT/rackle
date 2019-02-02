@@ -90,31 +90,6 @@ export const MapData: ActiveMapState = {
     capacity: 6,
     latitude: 35.46662521408242,
     longitude: 139.62260585278273,
-  }, {
-    floor: 'B1',
-    capacity: 6,
-    latitude: 35.4662273546807,
-    longitude: 139.62275706231594,
-  }, {
-    floor: 'B1',
-    capacity: 12,
-    latitude: 35.46601927643347,
-    longitude: 139.62302025407553,
-  }, {
-    floor: 'B1',
-    capacity: 12,
-    latitude: 35.4659865081565,
-    longitude: 139.62323047220707,
-  }, {
-    floor: 'B1',
-    capacity: 12,
-    latitude: 35.46614024587368,
-    longitude: 139.62289653718472,
-  }, {
-    floor: 'B1',
-    capacity: 12,
-    latitude: 35.4663073636272,
-    longitude: 139.6226128935814,
   }],
   guideLines:[{
     floor: 'B1',
