@@ -12,7 +12,7 @@ import { Modal } from '../components/Modal';
 interface Props { navigation: any; }
 
 type ScreenName = 'video' | 'map';
-type CarouselMarker = Movie;
+type Carousel = (Movie | Gate);
 
 interface BaseState {
   currentScreen: ScreenName | undefined;
@@ -27,7 +27,7 @@ export interface ActiveMapState extends BaseState{
   elevatorMarkers: ElevatorMarker[] | undefined;
   guideLines: GuideLine[] | undefined;
   movies: Movie[];
-  carouselMarker?: CarouselMarker;
+  carouselMarker?: Carousel;
   firstItem: number;
   start_gate: Gate;
   end_gate: Gate;
@@ -88,11 +88,12 @@ export default class GuideScreen extends React.Component<Props, State> {
     if ((this.state.indoorLevel !== undefined) && (this.state.movieId !== undefined)) return null;
 
     const {
-      indoorLevel, initializedLocation,
+      indoorLevel, initializedLocation, start_gate, end_gate,
       toiletMarkers, elevatorMarkers, guideLines, movies,
     } = this.state;
 
-    let currentCarousel = movies.filter(movie => movie.floor === this.state.indoorLevel);
+    const carousel = [start_gate, ...movies, end_gate];
+    let currentCarousel = carousel.filter(movie => movie.floor === this.state.indoorLevel);
 
     return (
       <View style={styles.content_wrap}>
@@ -141,7 +142,8 @@ export default class GuideScreen extends React.Component<Props, State> {
   private carouselOnSnapToItem = (index: number) => {
     if (this.state.movies == undefined) return;
 
-    const currentCarousel = this.state.movies.filter(movie => movie.floor === this.state.indoorLevel);
+    const carousel = [this.state.start_gate, ...this.state.movies, this.state.end_gate];
+    const currentCarousel = carousel.filter(movie => movie.floor === this.state.indoorLevel);
     return this.changeInitializedLocation(currentCarousel[index]);
   }
 
@@ -157,45 +159,45 @@ export default class GuideScreen extends React.Component<Props, State> {
     this.setState({ indoorLevel });
   }
 
-  private changeInitializedLocation = (movie: Movie) => {
+  private changeInitializedLocation = (carousel: Carousel) => {
     const centerLatitude = -0.0006;
-    const latitude = movie.latitude + centerLatitude;
+    const latitude = carousel.latitude + centerLatitude;
     this.setState({
       initializedLocation: {
         latitude: latitude,
-        longitude: movie.longitude,
+        longitude: carousel.longitude,
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
       },
-      carouselMarker: movie,
+      carouselMarker: carousel,
     });
   }
 
   private createMovieMarkers = () => {
     if (this.state.movieMarkers == undefined) return;
-
     if (this.state.carouselMarker == undefined) return this.state.movieMarkers;
+    if (this.state.carouselMarker === this.state.start_gate || this.state.carouselMarker === this.state.end_gate) return this.state.movieMarkers;
 
     const carouselMarkerId = this.state.carouselMarker.id;
     return this.state.movieMarkers.filter(movieMarker => movieMarker.id !== carouselMarkerId);
   }
 
-  private changeCarousel = (movieMarker: Movie) => {
+  private changeCarousel = (carouselMarker: Carousel) => {
     const centerLatitude = -0.0006;
-    const latitude = movieMarker.latitude + centerLatitude;
+    const latitude = carouselMarker.latitude + centerLatitude;
     this.setState({
       showModal: true,
-      carouselMarker: movieMarker,
+      carouselMarker: carouselMarker,
       initializedLocation: {
         latitude: latitude,
-        longitude: movieMarker.longitude,
+        longitude: carouselMarker.longitude,
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
       },
     });
   }
 
-  private carouselFirstItem = (currentCarousel: Movie[]) => {
+  private carouselFirstItem = (currentCarousel: Carousel[]) => {
     const carouselMarker = this.state.carouselMarker;
     if(carouselMarker == undefined) return;
 

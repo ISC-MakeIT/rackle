@@ -10,6 +10,8 @@ type IconNameType = 'default'
   | 'elevator12seater'
   | 'carousel'
   | 'gate';
+  type Carousel = (Movie | Gate);
+
 
 interface Props {
   indoorLevel: string;
@@ -18,7 +20,7 @@ interface Props {
   elevatorMarkers?: ElevatorMarker[];
   iconName?: IconNameType;
   pinColor?: string;
-  carouselMarker?: Movie;
+  carouselMarker?: Carousel;
   changeCarousel?: any;
   start_gate?: Gate;
   end_gate?: Gate;
@@ -161,7 +163,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
     });
   }
 
-  private createCarouselMarker(carousel: Movie) {
+  private createCarouselMarker(carousel: Carousel) {
     if (carousel === undefined) return null;
 
     return(
@@ -174,6 +176,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
   }
 
   private createGate = (gateMarker: Gate) => {
+
     return (
       <Marker
         key={`${gateMarker.id}`}

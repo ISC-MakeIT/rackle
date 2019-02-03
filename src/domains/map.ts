@@ -1,10 +1,3 @@
-export interface MovieMarker {
-  floor: string;
-  movieId: number;
-  latitude: number;
-  longitude: number;
-}
-
 export interface ToiletMarker {
   floor: string;
   latitude: number;

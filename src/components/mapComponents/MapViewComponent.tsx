@@ -8,6 +8,7 @@ import { ToiletMarker, ElevatorMarker, GuideLine, Region, Gate } from '../../dom
 import { Movie } from '../../domains/movie';
 
 type ScreenNameType = 'video' | 'map';
+type Carousel = (Movie | Gate);
 
 interface Props {
   indoorLevel: string;
@@ -20,7 +21,7 @@ interface Props {
   changeIndoorLevel: (nextIndoorLevel: string) => void;
   screenChange?: () => void;
   currentScreen?: ScreenNameType;
-  carouselMarker?: Movie;
+  carouselMarker?: Carousel;
   changeCarousel?: any;
   start_gate?: Gate;
   end_gate?: Gate;
