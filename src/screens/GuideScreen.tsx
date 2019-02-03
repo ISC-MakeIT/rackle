@@ -6,8 +6,9 @@ import { Region, ToiletMarker, ElevatorMarker, GuideLine, Gate } from 'src/domai
 import { Movie } from 'src/domains/movie';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
-import Carousel from 'react-native-snap-carousel';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
 import { Modal } from '../components/Modal';
+import Colors from 'src/constants/Colors';
 
 interface Props { navigation: any; }
 
@@ -124,6 +125,11 @@ export default class GuideScreen extends React.Component<Props, State> {
             onSnapToItem={this.carouselOnSnapToItem}
             inactiveSlideShift={0.1}
             firstItem={this.carouselFirstItem(currentCarousel)}
+          />
+          <Pagination
+            activeDotIndex={this.carouselFirstItem(currentCarousel) ? this.carouselFirstItem(currentCarousel) : 0}
+            dotsLength={currentCarousel.length}
+            dotStyle={styles.paginationDotStyle}
           />
         </Modal>
         { currentCarousel.length !== 0 ?
@@ -245,7 +251,7 @@ const styles = EStyleSheet.create({
   },
   showModalBottom: {
     width: width * 0.42,
-    height: height * 0.1,
+    height: height * 0.3,
     backgroundColor: 'red',
   },
   showModalBottomText: {
@@ -256,7 +262,7 @@ const styles = EStyleSheet.create({
   },
   showModalBottomAround: {
     width: width,
-    height: width * 0.07,
+    height: width * 0.1,
     position: 'absolute',
     bottom: 0,
     flexDirection: 'row',
@@ -268,11 +274,16 @@ const styles = EStyleSheet.create({
     backgroundColor: 'red',
     position: 'absolute',
     justifyContent: 'center',
-    marginTop: height * 0.05,
+    bottom: 0,
   },
   view: {
     width: width,
     height: '50%',
     backgroundColor: 'rgba(50, 50, 50, 1)',
+  },
+  paginationDotStyle: {
+    backgroundColor: '#fff',
+    marginBottom: height * 0.03,
+    marginTop: height * -0.025,
   },
 });
