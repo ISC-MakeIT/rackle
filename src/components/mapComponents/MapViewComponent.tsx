@@ -59,9 +59,9 @@ export default class MapViewComponent extends React.Component<Props, State> {
     const carouselMarker = this.props.carouselMarker ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} carouselMarker={this.props.carouselMarker} /> : null;
     const startGateMarker = this.props.start_gate != undefined ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} start_gate={this.props.start_gate} /> : null;
+      <MarkerComponent indoorLevel={this.props.indoorLevel} start_gate={this.props.start_gate} changeCarousel={this.props.changeCarousel}/> : null;
     const endGateMarker = this.props.end_gate != undefined ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} end_gate={this.props.end_gate} /> : null;
+      <MarkerComponent indoorLevel={this.props.indoorLevel} end_gate={this.props.end_gate} changeCarousel={this.props.changeCarousel}/> : null;
 
     return (
       <MapView

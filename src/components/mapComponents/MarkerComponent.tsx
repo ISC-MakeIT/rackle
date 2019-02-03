@@ -165,7 +165,6 @@ export default class MarkerComponent extends React.Component<Props, State> {
 
   private createCarouselMarker(carousel: Carousel) {
     if (carousel === undefined) return null;
-
     return(
       <Marker
         key={'carouselMarker'}
@@ -176,12 +175,12 @@ export default class MarkerComponent extends React.Component<Props, State> {
   }
 
   private createGate = (gateMarker: Gate) => {
-
     return (
       <Marker
         key={`${gateMarker.id}`}
         coordinate={{latitude: gateMarker.latitude, longitude: gateMarker.longitude}}
         image={this.iconChange('gate')}
+        onPress={() => this.props.changeCarousel(gateMarker)}
       />
     );
   }
