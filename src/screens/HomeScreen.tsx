@@ -5,17 +5,19 @@ import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { ExtButton } from '../components/ExtButton';
-import { StationData } from '../dummydata/stations';
 import { StationType, LineType } from '../domains/station';
 import * as _ from 'lodash';
 import { GateSelector } from '../components/GateSelector';
 import swapIcon from '../../assets/images/changeIcon.png';
+import { getTrainLines } from '../services/train_lines';
+import { getGates } from '../services/gates';
 
 interface Props { navigation: any; }
 
 interface State {
   station: StationType;
   lines: LineType;
+  gates: any[]; //todo
   selectedFromLineId: number | undefined;
   selectedToLineId: number | undefined;
   selectedFromGateId: number | undefined;
@@ -35,13 +37,25 @@ export default class HomeScreen extends React.Component<Props, State> {
   };
 
   readonly state = {
-    station: StationData.station,
-    lines: StationData.train_lines,
+    station: undefined,
+    lines: undefined,
+    gates: undefined,
     selectedFromLineId: undefined,
     selectedToLineId: undefined,
     selectedFromGateId: undefined,
     selectedToGateId: undefined,
   };
+
+  async componentDidMount () {
+    // MEMO yokohama = 1
+    // const data = await getStation();
+    // const station = data.station![0];
+    const lines = await getTrainLines(1); // yokohama id
+    this.setState({
+      station: lines.station,
+      lines: lines.train_lines,
+    });
+  }
 
   public render() {
     return (
@@ -66,7 +80,10 @@ export default class HomeScreen extends React.Component<Props, State> {
                 <RNPickerSelect
                   placeholder={{ label: '駅を選択してください', value: null, color: '#9EA0A4', }}
                   items={this.castLineTypeToPickerItemType()}
-                  onValueChange={(value: number) => { this.setState({ selectedFromLineId: value }); }}
+                    onValueChange={(value: number) => {
+                      this.setState({ selectedFromLineId: value });
+                      this.updateGateIds(value);
+                    }}
                   style={{...inputPickerStyle}}
                   value={this.state.selectedFromLineId}
                   useNativeAndroidPickerStyle={false}
@@ -87,7 +104,10 @@ export default class HomeScreen extends React.Component<Props, State> {
                 <RNPickerSelect
                   placeholder={{ label: '駅を選択してください', value: null, color: '#9EA0A4', }}
                   items={this.castLineTypeToPickerItemType()}
-                  onValueChange={(value: number) => { this.setState({ selectedToLineId: value }); }}
+                    onValueChange={(value: number) => {
+                      this.setState({ selectedToLineId: value });
+                      this.updateGateIds(value);
+                    }}
                   style={{...inputPickerStyle}}
                   value={this.state.selectedToLineId}
                   useNativeAndroidPickerStyle={false}
@@ -123,22 +143,32 @@ export default class HomeScreen extends React.Component<Props, State> {
     const selectedLineId = isTypeFrom ? this.state.selectedFromLineId : this.state.selectedToLineId;
 
     if (selectedLineId == undefined) return null;
+    if (this.state.gates == undefined) return null;
+    if (_.isEmpty(this.state.gates)) return null;
 
-    return this.state.lines.map((line, index) => {
+    return this.state.gates.map((gate, index) => {
       const isActive = isTypeFrom ?
-        (this.state.selectedFromGateId && (this.state.selectedFromGateId === line.id)) :
-        (this.state.selectedToGateId && (this.state.selectedToGateId === line.id));
+        (this.state.selectedFromGateId && (this.state.selectedFromGateId === gate.id)) :
+        (this.state.selectedToGateId && (this.state.selectedToGateId === gate.id));
 
       return (
         <GateSelector
           key={`${type}_selector_${index}`}
           active={isActive}
-          gateName={line.name}
-          value={line.id}
+          gateName={gate.name}
+          value={gate.id}
           updateActiveSelector={isTypeFrom ? this.updateFromSelecter : this.updateToSelector}
         />
       );
     });
+  }
+
+  private updateGateIds = async(lineId: number) => {
+    const stationId = this.state.station.id;
+    if (stationId == undefined) return;
+
+    const gates = await getGates(stationId, lineId);
+    this.setState({ gates });
   }
 
   private switchDestination = () => {
@@ -149,11 +179,13 @@ export default class HomeScreen extends React.Component<Props, State> {
       selectedToLineId: currentState.selectedFromLineId,
     });
   }
+
   private castLineTypeToPickerItemType = () => {
+    if (this.state.lines == undefined) return [];
     if (_.isEmpty(this.state.lines)) return [];
 
     // 毎回やってるのなんか嫌い
-    return this.state.lines.map(line => {
+    return this.state.lines.map((line: any) => {
       return _.mapKeys(line, (_, key) => {
         return key === 'id' ? 'value' : key === 'name' ? 'label' : key;
       });
@@ -167,7 +199,6 @@ export default class HomeScreen extends React.Component<Props, State> {
   private updateToSelector = (e: number) => {
     this.setState({selectedToGateId: e});
   }
-
 }
 
 EStyleSheet.build();
