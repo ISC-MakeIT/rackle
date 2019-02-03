@@ -10,7 +10,7 @@ export const Modal: React.FC<Props> = props => {
     const style = props.modalView ? styles.appear : styles.hidden;
     return (
       <LinearGradient
-        colors={[Color.black, 'rgba(0, 0, 0, 0)']}
+        colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
         start={{ x: 0, y: 1 }}
         end={{ x: 0, y: 0 }}
         style={style}

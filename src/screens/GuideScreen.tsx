@@ -8,7 +8,7 @@ import MovieNavigateComponent from '../components/movieComponents/MovieNavigateC
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import { Modal } from '../components/Modal';
-import Colors from 'src/constants/Colors';
+import Colors from '../constants/Colors';
 
 interface Props { navigation: any; }
 
@@ -135,7 +135,10 @@ export default class GuideScreen extends React.Component<Props, State> {
         { currentCarousel.length !== 0 ?
           <View style={styles.showModalBottomAround}>
             <TouchableOpacity onPress={this.changeModal.bind(this, Carousel)} style={styles.showModalBottom} >
-              <Text style={styles.showModalBottomText}>OPEN</Text>
+              {
+                this.state.showModal ? <View style={styles.closeModalBottomText}><Text style={styles.closeText}>CLOSE</Text></View>
+                  : <View style={styles.openModalBottomText}><Text style={styles.openText}>OPEN</Text></View>
+              }
             </TouchableOpacity>
           </View> : null
         }
@@ -239,7 +242,7 @@ const styles = EStyleSheet.create({
     width: width * 0.79,
     height: height * 0.48,
     backgroundColor: 'red',
-    marginBottom: height * 0.1,
+    marginBottom: height * 0.05,
   },
   modalInView: {
     width: width * 0.79,
@@ -251,18 +254,37 @@ const styles = EStyleSheet.create({
   },
   showModalBottom: {
     width: width * 0.42,
-    height: height * 0.3,
-    backgroundColor: 'red',
+    height: height * 0.05,
+    justifyContent: 'center',
+    position: 'absolute',
   },
-  showModalBottomText: {
-    bottom: 0,
+  openModalBottomText: {
+    position: 'absolute',
+   justifyContent: 'center',
+    backgroundColor: Colors.subColorRed,
+    paddingLeft: width * 0.14,
+    width: width * 0.42,
+    height: height * 0.05,
+  },
+  openText: {
+    color: Colors.black,
+    fontSize: 20,
+  },
+  closeText: {
+    color: Colors.white,
+    fontSize: 20,
+  },
+  closeModalBottomText: {
     position: 'absolute',
     justifyContent: 'center',
-    backgroundColor: '#000',
+    paddingLeft: width * 0.12,
+    backgroundColor: Colors.black,
+    width: width * 0.42,
+    height: height * 0.05,
   },
   showModalBottomAround: {
     width: width,
-    height: width * 0.1,
+    height: height * 0.05,
     position: 'absolute',
     bottom: 0,
     flexDirection: 'row',
