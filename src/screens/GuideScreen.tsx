@@ -94,7 +94,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     } = this.state;
 
     const carousel = [start_gate, ...movies, end_gate];
-    let currentCarousel = carousel.filter(movie => movie.floor === this.state.indoorLevel);
+    const currentCarousel = carousel.filter(movie => movie.floor === this.state.indoorLevel);
 
     return (
       <View style={styles.content_wrap}>
@@ -158,9 +158,8 @@ export default class GuideScreen extends React.Component<Props, State> {
     return this.changeInitializedLocation(currentCarousel[index]);
   }
 
-  private changeModal = (initializedLocation) => {
+  private changeModal = (initializedLocation: Region) => {
     const centerLatitude = 0.0006;
-    console.log(initializedLocation.latitude);
     this.state.showModal ?
     this.setState({
       showModal: false,
