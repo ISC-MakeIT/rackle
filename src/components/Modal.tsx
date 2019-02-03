@@ -7,13 +7,13 @@ import Color from '../constants/Colors';
 interface Props { modalView: boolean; }
 
 export const Modal: React.FC<Props> = props => {
-    const style = props.modalView ? styles.appear : styles.hidden;
+    const modalStyle = props.modalView ? styles.appear : styles.hidden;
     return (
       <LinearGradient
         colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
         start={{ x: 0, y: 1 }}
         end={{ x: 0, y: 0 }}
-        style={style}
+        style={modalStyle}
         >
         {props.children}
       </LinearGradient>
