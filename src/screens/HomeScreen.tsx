@@ -15,8 +15,8 @@ interface Props { navigation: any; }
 interface State {
   station: StationType;
   lines: LineType;
-  selectedFromLineId: number;
-  selectedToLineId: number;
+  selectedFromLineId: number | undefined;
+  selectedToLineId: number | undefined;
   selectedFromGateId: number | undefined;
   selectedToGateId: number | undefined;
 }
@@ -36,8 +36,8 @@ export default class HomeScreen extends React.Component<Props, State> {
   readonly state = {
     station: StationData.station,
     lines: StationData.train_lines,
-    selectedFromLineId: 0,
-    selectedToLineId: 0,
+    selectedFromLineId: undefined,
+    selectedToLineId: undefined,
     selectedFromGateId: undefined,
     selectedToGateId: undefined,
   };
@@ -85,19 +85,7 @@ export default class HomeScreen extends React.Component<Props, State> {
               </View>
 
             <View style={containerStyles.searchedListContainer}>
-              {this.state.lines.map((line, index) => {
-                const isActive = this.state.selectedFromGateId && ( this.state.selectedFromGateId === line.id);
-
-                return (
-                  <GateSelector
-                    key={`fromSelector_${index}`}
-                    active={isActive}
-                    gateName={line.name}
-                    value={line.id}
-                    updateActiveSelector={this.updateFromSelecter}
-                  />
-                );
-              })}
+              {this.fromGateSelectors()}
             </View>
 
           </View>
@@ -116,19 +104,7 @@ export default class HomeScreen extends React.Component<Props, State> {
                 </View>
               </View>
               <View style={containerStyles.searchedListContainer}>
-              {this.state.lines.map((line, index) => {
-                const isActive = this.state.selectedToGateId && (this.state.selectedToGateId === line.id);
-
-                return (
-                  <GateSelector
-                    key={`fromSelector_${index}`}
-                    active={isActive}
-                    gateName={line.name}
-                    value={line.id}
-                    updateActiveSelector={this.updateToSelector}
-                  />
-                );
-              })}
+                {this.toGateSelectors()}
               </View>
             </View>
           </View>
@@ -144,6 +120,32 @@ export default class HomeScreen extends React.Component<Props, State> {
         </ScrollView>
       </View>
     );
+  }
+
+  private fromGateSelectors = () => this.gateSelectors('from');
+  private toGateSelectors = () => this.gateSelectors('to');
+
+  private gateSelectors = (type: 'from' | 'to'  ) => {
+    const isTypeFrom = type === 'from';
+    const selectedLineId = isTypeFrom ? this.state.selectedFromLineId : this.state.selectedToLineId;
+
+    if (selectedLineId == undefined) return null;
+
+    return this.state.lines.map((line, index) => {
+      const isActive = isTypeFrom ?
+        (this.state.selectedFromGateId && (this.state.selectedFromGateId === line.id)) :
+        (this.state.selectedToGateId && (this.state.selectedToGateId === line.id));
+
+      return (
+        <GateSelector
+          key={`${type}_selector_${index}`}
+          active={isActive}
+          gateName={line.name}
+          value={line.id}
+          updateActiveSelector={isTypeFrom ? this.updateFromSelecter : this.updateToSelector}
+        />
+      );
+    });
   }
 
   private switchDestination = () => {
