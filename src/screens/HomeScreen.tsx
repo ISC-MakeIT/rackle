@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Dimensions, StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, Text, View, ScrollView, TouchableOpacity, Image} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
@@ -9,6 +9,7 @@ import { StationData } from '../dummydata/stations';
 import { StationType, LineType } from '../domains/station';
 import * as _ from 'lodash';
 import { GateSelector } from '../components/GateSelector';
+import swapIcon from '../../assets/images/changeIcon.png';
 
 interface Props { navigation: any; }
 
@@ -101,7 +102,7 @@ export default class HomeScreen extends React.Component<Props, State> {
             </View>
           </View>
           <TouchableOpacity style={ButtonStyle.switchButton} onPress={this.switchDestination}>
-            <Text>■</Text>
+            <Image source={swapIcon} style={ButtonStyle.image}/>
           </TouchableOpacity>
         </View>
           <ExtButton
@@ -320,10 +321,14 @@ const inputPickerStyle = EStyleSheet.create({
   },
 });
 
-const ButtonStyle = EStyleSheet.create({
+const ButtonStyle = StyleSheet.create({
   switchButton: {
-    width: '7%',
-    height: '7%',
-    backgroundColor: Color.mainColor,
+    width: 30,
+    height: 30,
+    backgroundColor: Color.swapBtnColor,
+  },
+  image: {
+    width: 30,
+    height: 30,
   },
 });
