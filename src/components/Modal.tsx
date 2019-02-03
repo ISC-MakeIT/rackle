@@ -32,7 +32,6 @@ const styles = EStyleSheet.create({
     bottom: 0,
     //marginBottom: height * 0.1,
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0)',
   },
   hidden: {
     display: 'none',

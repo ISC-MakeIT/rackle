@@ -116,7 +116,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         <Modal modalView={this.state.showModal}>
           <Carousel
             data={currentCarousel}
-            itemWidth={Dimensions.get('screen').width}
+            itemWidth={Dimensions.get('screen').width * 0.8}
             sliderWidth={Dimensions.get('screen').width}
             sliderHeight={Dimensions.get('screen').height}
             renderItem={this.carouselRenderItem}
@@ -268,8 +268,6 @@ const styles = EStyleSheet.create({
     backgroundColor: 'red',
     position: 'absolute',
     justifyContent: 'center',
-    //bottom: 0,
-    marginLeft: width * 0.1,
     marginTop: height * 0.05,
   },
   view: {
