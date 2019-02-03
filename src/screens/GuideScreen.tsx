@@ -268,8 +268,9 @@ const styles = EStyleSheet.create({
     backgroundColor: 'red',
     position: 'absolute',
     justifyContent: 'center',
-    bottom: 0,
+    //bottom: 0,
     marginLeft: width * 0.1,
+    marginTop: height * 0.05,
   },
   view: {
     width: width,
