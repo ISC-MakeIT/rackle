@@ -262,7 +262,7 @@ const styles = EStyleSheet.create({
     position: 'absolute',
    justifyContent: 'center',
     backgroundColor: Colors.subColorRed,
-    paddingLeft: width * 0.14,
+    paddingLeft: width * 0.15,
     width: width * 0.42,
     height: height * 0.05,
   },
@@ -277,7 +277,7 @@ const styles = EStyleSheet.create({
   closeModalBottomText: {
     position: 'absolute',
     justifyContent: 'center',
-    paddingLeft: width * 0.12,
+    paddingLeft: width * 0.13,
     backgroundColor: Colors.black,
     width: width * 0.42,
     height: height * 0.05,
