@@ -8,7 +8,7 @@ import { ToiletMarker, ElevatorMarker, GuideLine, Region, Gate } from '../../dom
 import { Movie } from '../../domains/movie';
 
 type ScreenNameType = 'video' | 'map';
-type Carousel = (Movie | Gate);
+type Carousel = Movie | Gate;
 
 interface Props {
   indoorLevel: string;

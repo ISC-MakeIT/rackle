@@ -13,7 +13,7 @@ import Colors from '../constants/Colors';
 interface Props { navigation: any; }
 
 type ScreenName = 'video' | 'map';
-type Carousel = (Movie | Gate);
+type Carousel = Movie | Gate;
 
 interface BaseState {
   currentScreen: ScreenName | undefined;
@@ -134,7 +134,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         </Modal>
         { currentCarousel.length !== 0 ?
           <View style={styles.showModalBottomAround}>
-            <TouchableOpacity onPress={this.changeModal.bind(this, Carousel)} style={styles.showModalBottom} >
+            <TouchableOpacity onPress={this.changeModal.bind(this, initializedLocation)} style={styles.showModalBottom} >
               {
                 this.state.showModal ? <View style={styles.closeModalBottomText}><Text style={styles.closeText}>CLOSE</Text></View>
                   : <View style={styles.openModalBottomText}><Text style={styles.openText}>OPEN</Text></View>
@@ -158,9 +158,20 @@ export default class GuideScreen extends React.Component<Props, State> {
     return this.changeInitializedLocation(currentCarousel[index]);
   }
 
-  private changeModal = () => {
+  private changeModal = (initializedLocation) => {
+    const centerLatitude = 0.0006;
+    console.log(initializedLocation.latitude);
+    this.state.showModal ?
     this.setState({
-      showModal: this.state.showModal ? false : true,
+      showModal: false,
+      initializedLocation: {
+        latitude: initializedLocation.latitude + centerLatitude,
+        longitude: initializedLocation.longitude,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
+      },
+    }) : this.setState({
+      showModal: true,
     });
   }
 

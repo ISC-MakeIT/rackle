@@ -10,7 +10,7 @@ type IconNameType = 'default'
   | 'elevator12seater'
   | 'carousel'
   | 'gate';
-  type Carousel = (Movie | Gate);
+  type Carousel = Movie | Gate;
 
 
 interface Props {
