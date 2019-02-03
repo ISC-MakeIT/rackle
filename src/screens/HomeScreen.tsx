@@ -43,20 +43,12 @@ export default class HomeScreen extends React.Component<Props, State> {
   };
 
   public render() {
-    const { height } = Dimensions.get('window');
-
     return (
       <View style={styles.container}>
       <ScrollView>
         <LinearGradient
           colors={[Color.mainColor, Color.subColorOffWhite, Color.subColorOffWhite]}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            minHeight: height,
-          }}
+          style={gradationStyle.gradation}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
         />
@@ -184,6 +176,19 @@ const styles = StyleSheet.create({
     backgroundColor: Color.mainColor,
     flex: 1,
     flexDirection: 'column',
+  },
+});
+
+const { height } = Dimensions.get('window');
+
+const gradationStyle = EStyleSheet.create({
+  gradation: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    minHeight: height,
   },
 });
 
