@@ -126,11 +126,13 @@ export default class GuideScreen extends React.Component<Props, State> {
             firstItem={this.carouselFirstItem(currentCarousel)}
           />
         </Modal>
+        { currentCarousel.length !== 0 ?
           <View style={styles.showModalBottomAround}>
             <TouchableOpacity onPress={this.changeModal.bind(this, Carousel)} style={styles.showModalBottom} >
               <Text style={styles.showModalBottomText}>OPEN</Text>
             </TouchableOpacity>
-          </View>
+          </View> : null
+        }
       </View>
     );
   }
