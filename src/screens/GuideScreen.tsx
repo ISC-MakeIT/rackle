@@ -157,6 +157,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   private currentPaginationPoint = (currentCarousel: Carousel[]) => {
     const currentPoint = this.carouselFirstItem(currentCarousel);
+
     if (currentPoint == undefined) return undefined;
     if (currentPoint > 6 ) return  Math.round((6 / currentPoint) * 6);
     return currentPoint;
