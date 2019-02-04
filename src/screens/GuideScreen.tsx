@@ -137,8 +137,17 @@ export default class GuideScreen extends React.Component<Props, State> {
           <View style={styles.showModalBottomAround}>
             <TouchableOpacity onPress={this.changeModal.bind(this, initializedLocation)} style={styles.showModalBottom} >
               {
-                this.state.showModal ? <View style={styles.closeModalBottomText}><Text style={styles.closeText}>CLOSE</Text></View>
-                  : <View style={styles.openModalBottomText}><Text style={styles.openText}>OPEN</Text></View>
+                this.state.showModal ?
+                  <View style={styles.closeModalBottomText}>
+                    <Text style={styles.closeText}>
+                      CLOSE
+                    </Text>
+                  </View> :
+                  <View style={styles.openModalBottomText}>
+                    <Text style={styles.openText}>
+                      OPEN
+                    </Text>
+                  </View>
               }
             </TouchableOpacity>
           </View> : null
