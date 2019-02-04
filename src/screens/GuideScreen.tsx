@@ -102,7 +102,6 @@ export default class GuideScreen extends React.Component<Props, State> {
     } = this.state;
 
     const carousel = [startGate, ...movies, endGate];
-    console.log(carousel);
     const currentCarousel = carousel.filter(movie => movie.floor === this.state.indoorLevel);
 
     return (
