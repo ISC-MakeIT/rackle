@@ -2,7 +2,8 @@ import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { MapData } from '../dummydata/mapData';
-import { Region, ToiletMarker, ElevatorMarker, GuideLine, Gate } from 'src/domains/map';
+import { Region, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
+import { Gate, StartGate, EndGate} from 'src/domains/gate';
 import { Movie } from 'src/domains/movie';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
@@ -14,14 +15,6 @@ interface Props { navigation: any; }
 
 type ScreenName = 'video' | 'map';
 type Carousel = Movie | Gate;
-
-interface StartGate {
-  startGate: Gate;
-}
-
-interface EndGate {
-  endGate: Gate;
-}
 
 interface BaseState {
   currentScreen: ScreenName | undefined;
@@ -116,8 +109,8 @@ export default class GuideScreen extends React.Component<Props, State> {
           changeIndoorLevel={this.changeIndoorLevel}
           carouselMarker={this.state.carouselMarker}
           changeCarousel={this.changeCarousel.bind(this)}
-          start_gate={this.state.startGate}
-          end_gate={this.state.endGate}
+          startGate={this.state.startGate}
+          endGate={this.state.endGate}
         />
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
