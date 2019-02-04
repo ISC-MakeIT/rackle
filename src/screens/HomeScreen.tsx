@@ -11,14 +11,15 @@ import { GateSelector } from '../components/GateSelector';
 import swapIcon from '../../assets/images/changeIcon.png';
 import { getTrainLines } from '../services/train_lines';
 import { getGates } from '../services/gates';
+import { Gate } from 'src/domains/gate';
 
 interface Props { navigation: any; }
 
 interface State {
   station: StationType;
   lines: LineType;
-  fromGates: any[];
-  toGates: any[];
+  fromGates: Gate[];
+  toGates: Gate[];
   selectedFromLineId: number | undefined;
   selectedToLineId: number | undefined;
   selectedFromGateId: number | undefined;
