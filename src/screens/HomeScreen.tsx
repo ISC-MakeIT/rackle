@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Dimensions, StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, Text, View, ScrollView, TouchableOpacity, Image} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
@@ -9,14 +9,15 @@ import { StationData } from '../dummydata/stations';
 import { StationType, LineType } from '../domains/station';
 import * as _ from 'lodash';
 import { GateSelector } from '../components/GateSelector';
+import swapIcon from '../../assets/images/changeIcon.png';
 
 interface Props { navigation: any; }
 
 interface State {
   station: StationType;
   lines: LineType;
-  selectedFromLineId: number;
-  selectedToLineId: number;
+  selectedFromLineId: number | undefined;
+  selectedToLineId: number | undefined;
   selectedFromGateId: number | undefined;
   selectedToGateId: number | undefined;
 }
@@ -36,27 +37,19 @@ export default class HomeScreen extends React.Component<Props, State> {
   readonly state = {
     station: StationData.station,
     lines: StationData.train_lines,
-    selectedFromLineId: 0,
-    selectedToLineId: 0,
+    selectedFromLineId: undefined,
+    selectedToLineId: undefined,
     selectedFromGateId: undefined,
     selectedToGateId: undefined,
   };
 
   public render() {
-    const { height } = Dimensions.get('window');
-
     return (
       <View style={styles.container}>
       <ScrollView>
         <LinearGradient
           colors={[Color.mainColor, Color.subColorOffWhite, Color.subColorOffWhite]}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            minHeight: height,
-          }}
+          style={gradationStyle.gradation}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
         />
@@ -85,19 +78,7 @@ export default class HomeScreen extends React.Component<Props, State> {
               </View>
 
             <View style={containerStyles.searchedListContainer}>
-              {this.state.lines.map((line, index) => {
-                const isActive = this.state.selectedFromGateId && ( this.state.selectedFromGateId === line.id);
-
-                return (
-                  <GateSelector
-                    key={`fromSelector_${index}`}
-                    active={isActive}
-                    gateName={line.name}
-                    value={line.id}
-                    updateActiveSelector={this.updateFromSelecter}
-                  />
-                );
-              })}
+              {this.fromGateSelectors()}
             </View>
 
           </View>
@@ -116,24 +97,12 @@ export default class HomeScreen extends React.Component<Props, State> {
                 </View>
               </View>
               <View style={containerStyles.searchedListContainer}>
-              {this.state.lines.map((line, index) => {
-                const isActive = this.state.selectedToGateId && (this.state.selectedToGateId === line.id);
-
-                return (
-                  <GateSelector
-                    key={`fromSelector_${index}`}
-                    active={isActive}
-                    gateName={line.name}
-                    value={line.id}
-                    updateActiveSelector={this.updateToSelector}
-                  />
-                );
-              })}
+                {this.toGateSelectors()}
               </View>
             </View>
           </View>
           <TouchableOpacity style={ButtonStyle.switchButton} onPress={this.switchDestination}>
-            <Text>■</Text>
+            <Image source={swapIcon} style={ButtonStyle.image}/>
           </TouchableOpacity>
         </View>
           <ExtButton
@@ -144,6 +113,32 @@ export default class HomeScreen extends React.Component<Props, State> {
         </ScrollView>
       </View>
     );
+  }
+
+  private fromGateSelectors = () => this.gateSelectors('from');
+  private toGateSelectors = () => this.gateSelectors('to');
+
+  private gateSelectors = (type: 'from' | 'to'  ) => {
+    const isTypeFrom = type === 'from';
+    const selectedLineId = isTypeFrom ? this.state.selectedFromLineId : this.state.selectedToLineId;
+
+    if (selectedLineId == undefined) return null;
+
+    return this.state.lines.map((line, index) => {
+      const isActive = isTypeFrom ?
+        (this.state.selectedFromGateId && (this.state.selectedFromGateId === line.id)) :
+        (this.state.selectedToGateId && (this.state.selectedToGateId === line.id));
+
+      return (
+        <GateSelector
+          key={`${type}_selector_${index}`}
+          active={isActive}
+          gateName={line.name}
+          value={line.id}
+          updateActiveSelector={isTypeFrom ? this.updateFromSelecter : this.updateToSelector}
+        />
+      );
+    });
   }
 
   private switchDestination = () => {
@@ -182,6 +177,19 @@ const styles = StyleSheet.create({
     backgroundColor: Color.mainColor,
     flex: 1,
     flexDirection: 'column',
+  },
+});
+
+const { height } = Dimensions.get('window');
+
+const gradationStyle = EStyleSheet.create({
+  gradation: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    minHeight: height,
   },
 });
 
@@ -313,10 +321,14 @@ const inputPickerStyle = EStyleSheet.create({
   },
 });
 
-const ButtonStyle = EStyleSheet.create({
+const ButtonStyle = StyleSheet.create({
   switchButton: {
-    width: '7%',
-    height: '7%',
-    backgroundColor: Color.mainColor,
+    width: 30,
+    height: 30,
+    backgroundColor: Color.swapBtnColor,
+  },
+  image: {
+    width: 30,
+    height: 30,
   },
 });
