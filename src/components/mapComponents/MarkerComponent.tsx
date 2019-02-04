@@ -181,7 +181,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
   private createGate = (gateMarker: Gate) => {
     return (
       <Marker
-        key={`${gateMarker.id}`}
+        key={gateMarker.id}
         coordinate={{latitude: gateMarker.latitude, longitude: gateMarker.longitude}}
         image={this.iconChange('gate')}
         onPress={() => this.props.changeCarousel(gateMarker)}
