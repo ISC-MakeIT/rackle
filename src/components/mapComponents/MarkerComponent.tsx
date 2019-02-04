@@ -21,7 +21,7 @@ interface Props {
   iconName?: IconNameType;
   pinColor?: string;
   carouselMarker?: Carousel;
-  changeCarousel?: any;
+  changeCarousel?: (carousel: Carousel) => void;
   start_gate?: Gate;
   end_gate?: Gate;
 }

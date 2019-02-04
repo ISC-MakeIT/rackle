@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Text, View, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { LinearGradient } from 'expo';
-import Color from '../constants/Colors';
 
 interface Props { modalView: boolean; }
 
