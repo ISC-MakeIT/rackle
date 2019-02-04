@@ -21,9 +21,9 @@ interface Props {
   iconName?: IconNameType;
   pinColor?: string;
   carouselMarker?: Carousel;
-  changeCarousel?: (carousel: Carousel) => void;
-  start_gate?: Gate;
-  end_gate?: Gate;
+  changeCarousel: (carousel: Carousel) => void;
+  startGate?: Gate;
+  endGate?: Gate;
 }
 
 interface State {
@@ -45,10 +45,10 @@ export default class MarkerComponent extends React.Component<Props, State> {
       this.currentElevatorMarkerGenerate(this.props.indoorLevel, this.props.elevatorMarkers) : undefined;
     const currentToiletMarkers = this.props.toiletMarkers ?
       this.currentToiletMarkerGenerate(this.props.indoorLevel, this.props.toiletMarkers) : undefined;
-    const currentStartGateMarker =  this.props.start_gate != undefined ?
-      this.currentGateMarkerGenerate(this.props.indoorLevel, this.props.start_gate): undefined;
-    const currentEndGateMarker = this.props.end_gate != undefined ?
-      this.currentGateMarkerGenerate(this.props.indoorLevel, this.props.end_gate) : undefined;
+    const currentStartGateMarker =  this.props.startGate != undefined ?
+      this.currentGateMarkerGenerate(this.props.indoorLevel, this.props.startGate): undefined;
+    const currentEndGateMarker = this.props.endGate != undefined ?
+      this.currentGateMarkerGenerate(this.props.indoorLevel, this.props.endGate) : undefined;
     this.state = {
       indoorLevel: this.props.indoorLevel,
       currentMovieMarkers,
@@ -66,10 +66,10 @@ export default class MarkerComponent extends React.Component<Props, State> {
       this.currentElevatorMarkerGenerate(nextProps.indoorLevel, nextProps.elevatorMarkers) : undefined;
     const currentToiletMarkers = nextProps.toiletMarkers ?
       this.currentToiletMarkerGenerate(nextProps.indoorLevel, nextProps.toiletMarkers) : undefined;
-    const currentStartGateMarker =  nextProps.start_gate != undefined ?
-      this.currentGateMarkerGenerate(nextProps.indoorLevel, nextProps.start_gate): undefined;
-    const currentEndGateMarker = nextProps.end_gate != undefined ?
-      this.currentGateMarkerGenerate(nextProps.indoorLevel, nextProps.end_gate) : undefined;
+    const currentStartGateMarker =  nextProps.startGate != undefined ?
+      this.currentGateMarkerGenerate(nextProps.indoorLevel, nextProps.startGate): undefined;
+    const currentEndGateMarker = nextProps.endGate != undefined ?
+      this.currentGateMarkerGenerate(nextProps.indoorLevel, nextProps.endGate) : undefined;
     this.setState({
       indoorLevel: nextProps.indoorLevel,
       currentMovieMarkers,

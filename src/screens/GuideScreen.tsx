@@ -15,6 +15,14 @@ interface Props { navigation: any; }
 type ScreenName = 'video' | 'map';
 type Carousel = Movie | Gate;
 
+interface StartGate {
+  startGate: Gate;
+}
+
+interface EndGate {
+  endGate: Gate;
+}
+
 interface BaseState {
   currentScreen: ScreenName | undefined;
   showModal: boolean;
@@ -40,7 +48,7 @@ interface ActiveMovieState extends BaseState {
   // FIXME 必要なものがわからん
 }
 
-type State = ActiveMapState & ActiveMovieState;
+type State = ActiveMapState & ActiveMovieState & StartGate & EndGate;
 
 export default class GuideScreen extends React.Component<Props, State> {
   public static navigationOptions = {
@@ -66,8 +74,8 @@ export default class GuideScreen extends React.Component<Props, State> {
         guideLines: MapData.guideLines,
         elevatorMarkers: MapData.elevatorMarkers,
         movies: MapData.movies,
-        start_gate: MapData.start_gate,
-        end_gate: MapData.end_gate,
+        startGate: MapData.start_gate,
+        endGate: MapData.end_gate,
       });
     } else {
       // TODO set movie states...
@@ -89,11 +97,12 @@ export default class GuideScreen extends React.Component<Props, State> {
     if ((this.state.indoorLevel !== undefined) && (this.state.movieId !== undefined)) return null;
 
     const {
-      indoorLevel, initializedLocation, start_gate, end_gate,
+      indoorLevel, initializedLocation, startGate, endGate,
       toiletMarkers, elevatorMarkers, guideLines, movies,
     } = this.state;
 
-    const carousel = [start_gate, ...movies, end_gate];
+    const carousel = [startGate, ...movies, endGate];
+    console.log(carousel);
     const currentCarousel = carousel.filter(movie => movie.floor === this.state.indoorLevel);
 
     return (
@@ -108,8 +117,8 @@ export default class GuideScreen extends React.Component<Props, State> {
           changeIndoorLevel={this.changeIndoorLevel}
           carouselMarker={this.state.carouselMarker}
           changeCarousel={this.changeCarousel.bind(this)}
-          start_gate={this.state.start_gate}
-          end_gate={this.state.end_gate}
+          start_gate={this.state.startGate}
+          end_gate={this.state.endGate}
         />
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
@@ -153,7 +162,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   private carouselOnSnapToItem = (index: number) => {
     if (this.state.movies == undefined) return;
 
-    const carousel = [this.state.start_gate, ...this.state.movies, this.state.end_gate];
+    const carousel = [this.state.startGate, ...this.state.movies, this.state.endGate];
     const currentCarousel = carousel.filter(movie => movie.floor === this.state.indoorLevel);
     return this.changeInitializedLocation(currentCarousel[index]);
   }
@@ -197,7 +206,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   private createMovieMarkers = () => {
     if (this.state.movieMarkers == undefined) return;
     if (this.state.carouselMarker == undefined) return this.state.movieMarkers;
-    if (this.state.carouselMarker === this.state.start_gate || this.state.carouselMarker === this.state.end_gate) return this.state.movieMarkers;
+    if (this.state.carouselMarker === this.state.startGate || this.state.carouselMarker === this.state.endGate) return this.state.movieMarkers;
 
     const carouselMarkerId = this.state.carouselMarker.id;
     return this.state.movieMarkers.filter(movieMarker => movieMarker.id !== carouselMarkerId);
