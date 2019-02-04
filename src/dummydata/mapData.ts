@@ -11,47 +11,22 @@ export const MapData: ActiveMapState = {
     latitudeDelta: 0.1,
     longitudeDelta: 0.1,
   },
-  movieMarkers: [{
-    floor: 'B1',
-    movieId: 1,
-    latitude: 35.465821301223436,
-    longitude: 139.62295688688755,
-  }, {
-    floor: 'B1',
-    movieId: 2,
-    latitude: 35.46571343866254,
-    longitude: 139.62286870926619,
-  }, {
-    floor: 'B1',
-    movieId: 3,
-    latitude: 35.465792082771856,
-    longitude: 139.62272554636002,
-  }, {
-    floor: 'B1',
-    movieId: 4,
-    latitude: 35.465903768197734,
-    longitude: 139.62255354970694,
-  }, {
-    floor: 'B1',
-    movieId: 5,
-    latitude: 35.466043852632446,
-    longitude: 139.6223419904709,
-  }, {
-    floor: 'B1',
-    movieId: 6,
-    latitude: 35.46616127214609,
-    longitude: 139.6221974864602,
-  }, {
-    floor: 'B1',
-    movieId: 7,
-    latitude: 35.46594281709978,
-    longitude: 139.62197788059711,
-  }, {
+  start_gate: {
+    id: 1,
+    train_line_name: '京急',
+    name: '中央',
+    latitude: 35.46591086799952600,
+    longitude: 139.62309032678604000,
+    floor:'B1',
+  },
+  end_gate: {
+    id : 2,
+    train_line_name: '東急東横',
+    name: '南',
+    latitude: 35.46599142339890400,
+    longitude: 139.62201878428460000,
     floor: 'B3',
-    movieId: 8,
-    latitude: 35.46597258163476,
-    longitude: 139.62195876985788,
-  }],
+  },
   toiletMarkers: [{
     floor: 'B1',
     latitude: 35.46549853231885,

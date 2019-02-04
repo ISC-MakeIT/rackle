@@ -1,31 +1,40 @@
 import * as React from 'react';
-import { Marker, Callout } from 'react-native-maps';
-import { MovieMarker, ToiletMarker, ElevatorMarker }from '../../domains/map';
+import { Marker } from 'react-native-maps';
+import {ToiletMarker, ElevatorMarker }from '../../domains/map';
 import { Movie }from '../../domains/movie';
+import { Gate } from 'src/domains/gate';
 
 type IconNameType = 'default'
   | 'toilet'
   | 'movie'
   | 'elevator6seater'
   | 'elevator12seater'
-  | 'carousel';
+  | 'carousel'
+  | 'gate';
+  type Carousel = Movie | Gate;
+
 
 interface Props {
   indoorLevel: string;
-  movieMarkers?: MovieMarker[];
+  movieMarkers?: Movie[];
   toiletMarkers?: ToiletMarker[];
   elevatorMarkers?: ElevatorMarker[];
   iconName?: IconNameType;
   pinColor?: string;
-  carouselMarker?: Movie;
+  carouselMarker?: Carousel;
+  changeCarousel: (carousel: Carousel) => void;
+  startGate?: Gate;
+  endGate?: Gate;
 }
 
 interface State {
   indoorLevel: string;
-  currentMovieMarkers?: MovieMarker[];
+  currentMovieMarkers?: Movie[];
   currentToiletMarkers?: ToiletMarker[];
   currentElevatorMarkers?: ElevatorMarker[];
   currentCarouselMarker?: Movie;
+  currentStartGateMarker?: Gate;
+  currentEndGateMarker?: Gate;
 }
 
 export default class MarkerComponent extends React.Component<Props, State> {
@@ -37,11 +46,17 @@ export default class MarkerComponent extends React.Component<Props, State> {
       this.currentElevatorMarkerGenerate(this.props.indoorLevel, this.props.elevatorMarkers) : undefined;
     const currentToiletMarkers = this.props.toiletMarkers ?
       this.currentToiletMarkerGenerate(this.props.indoorLevel, this.props.toiletMarkers) : undefined;
+    const currentStartGateMarker =  this.props.startGate != undefined ?
+      this.currentGateMarkerGenerate(this.props.indoorLevel, this.props.startGate): undefined;
+    const currentEndGateMarker = this.props.endGate != undefined ?
+      this.currentGateMarkerGenerate(this.props.indoorLevel, this.props.endGate) : undefined;
     this.state = {
       indoorLevel: this.props.indoorLevel,
       currentMovieMarkers,
       currentElevatorMarkers,
       currentToiletMarkers,
+      currentStartGateMarker,
+      currentEndGateMarker,
     };
   }
 
@@ -52,11 +67,17 @@ export default class MarkerComponent extends React.Component<Props, State> {
       this.currentElevatorMarkerGenerate(nextProps.indoorLevel, nextProps.elevatorMarkers) : undefined;
     const currentToiletMarkers = nextProps.toiletMarkers ?
       this.currentToiletMarkerGenerate(nextProps.indoorLevel, nextProps.toiletMarkers) : undefined;
+    const currentStartGateMarker =  nextProps.startGate != undefined ?
+      this.currentGateMarkerGenerate(nextProps.indoorLevel, nextProps.startGate): undefined;
+    const currentEndGateMarker = nextProps.endGate != undefined ?
+      this.currentGateMarkerGenerate(nextProps.indoorLevel, nextProps.endGate) : undefined;
     this.setState({
       indoorLevel: nextProps.indoorLevel,
       currentMovieMarkers,
       currentElevatorMarkers,
       currentToiletMarkers,
+      currentStartGateMarker,
+      currentEndGateMarker,
     });
   }
 
@@ -65,10 +86,12 @@ export default class MarkerComponent extends React.Component<Props, State> {
     if (this.state.currentElevatorMarkers !== undefined) return this.createElevatorMarkers();
     if (this.state.currentToiletMarkers !== undefined) return this.createToiletMarkers();
     if (this.props.carouselMarker !== undefined) return this.createCarouselMarker(this.props.carouselMarker);
+    if (this.state.currentStartGateMarker !== undefined) return this.createGate(this.state.currentStartGateMarker);
+    if (this.state.currentEndGateMarker !== undefined) return this.createGate(this.state.currentEndGateMarker);
     return null;
   }
 
-  private currentMovieMarkerGenerate(indoorLevel: string, movieMarkers: MovieMarker[]) {
+  private currentMovieMarkerGenerate(indoorLevel: string, movieMarkers: Movie[]) {
     return movieMarkers.filter(movieMarker => movieMarker.floor === indoorLevel);
   }
 
@@ -78,6 +101,11 @@ export default class MarkerComponent extends React.Component<Props, State> {
 
   private currentToiletMarkerGenerate(indoorLevel: string, toiletMarkers: ToiletMarker[]) {
     return toiletMarkers.filter(toiletMarker => toiletMarker.floor === indoorLevel);
+  }
+
+  private currentGateMarkerGenerate(indoorLevel: string, GateMarker: Gate) {
+    if (GateMarker.floor === indoorLevel) return GateMarker;
+    return undefined;
   }
 
   private iconChange(iconName: IconNameType) {
@@ -102,15 +130,18 @@ export default class MarkerComponent extends React.Component<Props, State> {
       <Marker
         key={`movieMarker_${index}`}
         coordinate={{latitude: movieMarker.latitude, longitude: movieMarker.longitude}}
-        image={maxLength === index || index === 0 ? this.iconChange('default') : this.iconChange('movie')}
+        image={this.iconChange('movie')}
+        onPress={() => this.props.changeCarousel(movieMarker)}
       />
     ));
   }
 
   private createElevatorMarkers() {
     if (this.state.currentElevatorMarkers === undefined) return null;
+
     return this.state.currentElevatorMarkers.map((elevatorMarker, index: number) => {
       const icon: IconNameType = elevatorMarker.capacity === 6 ? 'elevator6seater' : 'elevator12seater'; // TODO 流動性もたせたい
+
       return (
         <Marker
           key={`elevatorMarker_${index}`}
@@ -125,6 +156,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
   private createToiletMarkers() {
     if (this.state.currentToiletMarkers === undefined) return null;
     return this.state.currentToiletMarkers.map((toiletMarker, index: number) => {
+
       return (
         <Marker
           key={`toiletMarker_${index}`}
@@ -133,9 +165,9 @@ export default class MarkerComponent extends React.Component<Props, State> {
         />
       );
     });
-
   }
-  private createCarouselMarker(carousel: movie) {
+
+  private createCarouselMarker(carousel: Carousel) {
     if (carousel === undefined) return null;
 
     return(
@@ -143,6 +175,17 @@ export default class MarkerComponent extends React.Component<Props, State> {
         key={'carouselMarker'}
         coordinate={{latitude: carousel.latitude, longitude: carousel.longitude}}
         image={this.iconChange('carousel')}
+      />
+    );
+  }
+
+  private createGate = (gateMarker: Gate) => {
+    return (
+      <Marker
+        key={`gateMarker${gateMarker.id}`}
+        coordinate={{latitude: gateMarker.latitude, longitude: gateMarker.longitude}}
+        image={this.iconChange('gate')}
+        onPress={() => this.props.changeCarousel(gateMarker)}
       />
     );
   }
