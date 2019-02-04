@@ -30,7 +30,6 @@ export interface ActiveMapState extends BaseState{
   guideLines: GuideLine[] | undefined;
   movies: Movie[];
   carouselMarker?: Carousel;
-  firstItem: number;
   start_gate: Gate;
   end_gate: Gate;
 }
