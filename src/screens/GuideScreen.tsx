@@ -162,8 +162,16 @@ export default class GuideScreen extends React.Component<Props, State> {
     return currentPoint;
   }
 
-  private carouselRenderItem = () => {
-    return <View style={styles.carousel}></View>;
+  private carouselRenderItem = ({item})=> {
+    const carousel = [this.state.startGate, ...this.state.movies, this.state.endGate];
+
+    return (
+      <View style={styles.carousel}>
+        <View style={styles.carouselInText}>
+          <Text style={styles.carouseText}>{carousel.indexOf(item) + 1}</Text>
+        </View>
+      </View>
+    );
   }
 
   private carouselOnSnapToItem = (index: number) => {
@@ -319,7 +327,7 @@ const styles = EStyleSheet.create({
   carousel: {
     width: width * 0.79,
     height: height * 0.33,
-    backgroundColor: 'red',
+    backgroundColor: 'white',
     position: 'absolute',
     justifyContent: 'center',
     bottom: 0,
@@ -333,5 +341,19 @@ const styles = EStyleSheet.create({
     backgroundColor: '#fff',
     marginBottom: height * 0.03,
     marginTop: height * -0.025,
+  },
+  carouselInText: {
+    position: 'absolute',
+    width: width * 0.12,
+    height: height * 0.06,
+    top: 0,
+    left: 0,
+    justifyContent: 'center',
+    paddingLeft: width * 0.05,
+    backgroundColor: 'rgba(77, 178, 124, 0.7)',
+  },
+  carouseText: {
+    color: Colors.white,
+    fontSize: 19,
   },
 });
