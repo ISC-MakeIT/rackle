@@ -168,8 +168,16 @@ export default class GuideScreen extends React.Component<Props, State> {
     return (
       <View style={styles.carousel}>
         <View style={styles.carouselInText}>
-          <Text style={styles.carouseText}>{carousel.indexOf(item) + 1}</Text>
+          <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
         </View>
+        {
+          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 ?
+          <View style={styles.carouselMovieBottom}>
+            <TouchableOpacity style={styles.carouselMovieBottomRadius}>
+              <Text style={styles.carouselMovieBottomText}>再生</Text>
+            </TouchableOpacity>
+          </View> : null
+        }
       </View>
     );
   }
@@ -341,6 +349,7 @@ const styles = EStyleSheet.create({
     backgroundColor: '#fff',
     marginBottom: height * 0.03,
     marginTop: height * -0.025,
+    zIndex: 5,
   },
   carouselInText: {
     position: 'absolute',
@@ -352,8 +361,25 @@ const styles = EStyleSheet.create({
     paddingLeft: width * 0.05,
     backgroundColor: 'rgba(77, 178, 124, 0.7)',
   },
-  carouseText: {
+  carouselText: {
     color: Colors.white,
     fontSize: 19,
+  },
+  carouselMovieBottom: {
+    position: 'absolute',
+    bottom: -10,
+    right: -10,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderRadius: 50,
+    zIndex: 10,
+  },
+  carouselMovieBottomRadius: {
+    borderRadius: 50,
+    width: width * 0.16,
+    height: width * 0.16,
+    justifyContent: 'center',
+  },
+  carouselMovieBottomText: {
+    color: Colors.white,
   },
 });

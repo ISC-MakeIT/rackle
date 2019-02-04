@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Marker } from 'react-native-maps';
 import {ToiletMarker, ElevatorMarker }from '../../domains/map';
 import { Movie }from '../../domains/movie';
+import { Gate } from 'src/domains/gate';
 
 type IconNameType = 'default'
   | 'toilet'
