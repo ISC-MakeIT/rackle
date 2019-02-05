@@ -52,29 +52,32 @@ export default class GuideScreen extends React.Component<Props, State> {
     modalVisible: false,
   };
 
-  async componentDidMount () {
+  async componentWillMount () {
     // FIXME 2回目以降はAsyncStorageとか使って以前のScreenを参照するようにしたい
     console.log("guidScreen didMount");
 
     const mapData: State = await getGuidelines(1, 2);
+    console.log('--------------');
+    console.log(mapData.movies);
+    console.log('--------------');
 
-    // this.setState({
-    //   indoorLevel: '1',
-    //   initializedLocation: {
-    //     latitude: 35.46588771428577,
-    //     longitude: 139.62227088041905,
-    //     latitudeDelta: 0.1,
-    //     longitudeDelta: 0.1,
-    //   },
-    //   movieMarkers: this.indoorChanges(mapData.movies),
-    //   guideLines: this.indoorChanges(mapData.movie_points),
-    //   elevators: this.indoorChanges(mapData.elevators),
-    //   movies: this.indoorChanges(mapData.movies),
-    //   startGate: this.indoorChange(mapData.start_gate),
-    //   endGate: this.indoorChange(mapData.end_gate),
-    //   movieId: 'tmpState', // tmp
-    //   thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
-    // });
+    this.setState({
+      indoorLevel: '1',
+      initializedLocation: {
+        latitude: 35.46588771428577,
+        longitude: 139.62227088041905,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
+      },
+      movieMarkers: this.indoorChanges(mapData.movies),
+      guideLines: this.indoorChanges(mapData.movie_points),
+      elevators: this.indoorChanges(mapData.elevators),
+      movies: this.indoorChanges(mapData.movies),
+      startGate: this.indoorChange(mapData.start_gate),
+      endGate: this.indoorChange(mapData.end_gate),
+      movieId: 'tmpState', // tmp
+      thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
+    });
     // TODO set movie states...
     console.log("after setState");
 
@@ -85,7 +88,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   // }
 
   public render () {
-    console.log( "render");
+    //onsole.log(this.state);
 
     // NITS もう少し厳密に判断した方がいい説 :thinking:
     if ((this.state.indoorLevel !== undefined) && (this.state.movieId !== undefined)) return null;
@@ -165,12 +168,17 @@ export default class GuideScreen extends React.Component<Props, State> {
     );
   }
 
+<<<<<<< HEAD
   private setMovieModalVisible = (modalVisible: boolean) => this.setState({ modalVisible });
 
   private openMovieModal = () => this.setMovieModalVisible(true);
 
   private closeMovieModal = () => this.setMovieModalVisible(false);
   private indoorChanges = (items: ElevatorMarker[] | Movie[] | GuideLine[] | undefined) => {
+=======
+  private indoorChanges = (items: any) => {
+  // private indoorChanges = (items: ElevatorMarker[] | Movie[] | GuideLine[]) => {
+>>>>>>> 動かない
     if (items == undefined) return;
 
     return items.map(item => {

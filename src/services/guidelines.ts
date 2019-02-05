@@ -11,20 +11,7 @@ export const getGuidelines = async(startLineId: number, endLineId: number) => {
     method: 'get',
   });
 
-
-  console.log("--------------");
-  console.log("--------------");
-  console.log("--------------");
-  console.log(res);
-
   const data = await res.json();
 
-  console.log("--------------");
-  console.log("--------------");
-  console.log("--------------");
-  console.log(data);
-  console.log("--------------");
-  console.log("--------------");
-  console.log("--------------");
   return data;
 };
