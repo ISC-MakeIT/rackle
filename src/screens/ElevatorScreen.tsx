@@ -31,12 +31,12 @@ export default class ElevatorScreen extends React.Component<Props, State> {
             <FlatList
               data={capacities}
               contentContainerStyle={{ flexDirection: 'row'}}
-              renderItem={capacity => {
+              renderItem={size => {
                 return (
                   <Tab
-                    capacity={capacity.item}
+                    size={size.item}
                     changeCapacity={this.changeCapacity}
-                    key={`tab_${capacity.index}`}
+                    key={`tab_${size.index}`}
                   />
                 );
               }}
@@ -48,7 +48,7 @@ export default class ElevatorScreen extends React.Component<Props, State> {
               return (
                 <Elevator
                   navigation={this.props.navigation}
-                  capacity={elevatorMarker.item.capacity}
+                  size={elevatorMarker.item.size}
                   initializedLocation={MapData.initializedLocation!}
                   elevatorMarkers={MapData.elevatorMarkers!}
                   key={`elevatorMarker_${elevatorMarker.index}`}
@@ -61,19 +61,19 @@ export default class ElevatorScreen extends React.Component<Props, State> {
     );
   }
 
-  private changeCapacity = (capacity: ElevatorCapacity) => {
-    this.setState({ currentCapacity: capacity });
+  private changeCapacity = (size: ElevatorCapacity) => {
+    this.setState({ currentCapacity: size });
   }
 
   private sizeClipping = () => {
     if (MapData.elevatorMarkers == undefined) return;
 
-    const capacity = _.flatMap(MapData.elevatorMarkers, (e => e.capacity));
-    return _.uniq(capacity);
+    const size = _.flatMap(MapData.elevatorMarkers, (e => e.size));
+    return _.uniq(size);
   }
 
   private currentElevatorMarkers(elevatorMarkers: ElevatorMarker[]) {
-    return _.filter(elevatorMarkers, e => this.state.currentCapacity === e.capacity);
+    return _.filter(elevatorMarkers, e => this.state.currentCapacity === e.size);
   }
 }
 

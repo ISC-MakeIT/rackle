@@ -5,14 +5,14 @@ import Color from '../../constants/Colors';
 import { ElevatorCapacity } from 'src/domains/map';
 
 interface Props {
-  capacity: ElevatorCapacity;
+  size: ElevatorCapacity;
   changeCapacity: (e: ElevatorCapacity) => void;
 }
 
 export const Tab: React.FC<Props> = props => {
 
   const changeCapacity = () => {
-    props.changeCapacity(props.capacity);
+    props.changeCapacity(props.size);
   };
 
   return (
@@ -20,7 +20,7 @@ export const Tab: React.FC<Props> = props => {
       style={styles.container}
       onPress={changeCapacity}
     >
-      <Text style={styles.containerText}>{props.capacity}人乗り</Text>
+      <Text style={styles.containerText}>{props.size}人乗り</Text>
     </TouchableOpacity>
   );
 };

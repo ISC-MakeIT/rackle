@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, Image, Modal } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { MapData } from '../dummydata/mapData';
-import { Region, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
+import { Region, ToiletMarker, ElevatorMarker, GuideLine, GuideLines, Elevators, GuideScreenMapState } from 'src/domains/map';
 import { Gate, StartGate, EndGate} from 'src/domains/gate';
 import { Movie } from 'src/domains/movie';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
@@ -14,11 +13,9 @@ import movieIcon from '../../assets/images/movie-load-icon.png';
 
 interface Props { navigation: any; }
 
-type ScreenName = 'video' | 'map';
 type Carousel = Movie | Gate;
 
 interface BaseState {
-  currentScreen: ScreenName | undefined;
   showModal: boolean;
   modalVisible: boolean;
 }
@@ -27,9 +24,9 @@ export interface ActiveMapState extends BaseState{
   indoorLevel: string;
   initializedLocation: Region | undefined;
   movieMarkers: Movie[] | undefined;
-  toiletMarkers: ToiletMarker[] | undefined;
-  elevatorMarkers: ElevatorMarker[] | undefined;
-  guideLines: GuideLine[] | undefined;
+  toilets: ToiletMarker[] | undefined;
+  elevators: ElevatorMarker[] | undefined;
+  movie_points: GuideLine[] | undefined;
   movies: Movie[];
   carouselMarker?: Carousel;
   start_gate: Gate;
@@ -42,7 +39,7 @@ interface ActiveMovieState extends BaseState {
   // FIXME 必要なものがわからん
 }
 
-type State = ActiveMapState & ActiveMovieState & StartGate & EndGate;
+type State = ActiveMapState & ActiveMovieState & StartGate & EndGate & GuideScreenMapState;
 
 export default class GuideScreen extends React.Component<Props, State> {
   public static navigationOptions = {
@@ -50,45 +47,47 @@ export default class GuideScreen extends React.Component<Props, State> {
   };
 
   readonly state: State = {
-    currentScreen: undefined,
     showModal: false,
     carouselMarker: undefined,
     modalVisible: false,
   };
 
-  public componentDidMount () {
+  async componentDidMount () {
     // FIXME 2回目以降はAsyncStorageとか使って以前のScreenを参照するようにしたい
-    const currentScreen = this.state.currentScreen === 'video' ? 'video' : 'map'; // defaultは'map'
+    console.log("guidScreen didMount");
 
-    if (currentScreen === 'map') {
-      this.setState({
-        currentScreen,
-        indoorLevel: MapData.indoorLevel,
-        initializedLocation: MapData.initializedLocation,
-        movieMarkers: MapData.movies,
-        guideLines: MapData.guideLines,
-        elevatorMarkers: MapData.elevatorMarkers,
-        movies: MapData.movies,
-        startGate: MapData.start_gate,
-        endGate: MapData.end_gate,
-      });
-    } else {
-      // TODO set movie states...
-      this.setState({
-        currentScreen,
-        movieId: 'tmpState', // tmp
-        thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
-      });
-    }
+    const mapData: State = await getGuidelines(1, 2);
+
+    // this.setState({
+    //   indoorLevel: '1',
+    //   initializedLocation: {
+    //     latitude: 35.46588771428577,
+    //     longitude: 139.62227088041905,
+    //     latitudeDelta: 0.1,
+    //     longitudeDelta: 0.1,
+    //   },
+    //   movieMarkers: this.indoorChanges(mapData.movies),
+    //   guideLines: this.indoorChanges(mapData.movie_points),
+    //   elevators: this.indoorChanges(mapData.elevators),
+    //   movies: this.indoorChanges(mapData.movies),
+    //   startGate: this.indoorChange(mapData.start_gate),
+    //   endGate: this.indoorChange(mapData.end_gate),
+    //   movieId: 'tmpState', // tmp
+    //   thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
+    // });
+    // TODO set movie states...
+    console.log("after setState");
+
   }
 
-  public componentWillUpdate (nextProps: Props, nextState: State) {
-    if (this.state.indoorLevel !== nextState.indoorLevel) this.setState({carouselMarker: undefined});
-  }
+  // public componentWillUpdate (nextProps: Props, nextState: State) {
+  //   if (this.state.indoorLevel !== nextState.indoorLevel) this.setState({carouselMarker: undefined});
+  // }
 
   public render () {
+    console.log( "render");
+
     // NITS もう少し厳密に判断した方がいい説 :thinking:
-    if (this.state.currentScreen == undefined) return null; // TODO loading animation
     if ((this.state.indoorLevel !== undefined) && (this.state.movieId !== undefined)) return null;
 
     const {
@@ -171,6 +170,21 @@ export default class GuideScreen extends React.Component<Props, State> {
   private openMovieModal = () => this.setMovieModalVisible(true);
 
   private closeMovieModal = () => this.setMovieModalVisible(false);
+  private indoorChanges = (items: ElevatorMarker[] | Movie[] | GuideLine[] | undefined) => {
+    if (items == undefined) return;
+
+    return items.map(item => {
+      const floor = String(item.floor).replace('-', 'B');
+      item.floor = floor;
+      return item;
+    });
+  }
+
+  private indoorChange = (items: Gate) => {
+    const floor = String(items.floor).replace('-', 'B');
+    items.floor = floor;
+    return items;
+  }
 
   private currentPaginationPoint = (currentCarousel: Carousel[]) => {
     const currentPoint = this.carouselFirstItem(currentCarousel);
@@ -329,18 +343,18 @@ const styles = EStyleSheet.create({
   },
   openText: {
     color: Colors.white,
-    fontWeight: '700', 
+    fontWeight: '700',
     fontSize: 20,
     letterSpacing: '0.05rem',
   },
   closeText: {
     color: Colors.white,
-    fontWeight: '700', 
+    fontWeight: '700',
     fontSize: 20,
     letterSpacing: '0.05rem',
   },
   closeModalBottomText: {
-    alignItems: 'center',    
+    alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.black,
     width: width * 0.44,
