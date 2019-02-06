@@ -1,16 +1,24 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import Color from '../constants/Colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { ExtButton } from '../components/ExtButton';
+import wheelchairSelf from '../../assets/images/user_setting_icon_1_0.png';
+import wheelchairHelper from '../../assets/images/user_setting_icon_2_0.png';
+import wheelchairTilt from '../../assets/images/user_setting_icon_3_0.png';
 
-interface Props { navigation: any; }
+interface Props {
+  navigation: any;
+  active: boolean;
+ }
 
 export default class MyPageScreen extends React.Component<Props, {}> {
+  updateActiveSelector = () => this.setState({ active: true});
+  
   public static navigationOptions = {
     title: 'マイページ',
     headerStyle: {
-      backgroundColor: '#63BF8E',
+      backgroundColor: Color.mainColor,
       borderBottomWidth: 0,
     },
     headerTitleStyle: {
@@ -19,6 +27,7 @@ export default class MyPageScreen extends React.Component<Props, {}> {
   };
 
   public render() {
+  const btnColor = this.props.active ? { backgroundColor: Color.mainColor } : { backgroundColor: Color.white };
     return (
       <View style={styles.container}>
         <View style={headerStyle.container}>
@@ -27,21 +36,28 @@ export default class MyPageScreen extends React.Component<Props, {}> {
         </View>
         <View style={mainStyle.checkListContainer}>
           <View style={mainStyle.checkListItem}>
-            <Text style={mainStyle.checkListText}>車椅子</Text>
+            <View style={mainStyle.checkListLabel}>
+              <Text style={mainStyle.checkListText}>車椅子</Text>
+            </View>
             <View style={checkButtonStyle.checkButtonList}>
               <TouchableOpacity style={checkButtonStyle.wheelchairButton}>
+                <Image source={wheelchairSelf} style={checkButtonStyle.iconImage}/>
                 <Text style={checkButtonStyle.wheelchairButtonText}>自走式</Text>
               </TouchableOpacity>
               <TouchableOpacity style={checkButtonStyle.wheelchairButton}>
-                <Text style={checkButtonStyle.wheelchairButtonText}>自走式</Text>
+                <Image source={wheelchairHelper} style={checkButtonStyle.iconImage}/>
+                <Text style={checkButtonStyle.wheelchairButtonText}>介助用</Text>
               </TouchableOpacity>
               <TouchableOpacity style={checkButtonStyle.wheelchairButton}>
-                <Text style={checkButtonStyle.wheelchairButtonText}>自走式</Text>
+                <Image source={wheelchairTilt} style={checkButtonStyle.iconImage}/>
+                <Text style={checkButtonStyle.wheelchairButtonText}>ティルト</Text>
               </TouchableOpacity>
             </View>
           </View>
           <View style={mainStyle.checkListLastItem}>
-            <Text style={mainStyle.checkListText}>介助者</Text>
+            <View style={mainStyle.checkListLabel}>
+              <Text style={mainStyle.checkListText}>介助者</Text>            
+            </View>
             <View style={checkButtonStyle.checkButtonList}>
               <TouchableOpacity style={checkButtonStyle.helperButton}>
                 <Text style={checkButtonStyle.helperButtonText}>あり</Text>
@@ -90,14 +106,16 @@ const headerStyle = EStyleSheet.create({
 const mainStyle = EStyleSheet.create({
   checkListContainer: {
     flexDirection: 'column',
-    width: '100%',
+    width: '92%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
     marginBottom: '2.5rem',
     borderRadius: '0.3rem',
     backgroundColor: Color.white,
   },
   checkListItem: {
-    width: '90%',
-    height: '5.8rem',
+    width: '100%',
+    height: '6.3rem',
     marginLeft: 'auto',
     marginRight: 'auto',
     flexDirection: 'row',
@@ -106,8 +124,8 @@ const mainStyle = EStyleSheet.create({
     padding: '1rem',
   },
   checkListLastItem: {
-    width: '90%',
-    height: '5.8rem',
+    width: '100%',
+    height: '6.3rem',
     marginLeft: 'auto',
     marginRight: 'auto',
     flexDirection: 'row',
@@ -117,28 +135,32 @@ const mainStyle = EStyleSheet.create({
     borderColor: Color.subColorGray,
     borderTopWidth: 1,
   },
+  checkListLabel: {
+    width: '20%',
+    textAlign: 'center',
+    paddingLeft: '0.3rem',
+    // backgroundColor: Color.mainColor,
+  },
   checkListText: {
     fontSize: '1.2rem',
     fontWeight: '700',
     color: Color.black,
-    marginLeft: '0.5rem',
-    marginRight: '1.5rem',
   },
 });
 
 const checkButtonStyle = EStyleSheet.create({
   checkButtonList: {
-    flex: 1,
+    width: '80%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   wheelchairButton: {
-    width: '4.3rem',
-    height: '4.3rem',
-    marginLeft: '0.2rem',
-    marginRight: '0.2rem',
-    flexDirection: 'row',
+    width: '4.5rem',
+    height: '4.5rem',
+    marginLeft: '0.6rem',
+    // marginRight: '0.3rem',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Color.white,
@@ -150,13 +172,18 @@ const checkButtonStyle = EStyleSheet.create({
     color: Color.black,
     fontWeight: '700',
     fontSize: '0.9rem',
-    letterSpacing: '0.07rem',
+    letterSpacing: '0.08rem',
+  },
+  iconImage: {
+    width: '2.6rem',
+    height: '2.6rem',
+    marginBottom: '0.3rem',
   },
   helperButton: {
-    width: '6rem',
+    width: '7rem',
     height: '2.3rem',
-    marginLeft: '0.3rem',
-    marginRight: '0.3rem',
+    marginLeft: '0.6rem',
+    // marginRight: '0.4rem',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

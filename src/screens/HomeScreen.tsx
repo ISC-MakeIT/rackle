@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Dimensions, StyleSheet, Text, View, ScrollView, TouchableOpacity, Image} from 'react-native';
+import {Dimensions, StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, ImageBackground} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
@@ -8,6 +8,8 @@ import { ExtButton } from '../components/ExtButton';
 import { StationType, LineType } from '../domains/station';
 import * as _ from 'lodash';
 import { GateSelector } from '../components/GateSelector';
+import headerLogo from '../../assets/images/header-logo-image.png';
+import homeImage from '../../assets/images/home_image.jpg';
 import swapIcon from '../../assets/images/changeIcon.png';
 import { getTrainLines } from '../services/train_lines';
 import { getGates } from '../services/gates';
@@ -26,9 +28,19 @@ interface State {
   selectedToGateId: number | undefined;
 }
 
+class LogoTitle extends React.Component {
+  render() {
+    return (
+      <Image
+        source={headerLogo}
+        style={{ width: 110, height: 20 }}
+      />
+    );
+  }
+}
+
 export default class HomeScreen extends React.Component<Props, State> {
   public static navigationOptions = {
-    title: 'rackle',
     headerStyle: {
       backgroundColor: Color.mainColor,
       borderBottomWidth: 0,
@@ -36,6 +48,7 @@ export default class HomeScreen extends React.Component<Props, State> {
     headerTitleStyle: {
       color: Color.white,
     },
+    headerTitle: <LogoTitle />,
   };
 
   readonly state = {
@@ -63,9 +76,10 @@ export default class HomeScreen extends React.Component<Props, State> {
   public render() {
     return (
       <View style={styles.container}>
-      <ScrollView>
+      <ImageBackground source={homeImage} style={{width: '100%', height: '100%', backgroundSize: 'cover'}}>
+        <ScrollView>
         <LinearGradient
-          colors={[Color.mainColor, Color.subColorOffWhite, Color.subColorOffWhite]}
+          colors={['rgba(67, 195, 142, 1)', 'rgba(250, 250, 250, 0.7)', 'rgba(250, 250, 250, 1)']}
           style={gradationStyle.gradation}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
@@ -79,7 +93,7 @@ export default class HomeScreen extends React.Component<Props, State> {
         <View style={containerStyles.searchFormContainer}>
           <View style={containerStyles.inputSetContainer}>
             <View style={containerStyles.inputContainer}>
-              <View style={containerStyles.selectContainer} >
+              <View style={containerStyles.selectContainer}>
                 <RNPickerSelect
                   placeholder={{ label: '駅を選択してください', value: null, color: '#9EA0A4', }}
                   items={this.castLineTypeToPickerItemType()}
@@ -134,6 +148,7 @@ export default class HomeScreen extends React.Component<Props, State> {
             pageName={'Guide'}
           />
         </ScrollView>
+      </ImageBackground>
       </View>
     );
   }
@@ -232,11 +247,12 @@ export default class HomeScreen extends React.Component<Props, State> {
 
 EStyleSheet.build();
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
-    backgroundColor: Color.mainColor,
+    backgroundColor: Color.subColorOffWhite,
     flex: 1,
     flexDirection: 'column',
+
   },
 });
 
@@ -291,22 +307,29 @@ const containerStyles = EStyleSheet.create({
     justifyContent: 'center',
   },
   selectContainer: {
-    marginBottom: '0.5rem',
+    // marginBottom: '0rem',
   },
   searchedListContainer: {
+    width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: '1.8rem',
+    justifyContent: 'flex-start',
+    marginTop: '0.5rem',
+    marginBottom: '0.5rem',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   searchFormContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+    marginBottom: '1.8rem',
   },
   inputSetContainer: {
     width: '85%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
@@ -356,8 +379,8 @@ const inputPickerStyle = EStyleSheet.create({
     paddingTop: '0.7rem',
     paddingHorizontal: 10,
     paddingBottom: '0.7rem',
-    borderWidth: 1,
-    borderColor: Color.subColorGray,
+    // borderWidth: 1,
+    // borderColor: Color.subColorGray,
     borderRadius: 50,
     backgroundColor: 'white',
     color: 'black',
@@ -370,8 +393,8 @@ const inputPickerStyle = EStyleSheet.create({
     paddingTop: '0.8rem',
     paddingHorizontal: 10,
     paddingBottom: '0.7rem',
-    borderWidth: 1,
-    borderColor: Color.subColorGray,
+    // borderWidth: 1,
+    // borderColor: Color.subColorGray,
     borderRadius: 50,
     backgroundColor: 'white',
     color: 'black',
@@ -381,14 +404,19 @@ const inputPickerStyle = EStyleSheet.create({
   },
 });
 
-const ButtonStyle = StyleSheet.create({
+const ButtonStyle = EStyleSheet.create({
   switchButton: {
     width: 30,
     height: 30,
     backgroundColor: Color.swapBtnColor,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '0.3rem',
+    marginBottom: '1rem',
   },
   image: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
 });
