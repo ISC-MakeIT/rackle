@@ -105,12 +105,6 @@ const styles = EStyleSheet.create({
     right: '5%',
     justifyContent: 'center',
   },
-  header__controller_back_text: {
-    fontSize: '1.2rem',
-    fontWeight: '600',
-    top: 0,
-    color: 'white',
-  },
   content__movie_wrap: {
     flex: 1,
     position: 'absolute',
@@ -132,18 +126,5 @@ const styles = EStyleSheet.create({
     position: 'absolute',
     bottom: 48,
     width: '100%',
-  },
-  content__video_footer: {
-    flex: 1,
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    backgroundColor: 'black',
-  },
-  content__control_bar: {
-    flex: 1,
-  },
-  content__thumbnails: {
-    flex: 1,
   },
 });
