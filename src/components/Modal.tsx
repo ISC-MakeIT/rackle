@@ -28,6 +28,7 @@ const styles = EStyleSheet.create({
     width: width,
     height: height * 0.48,
     position: 'absolute',
+    paddingBottom: '0.5rem',
     bottom: 0,
     justifyContent: 'center',
   },

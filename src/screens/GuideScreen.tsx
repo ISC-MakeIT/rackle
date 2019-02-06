@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { MapData } from '../dummydata/mapData';
 import { Region, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
@@ -10,6 +10,7 @@ import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import { Modal } from '../components/Modal';
 import Colors from '../constants/Colors';
+import movieIcon from '../../assets/images/movie-load-icon.png';
 
 interface Props { navigation: any; }
 
@@ -175,6 +176,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 ?
           <View style={styles.carouselMovieBottom}>
             <TouchableOpacity style={styles.carouselMovieBottomRadius}>
+              <Image source={movieIcon} style={styles.movieIcon} />
               <Text style={styles.carouselMovieBottomText}>再生</Text>
             </TouchableOpacity>
           </View> : null
@@ -302,41 +304,47 @@ const styles = EStyleSheet.create({
     position: 'absolute',
   },
   openModalBottomText: {
-    position: 'absolute',
-   justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: Colors.subColorRed,
-    paddingLeft: width * 0.15,
-    width: width * 0.42,
-    height: height * 0.05,
+    width: width * 0.44,
+    height: height * 0.08,
+    borderRadius: '0.3rem',
+    paddingBottom: '0.3rem',
   },
   openText: {
-    color: Colors.black,
+    color: Colors.white,
+    fontWeight: '700', 
     fontSize: 20,
+    letterSpacing: '0.05rem',
   },
   closeText: {
     color: Colors.white,
+    fontWeight: '700', 
     fontSize: 20,
+    letterSpacing: '0.05rem',
   },
   closeModalBottomText: {
-    position: 'absolute',
+    alignItems: 'center',    
     justifyContent: 'center',
-    paddingLeft: width * 0.13,
     backgroundColor: Colors.black,
-    width: width * 0.42,
-    height: height * 0.05,
+    width: width * 0.44,
+    height: height * 0.08,
+    borderRadius: '0.3rem',
+    paddingBottom: '0.3rem',
   },
   showModalBottomAround: {
     width: width,
-    height: height * 0.05,
+    height: height * 0.08,
     position: 'absolute',
-    bottom: 0,
+    bottom: '-1rem',
     flexDirection: 'row',
     justifyContent: 'center',
   },
   carousel: {
     width: width * 0.79,
     height: height * 0.33,
-    backgroundColor: 'white',
+    backgroundColor: '#eee',
     position: 'absolute',
     justifyContent: 'center',
     bottom: 0,
@@ -355,32 +363,40 @@ const styles = EStyleSheet.create({
   carouselInText: {
     position: 'absolute',
     width: width * 0.12,
-    height: height * 0.06,
+    height: width * 0.12,
     top: 0,
     left: 0,
+    alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: width * 0.05,
-    backgroundColor: 'rgba(77, 178, 124, 0.7)',
+    backgroundColor: 'rgba(77, 178, 124, 0.8)',
   },
   carouselText: {
     color: Colors.white,
-    fontSize: 19,
+    fontSize: '2rem',
+    fontWeight: '700',
   },
   carouselMovieBottom: {
     position: 'absolute',
-    bottom: -10,
-    right: -10,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    bottom: 5,
+    right: 5,
+    // backgroundColor: 'rgba(0, 0, 0, 0.8)',
     borderRadius: 50,
-    zIndex: 10,
+    zIndex: 100,
   },
   carouselMovieBottomRadius: {
     borderRadius: 50,
     width: width * 0.16,
     height: width * 0.16,
+    flexDirection: 'column',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   carouselMovieBottomText: {
     color: Colors.white,
+    fontWeight: '700',
+  },
+  movieIcon: {
+    width: width * 0.085,
+    height: width * 0.085,
   },
 });
