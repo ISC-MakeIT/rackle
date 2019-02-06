@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Image, Modal } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { MapData } from '../dummydata/mapData';
 import { Region, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
@@ -7,8 +7,8 @@ import { Gate, StartGate, EndGate} from 'src/domains/gate';
 import { Movie } from 'src/domains/movie';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
-import Carousel, {Pagination} from 'react-native-snap-carousel';
-import { Modal } from '../components/Modal';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { Modal as ModalCarousel } from '../components/Modal';
 import Colors from '../constants/Colors';
 import movieIcon from '../../assets/images/movie-load-icon.png';
 
@@ -20,6 +20,7 @@ type Carousel = Movie | Gate;
 interface BaseState {
   currentScreen: ScreenName | undefined;
   showModal: boolean;
+  modalVisible: boolean;
 }
 
 export interface ActiveMapState extends BaseState{
@@ -52,6 +53,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     currentScreen: undefined,
     showModal: false,
     carouselMarker: undefined,
+    modalVisible: false,
   };
 
   public componentDidMount () {
@@ -115,7 +117,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
         */}
-        <Modal modalView={this.state.showModal}>
+        <ModalCarousel modalView={this.state.showModal}>
           <Carousel
             data={currentCarousel}
             itemWidth={Dimensions.get('screen').width * 0.8}
@@ -132,6 +134,14 @@ export default class GuideScreen extends React.Component<Props, State> {
             dotsLength={currentCarousel.length > 6 ? 6 : currentCarousel.length}
             dotStyle={styles.paginationDotStyle}
           />
+        </ModalCarousel>
+        <Modal
+          animationType="slide"
+          presentationStyle="fullScreen"
+          transparent={false}
+          visible={this.state.modalVisible}
+        >
+          <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} />
         </Modal>
         { currentCarousel.length !== 0 ?
           <View style={styles.showModalBottomAround}>
@@ -156,6 +166,12 @@ export default class GuideScreen extends React.Component<Props, State> {
     );
   }
 
+  private setMovieModalVisible = (modalVisible: boolean) => this.setState({ modalVisible })
+
+  private openMovieModal = () => this.setMovieModalVisible(true);
+
+  private closeMovieModal = () => this.setMovieModalVisible(false);
+
   private currentPaginationPoint = (currentCarousel: Carousel[]) => {
     const currentPoint = this.carouselFirstItem(currentCarousel);
 
@@ -175,9 +191,8 @@ export default class GuideScreen extends React.Component<Props, State> {
         {
           carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 ?
           <View style={styles.carouselMovieBottom}>
-            <TouchableOpacity style={styles.carouselMovieBottomRadius}>
+            <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
               <Image source={movieIcon} style={styles.movieIcon} />
-              <Text style={styles.carouselMovieBottomText}>再生</Text>
             </TouchableOpacity>
           </View> : null
         }
