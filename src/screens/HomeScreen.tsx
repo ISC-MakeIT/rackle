@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Dimensions, StyleSheet, Text, View, ScrollView, TouchableOpacity, Image} from 'react-native';
+import {Dimensions, StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, ImageBackground} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { LinearGradient } from 'expo';
 import Color from '../constants/Colors';
@@ -9,6 +9,7 @@ import { StationType, LineType } from '../domains/station';
 import * as _ from 'lodash';
 import { GateSelector } from '../components/GateSelector';
 import headerLogo from '../../assets/images/header-logo-image.png';
+import homeImage from '../../assets/images/home_image.jpg';
 import swapIcon from '../../assets/images/changeIcon.png';
 import { getTrainLines } from '../services/train_lines';
 import { getGates } from '../services/gates';
@@ -75,9 +76,10 @@ export default class HomeScreen extends React.Component<Props, State> {
   public render() {
     return (
       <View style={styles.container}>
-      <ScrollView>
+      <ImageBackground source={homeImage} style={{width: '100%', height: '100%', backgroundSize: 'cover'}}>
+        <ScrollView>
         <LinearGradient
-          colors={[Color.mainColor, Color.subColorOffWhite, Color.subColorOffWhite]}
+          colors={['rgba(67, 195, 142, 1)', 'rgba(250, 250, 250, 0.7)', 'rgba(250, 250, 250, 1)']}
           style={gradationStyle.gradation}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
@@ -146,6 +148,7 @@ export default class HomeScreen extends React.Component<Props, State> {
             pageName={'Guide'}
           />
         </ScrollView>
+      </ImageBackground>
       </View>
     );
   }
@@ -244,11 +247,12 @@ export default class HomeScreen extends React.Component<Props, State> {
 
 EStyleSheet.build();
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
-    backgroundColor: Color.mainColor,
+    backgroundColor: Color.subColorOffWhite,
     flex: 1,
     flexDirection: 'column',
+
   },
 });
 

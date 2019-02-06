@@ -5,7 +5,7 @@ export default {
   tabIconDefault: '#ccc',
   tabIconSelected: tintColor,
   tabBar: '#fefefe',
-  mainColor: '#63BF8E',
+  mainColor: '#43c38e',
   subColorOffWhite: '#FAFAFA',
   subColorRed: '#DF5656',
   subColorGray: '#EBEBEB',
