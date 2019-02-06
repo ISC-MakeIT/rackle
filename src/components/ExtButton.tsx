@@ -27,7 +27,7 @@ EStyleSheet.build();
 const rootButtonStyle = EStyleSheet.create({
   execBtn: {
     width: '80%',
-    height: '9.5%',
+    height: '13%',
     backgroundColor: Color.mainColor,
     marginLeft: 'auto',
     marginRight: 'auto',

@@ -11,6 +11,6 @@ export default {
   subColorGray: '#EBEBEB',
   subColorIvory: '#F8F7F4',
   white: '#ffffff',
-  black: '#312D2D',
-  swapBtnColor: '#767171',
+  black: '#3C3C3C',
+  swapBtnColor: '#3C3C3C',
 };

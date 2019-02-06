@@ -91,7 +91,7 @@ export default class HomeScreen extends React.Component<Props, State> {
         <View style={containerStyles.searchFormContainer}>
           <View style={containerStyles.inputSetContainer}>
             <View style={containerStyles.inputContainer}>
-              <View style={containerStyles.selectContainer} >
+              <View style={containerStyles.selectContainer}>
                 <RNPickerSelect
                   placeholder={{ label: '駅を選択してください', value: null, color: '#9EA0A4', }}
                   items={this.castLineTypeToPickerItemType()}
@@ -303,22 +303,25 @@ const containerStyles = EStyleSheet.create({
     justifyContent: 'center',
   },
   selectContainer: {
-    marginBottom: '0.5rem',
+    // marginBottom: '0rem',
   },
   searchedListContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '1.8rem',
+    marginTop: '1rem',
   },
   searchFormContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+    marginBottom: '1.8rem',
   },
   inputSetContainer: {
     width: '85%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
@@ -393,14 +396,19 @@ const inputPickerStyle = EStyleSheet.create({
   },
 });
 
-const ButtonStyle = StyleSheet.create({
+const ButtonStyle = EStyleSheet.create({
   switchButton: {
     width: 30,
     height: 30,
     backgroundColor: Color.swapBtnColor,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '0.3rem',
+    marginBottom: '1rem',
   },
   image: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
 });
