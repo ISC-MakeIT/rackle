@@ -306,11 +306,15 @@ const containerStyles = EStyleSheet.create({
     // marginBottom: '0rem',
   },
   searchedListContainer: {
+    width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '1rem',
+    justifyContent: 'flex-start',
+    marginTop: '0.5rem',
+    marginBottom: '0.5rem',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   searchFormContainer: {
     alignItems: 'center',

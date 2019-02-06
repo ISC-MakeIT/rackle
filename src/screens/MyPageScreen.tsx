@@ -106,7 +106,7 @@ const headerStyle = EStyleSheet.create({
 const mainStyle = EStyleSheet.create({
   checkListContainer: {
     flexDirection: 'column',
-    width: '95%',
+    width: '92%',
     marginLeft: 'auto',
     marginRight: 'auto',
     marginBottom: '2.5rem',
@@ -137,6 +137,8 @@ const mainStyle = EStyleSheet.create({
   },
   checkListLabel: {
     width: '20%',
+    textAlign: 'center',
+    paddingLeft: '0.3rem',
     // backgroundColor: Color.mainColor,
   },
   checkListText: {
@@ -154,10 +156,10 @@ const checkButtonStyle = EStyleSheet.create({
     alignItems: 'center',
   },
   wheelchairButton: {
-    width: '5rem',
-    height: '5rem',
-    marginLeft: '0.2rem',
-    marginRight: '0.2rem',
+    width: '4.5rem',
+    height: '4.5rem',
+    marginLeft: '0.6rem',
+    // marginRight: '0.3rem',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -178,10 +180,10 @@ const checkButtonStyle = EStyleSheet.create({
     marginBottom: '0.3rem',
   },
   helperButton: {
-    width: '6.5rem',
+    width: '7rem',
     height: '2.3rem',
-    marginLeft: '0.4rem',
-    marginRight: '0.4rem',
+    marginLeft: '0.6rem',
+    // marginRight: '0.4rem',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
