@@ -8,6 +8,7 @@ import { ExtButton } from '../components/ExtButton';
 import { StationType, LineType } from '../domains/station';
 import * as _ from 'lodash';
 import { GateSelector } from '../components/GateSelector';
+import headerLogo from '../../assets/images/header-logo-image.png';
 import swapIcon from '../../assets/images/changeIcon.png';
 import { getTrainLines } from '../services/train_lines';
 import { getGates } from '../services/gates';
@@ -26,9 +27,19 @@ interface State {
   selectedToGateId: number | undefined;
 }
 
+class LogoTitle extends React.Component {
+  render() {
+    return (
+      <Image
+        source={headerLogo}
+        style={{ width: 110, height: 20 }}
+      />
+    );
+  }
+}
+
 export default class HomeScreen extends React.Component<Props, State> {
   public static navigationOptions = {
-    title: 'rackle',
     headerStyle: {
       backgroundColor: Color.mainColor,
       borderBottomWidth: 0,
@@ -36,6 +47,7 @@ export default class HomeScreen extends React.Component<Props, State> {
     headerTitleStyle: {
       color: Color.white,
     },
+    headerTitle: <LogoTitle />,
   };
 
   readonly state = {
