@@ -74,7 +74,7 @@ export default class MovieNavigateComponent extends React.Component<Props, State
             trackImage={require('../../../assets/images/track.png')}
             textStyle={{
               color: Color.white,
-              fontSize: 12,
+              fontSize: 14,
             }}
             showFullscreenButton={false}
             playFromPositionMillis={0}

@@ -43,6 +43,7 @@ export default class App extends React.Component <Props, State> {
         require('../assets/images/user_setting_icon_1_0.png'),
         require('../assets/images/user_setting_icon_2_0.png'),
         require('../assets/images/user_setting_icon_3_0.png'),
+        require('../assets/images/marker.png'),
       ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
