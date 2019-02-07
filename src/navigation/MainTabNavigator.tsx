@@ -33,12 +33,12 @@ MyPageStack.navigationOptions = {
   ),
 };
 
-MovieNavigateStack.navigationOptions = {
-  tabBarLabel: 'Movie',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'} />
-  ),
-};
+// MovieNavigateStack.navigationOptions = {
+//   tabBarLabel: 'Movie',
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'} />
+//   ),
+// };
 
 ElevatorStack.navigationOptions = {
   tabBarLabel: 'Elevator',
@@ -49,7 +49,7 @@ ElevatorStack.navigationOptions = {
 
 GuideStack.navigationOptions = { tabBarVisible: true };
 
-const tabNavigator = createBottomTabNavigator({ HomeStack, MyPageStack, MovieNavigateStack, ElevatorStack }, {
+const tabNavigator = createBottomTabNavigator({ HomeStack, MyPageStack, ElevatorStack }, {
   tabBarOptions: {
     activeTintColor: '#312D2D',
     inactiveTintColor: '#312D2D',

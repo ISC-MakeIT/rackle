@@ -64,7 +64,7 @@ export default class MovieNavigateComponent extends React.Component<Props, State
         <View style={styles.content__movie_wrap}>
           <VideoPlayer
             videoProps={{
-              source: { uri: Asset.fromModule(require('../../../assets/movie/kt01.mp4')).uri, },
+              source: { uri: Asset.fromModule(require('../../../assets/movies/KK_TY_P1.mp4')).uri, },
               resizeMode: Video.RESIZE_MODE_COVER,
             }}
             showControlsOnLoad={true}
