@@ -185,16 +185,30 @@ export default class GuideScreen extends React.Component<Props, State> {
 
     return (
       <View style={styles.carousel}>
-        <View style={styles.carouselInText}>
-          <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
-        </View>
         {
           carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 ?
+        <TouchableOpacity style={styles.carousel} onPress={this.openMovieModal}>
+            <View style={styles.carouselInText}>
+              <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
+            </View>
+            <View style={styles.carouselMovieBottom}>
+              <View style={styles.carouselMovieBottomRadius}>
+                <Image source={movieIcon} style={styles.movieIcon} />
+                <Text style={styles.carouselMovieBottomText}>再生</Text>
+              </View>
+            </View>
+        </TouchableOpacity>        
+          : 
+        <View style={styles.carousel}>
+          <View style={styles.carouselInText}>
+            <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
+          </View>
           <View style={styles.carouselMovieBottom}>
-            <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
-              <Image source={movieIcon} style={styles.movieIcon} />
-            </TouchableOpacity>
-          </View> : null
+              {/* <TouchableOpacity style={styles.carouselMovieBottomRadius}>
+                <Image source={movieIcon} style={styles.movieIcon} />
+              </TouchableOpacity> */}
+          </View>
+        </View>  
         }
       </View>
     );
@@ -389,6 +403,7 @@ const styles = EStyleSheet.create({
     color: Colors.white,
     fontSize: '2rem',
     fontWeight: '700',
+    fontFamily: 'MPLUS1p-Medium',
   },
   carouselMovieBottom: {
     position: 'absolute',

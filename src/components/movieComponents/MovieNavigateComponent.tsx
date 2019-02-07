@@ -81,6 +81,7 @@ export default class MovieNavigateComponent extends React.Component<Props, State
             playbackCallback={this.playbackCallback}
             showControlsCallback={this.showNavigationPlate}
             hideControlsCallback={this.hideNavigationPlate}
+            hideControlsTimerDuration={5000}
           />
         </View>
         {this.renderNavigationPlate()}
