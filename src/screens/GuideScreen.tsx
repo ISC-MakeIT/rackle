@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Dimensions, Image, Modal } from 'react-na
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Region, ToiletMarker, ElevatorMarker, GuideLine, GuideLines, Elevators, GuideScreenMapState } from 'src/domains/map';
 import { Gate, StartGate, EndGate} from 'src/domains/gate';
-import { Movie } from 'src/domains/movie';
+import { GuideLineObject, ObjectPoints } from 'src/domains/movie';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -14,7 +14,7 @@ import { getGuidelines } from '../services/guidelines';
 
 interface Props { navigation: any; }
 
-type Carousel = Movie | Gate;
+type Carousel = GuideLineObject | Gate;
 
 interface BaseState {
   showModal: boolean;
@@ -24,14 +24,15 @@ interface BaseState {
 export interface ActiveMapState extends BaseState{
   indoorLevel: string;
   initializedLocation: Region | undefined;
-  movieMarkers: Movie[] | undefined;
+  movieMarkers: GuideLineObject[] | undefined;
   toilets: ToiletMarker[] | undefined;
   elevators: ElevatorMarker[] | undefined;
-  movie_points: GuideLine[] | undefined;
-  movies: Movie[];
+  object_points: GuideLineObject[] | undefined;
+  movies: GuideLineObject[];
   carouselMarker?: Carousel;
   start_gate: Gate;
   end_gate: Gate;
+  guideline: GuideLine;
 }
 
 interface ActiveMovieState extends BaseState {
@@ -40,7 +41,7 @@ interface ActiveMovieState extends BaseState {
   // FIXME 必要なものがわからん
 }
 
-type State = ActiveMapState & ActiveMovieState & StartGate & EndGate & GuideScreenMapState;
+type State = ActiveMapState & ActiveMovieState & StartGate & EndGate & GuideScreenMapState & ObjectPoints;
 
 export default class GuideScreen extends React.Component<Props, State> {
   public static navigationOptions = {
@@ -64,11 +65,11 @@ export default class GuideScreen extends React.Component<Props, State> {
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
       },
-      movieMarkers: this.indoorChanges(mapData.movies),
-      guideLines: this.indoorChanges(mapData.movie_points),
+      movieMarkers: this.indoorChanges(mapData.object_points),
+      guideLines: this.indoorChanges(mapData.guideline),
       elevators: this.indoorChanges(mapData.elevators),
       toilets: this.indoorChanges(mapData.toilets),
-      movies: this.indoorChanges(mapData.movies),
+      objectPoints: this.indoorChanges(mapData.object_points),
       startGate: this.indoorChange(mapData.start_gate),
       endGate: this.indoorChange(mapData.end_gate),
       movieId: undefined,
@@ -84,11 +85,11 @@ export default class GuideScreen extends React.Component<Props, State> {
 
     const {
       indoorLevel, initializedLocation, startGate, endGate,
-      toilets, elevators, guideLines, movies,
+      toilets, guideLines, objectPoints,
     } = this.state;
 
-    const carousel = [startGate, ...movies, endGate];
-    const currentCarousel = carousel.filter(movie => movie.floor === this.state.indoorLevel);
+    const carousel = [startGate, ...objectPoints, endGate];
+    const currentCarousel = carousel.filter(objectPoint => objectPoint.floor === this.state.indoorLevel);
 
     return (
       <View style={styles.content_wrap}>
@@ -193,15 +194,16 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private carouselRenderItem = ({item})=> {
-    const carousel = [this.state.startGate, ...this.state.movies, this.state.endGate];
-
+    if (this.state.carouselMarker == undefined) return null;
+    const carousel = [this.state.startGate, ...this.state.objectPoints, this.state.endGate];
+    const type = Object.keys(this.state.carouselMarker).length === 9 ? this.state.carouselMarker.type : null;
     return (
       <View style={styles.carousel}>
         <View style={styles.carouselInText}>
           <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
         </View>
         {
-          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 ?
+          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 && type === '動画' ?
           <View style={styles.carouselMovieBottom}>
             <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
               <Image source={movieIcon} style={styles.movieIcon} />
@@ -213,10 +215,10 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private carouselOnSnapToItem = (index: number) => {
-    if (this.state.movies == undefined) return;
+    if (this.state.objectPoints == undefined) return;
 
-    const carousel = [this.state.startGate, ...this.state.movies, this.state.endGate];
-    const currentCarousel = carousel.filter(movie => movie.floor === this.state.indoorLevel);
+    const carousel = [this.state.startGate, ...this.state.objectPoints, this.state.endGate];
+    const currentCarousel = carousel.filter(objectPoint => objectPoint.floor === this.state.indoorLevel);
     return this.changeInitializedLocation(currentCarousel[index]);
   }
 

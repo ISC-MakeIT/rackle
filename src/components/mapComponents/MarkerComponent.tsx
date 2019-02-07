@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Marker } from 'react-native-maps';
 import {ToiletMarker, ElevatorMarker }from '../../domains/map';
-import { Movie }from '../../domains/movie';
+import { GuideLineObject, ObjectPoints }from '../../domains/movie';
 import { Gate } from 'src/domains/gate';
 
 type IconNameType = 'default'
@@ -10,13 +10,16 @@ type IconNameType = 'default'
   | 'elevator6seater'
   | 'elevator12seater'
   | 'carousel'
-  | 'gate';
-  type Carousel = Movie | Gate;
+  | 'gate'
+  | '12人乗り'
+  | '18人乗り';
+
+  type Carousel = GuideLineObject | Gate;
 
 
 interface Props {
   indoorLevel: string;
-  movieMarkers?: Movie[];
+  movieMarkers?: GuideLineObject[];
   toiletMarkers?: ToiletMarker[];
   elevatorMarkers?: ElevatorMarker[];
   iconName?: IconNameType;
@@ -29,10 +32,10 @@ interface Props {
 
 interface State {
   indoorLevel: string;
-  currentMovieMarkers?: Movie[];
+  currentMovieMarkers?: GuideLineObject[];
   currentToiletMarkers?: ToiletMarker[];
   currentElevatorMarkers?: ElevatorMarker[];
-  currentCarouselMarker?: Movie;
+  currentCarouselMarker?: GuideLineObject;
   currentStartGateMarker?: Gate;
   currentEndGateMarker?: Gate;
 }
@@ -82,7 +85,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
   }
 
   public render() {
-    if (this.state.currentMovieMarkers !== undefined)  return this.createMovieMarkers(this.state.currentMovieMarkers.length);
+    if (this.state.currentMovieMarkers !== undefined)  return this.createGuideLineObjects(this.state.currentMovieMarkers.length);
     if (this.state.currentElevatorMarkers !== undefined) return this.createElevatorMarkers();
     if (this.state.currentToiletMarkers !== undefined) return this.createToiletMarkers();
     if (this.props.carouselMarker !== undefined) return this.createCarouselMarker(this.props.carouselMarker);
@@ -91,8 +94,8 @@ export default class MarkerComponent extends React.Component<Props, State> {
     return null;
   }
 
-  private currentMovieMarkerGenerate(indoorLevel: string, movieMarkers: Movie[]) {
-    return movieMarkers.filter(movieMarker => movieMarker.floor === indoorLevel);
+  private currentMovieMarkerGenerate(indoorLevel: string, guideLineObjects: GuideLineObject[]) {
+    return guideLineObjects.filter(guideLineObject => guideLineObject.floor === indoorLevel);
   }
 
   private currentElevatorMarkerGenerate(indoorLevel: string, elevatorMarkers: ElevatorMarker[]) {
@@ -114,9 +117,9 @@ export default class MarkerComponent extends React.Component<Props, State> {
         return require('../../../assets/images/toilet.png');
       case 'movie':
         return require('../../../assets/images/map_movie_pointer.png');
-      case 'elevator6seater':
+      case '12人乗り':
         return require('../../../assets/images/map-elevator-small-marker.png');
-      case 'elevator12seater':
+      case '18人乗り':
         return require('../../../assets/images/map-elevator-big-marker.png');
       case 'gate':
         return require('../../../assets/images/map-ticket-gate.png');
@@ -127,15 +130,15 @@ export default class MarkerComponent extends React.Component<Props, State> {
     }
   }
 
-  private createMovieMarkers(maxLength: number) {
+  private createGuideLineObjects(maxLength: number) {
     if(this.state.currentMovieMarkers === undefined) return null;
 
-    return this.state.currentMovieMarkers.map((movieMarker, index: number) =>  (
+    return this.state.currentMovieMarkers.map((GuideLineObject, index: number) =>  (
       <Marker
         key={`movieMarker_${index}`}
-        coordinate={{latitude: movieMarker.latitude, longitude: movieMarker.longitude}}
-        image={this.iconChange('movie')}
-        onPress={() => this.props.changeCarousel(movieMarker)}
+        coordinate={{latitude: GuideLineObject.latitude, longitude: GuideLineObject.longitude}}
+        image={ GuideLineObject.type === 'movie' ? this.iconChange(GuideLineObject.type) : this.iconChange(GuideLineObject.caption)}
+        onPress={() => this.props.changeCarousel(GuideLineObject)}
       />
     ));
   }

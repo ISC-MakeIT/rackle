@@ -21,10 +21,9 @@ export interface ElevatorMarker {
 }
 
 export interface GuideLine {
-  id: number;
-  floor: string;
-  latitude: number;
-  longitude: number;
+    floor: string;
+    latitude: number;
+    longitude: number;
 }
 
 export interface Region {
@@ -51,3 +50,4 @@ export interface GuideScreenMapState {
   elevatorMarkers: ElevatorMarker[];
   toiletMarkers: ToiletMarker[];
 }
+
