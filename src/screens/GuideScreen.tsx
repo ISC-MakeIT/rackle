@@ -10,6 +10,7 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { Modal as ModalCarousel } from '../components/Modal';
 import Colors from '../constants/Colors';
 import movieIcon from '../../assets/images/movie-load-icon.png';
+import { getGuidelines } from '../services/guidelines';
 
 interface Props { navigation: any; }
 
@@ -53,16 +54,8 @@ export default class GuideScreen extends React.Component<Props, State> {
   };
 
   async componentDidMount () {
-    // FIXME 2回目以降はAsyncStorageとか使って以前のScreenを参照するようにしたい
-    console.log("guidScreen didMount");
-
     const mapData: State = await getGuidelines(1, 2);
-    console.log('--------------');
-    console.log(mapData.movies);
-    console.log('--------------');
 
-    // TODO set movie states...
-    // console.log(mapData);
     this.setState({
       indoorLevel: '1',
       initializedLocation: {
@@ -77,28 +70,19 @@ export default class GuideScreen extends React.Component<Props, State> {
       movies: this.indoorChanges(mapData.movies),
       startGate: this.indoorChange(mapData.start_gate),
       endGate: this.indoorChange(mapData.end_gate),
-      movieId: 'tmpState', // tmp
+      movieId: undefined, // tmp
       thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
     });
-    // TODO set movie states...
-    console.log("after setState");
-
   }
 
   // public componentWillUpdate (nextProps: Props, nextState: State) {
   //   if (this.state.indoorLevel !== nextState.indoorLevel) this.setState({carouselMarker: undefined});
   // }
   public render () {
-    //onsole.log(this.state);
-
     // NITS もう少し厳密に判断した方がいい説 :thinking:
     if (this.state.indoorLevel === undefined && this.state.movieId === undefined) {
       return null;
     }
-
-    console.log('------------------------------');
-    console.log(JSON.stringify(this.state, undefined, 2));
-    console.log('------------------------------');
 
     const {
       indoorLevel, initializedLocation, startGate, endGate,
@@ -120,8 +104,8 @@ export default class GuideScreen extends React.Component<Props, State> {
           changeIndoorLevel={this.changeIndoorLevel}
           carouselMarker={this.state.carouselMarker}
           changeCarousel={this.changeCarousel.bind(this)}
-          startGate={this.state.startGate}
-          endGate={this.state.endGate}
+          startGate={this.gateChange(this.state.startGate)}
+          endGate={this.gateChange(this.state.endGate)}
         />
         {/* TODO
           MapComponentは常に表示して、ビデオを出し分けるなどしたい
@@ -139,7 +123,7 @@ export default class GuideScreen extends React.Component<Props, State> {
             firstItem={this.carouselFirstItem(currentCarousel)}
           />
           <Pagination
-            activeDotIndex={this.carouselFirstItem(currentCarousel) ? this.currentPaginationPoint(currentCarousel) : 0}
+            activeDotIndex={this.carouselFirstItem(currentCarousel) ? this.currentPaginationPoint(currentCarousel) : 1}
             dotsLength={currentCarousel.length > 6 ? 6 : currentCarousel.length}
             dotStyle={styles.paginationDotStyle}
           />
@@ -181,8 +165,12 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   private closeMovieModal = () => this.setMovieModalVisible(false);
 
+  private gateChange = (gateMarker) => {
+    if (this.state.carouselMarker !== gateMarker) return gateMarker;
+    return;
+  }
+
   private indoorChanges = (items: any) => {
-  // private indoorChanges = (items: ElevatorMarker[] | Movie[] | GuideLine[]) => {
     if (items == undefined) return;
 
     return items.map(item => {

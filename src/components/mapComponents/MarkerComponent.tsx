@@ -118,6 +118,8 @@ export default class MarkerComponent extends React.Component<Props, State> {
         return require('../../../assets/images/elevator.png'); // TODO 画像名を 'IconNameType'に合わせたい
       case 'elevator12seater':
         return require('../../../assets/images/big_elevator.png');
+      case 'gate':
+        return require('../../../assets/images/map-ticket-gate.png');
       default:
         return null;
     }
