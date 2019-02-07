@@ -14,7 +14,7 @@ interface Props {
 const NavigationPlate: React.FC<Props> = props => (
   <View style={styles.container}>
     <View style={styles.leftContainer}>
-      <FontAwesome name={'map-marker'} size={16} color={'#FF0000'} style={styles.mapMarkerIcon} />
+      <FontAwesome name={'map-marker'} size={16} color={Color.subColorRed} style={styles.mapMarkerIcon} />
       <Text style={styles.stationName}>{props.stationName}</Text>
       <View style={styles.routeContainer}>
         <TouchableOpacity style={styles.gateNameContainer}>
@@ -53,12 +53,12 @@ const styles = EStyleSheet.create({
   stationName: {
     marginLeft: 10,
     paddingRight: 5,
-    color: 'white',
+    color: Color.white,
     fontSize: '1rem',
     lineHeight: 30,
   },
   gateNameContainer: {
-    backgroundColor: 'white',
+    backgroundColor: Color.white,
     height: 20,
     paddingHorizontal: 10,
     marginVertical: 5,
@@ -82,7 +82,7 @@ const styles = EStyleSheet.create({
   },
   caption: {
     marginHorizontal: 10,
-    color: 'white',
+    color: Color.white,
     fontSize: '1.5rem',
     lineHeight: 30,
     fontWeight: 'bold',

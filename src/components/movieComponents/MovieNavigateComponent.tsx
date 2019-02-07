@@ -11,6 +11,7 @@ import {
 import EStyleSheet from 'react-native-extended-stylesheet';
 import NavigationPlate from '../../components/NavigationPlate';
 import VideoPlayer from '@expo/videoplayer';
+import Color from '../../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 
 interface Props {
@@ -37,8 +38,8 @@ export default class MovieNavigateComponent extends React.Component<Props, State
     }
   }
 
-  private playIcon = () => ( <Ionicons name={'ios-play'} size={36} color={'#FFFFFF'} style={{ textAlign: 'center' }} /> );
-  private pauseIcon = () => ( <Ionicons name={'ios-pause'} size={36} color={'#FFFFFF'} style={{ textAlign: 'center' }} /> );
+  private playIcon = () => ( <Ionicons name={'ios-play'} size={36} color={Color.white} style={{ textAlign: 'center' }} /> );
+  private pauseIcon = () => ( <Ionicons name={'ios-pause'} size={36} color={Color.white} style={{ textAlign: 'center' }} /> );
 
   private renderNavigationPlate = () => (this.state.isVisibleNavigationPlate) ? (
     <View style={styles.content__navi}>
@@ -58,7 +59,7 @@ export default class MovieNavigateComponent extends React.Component<Props, State
     return(
       <View style={styles.content_wrap}>
         <TouchableOpacity style={styles.header__controller_back_wrap} onPress={this.props.setMovieModalVisible}>
-          <Ionicons name={'ios-close-circle'} size={40} color={'#DDDDDD'} style={{ textAlign: 'center', opacity: 0.8 }} />
+          <Ionicons name={'ios-close-circle'} size={40} color={Color.subColorGray} style={{ textAlign: 'center', opacity: 0.8 }} />
         </TouchableOpacity>
         <View style={styles.content__movie_wrap}>
           <VideoPlayer
@@ -72,7 +73,7 @@ export default class MovieNavigateComponent extends React.Component<Props, State
             thumbImage={require('../../../assets/images/thumb.png')}
             trackImage={require('../../../assets/images/track.png')}
             textStyle={{
-              color: '#FFFFFF',
+              color: Color.white,
               fontSize: 12,
             }}
             showFullscreenButton={false}
@@ -113,7 +114,7 @@ const styles = EStyleSheet.create({
     height: '100%',
     width: '100%',
     zIndex: -1,
-    backgroundColor: 'black',
+    backgroundColor: Color.black,
     justifyContent: 'center',
   },
   content__movie: {

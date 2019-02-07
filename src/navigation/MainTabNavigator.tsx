@@ -63,7 +63,7 @@ export default createStackNavigator({
   Elevator: { screen: ElevatorStack },
   Map: { screen: MapStack },
 }, {
-    initialRouteName: 'Guide',
+    initialRouteName: 'Main',
     headerMode: 'none',
   }
 );
