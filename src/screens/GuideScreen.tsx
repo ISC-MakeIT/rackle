@@ -136,8 +136,8 @@ export default class GuideScreen extends React.Component<Props, State> {
           />
         </ModalCarousel>
         <Modal
-          animationType="slide"
-          presentationStyle="fullScreen"
+          animationType='slide'
+          presentationStyle='fullScreen'
           transparent={false}
           visible={this.state.modalVisible}
         >
@@ -166,7 +166,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     );
   }
 
-  private setMovieModalVisible = (modalVisible: boolean) => this.setState({ modalVisible })
+  private setMovieModalVisible = (modalVisible: boolean) => this.setState({ modalVisible });
 
   private openMovieModal = () => this.setMovieModalVisible(true);
 
