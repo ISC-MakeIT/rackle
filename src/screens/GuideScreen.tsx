@@ -49,18 +49,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   readonly state: State = {
     showModal: false,
     carouselMarker: undefined,
-<<<<<<< HEAD
     modalVisible: false,
-=======
-    movieMarkers: undefined,
-    guideLines: undefined,
-    elevators: undefined,
-    movies: undefined,
-    startGate: undefined,
-    endGate: undefined,
-    movieId: undefined,
-    thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
->>>>>>> 一旦
   };
 
   async componentDidMount () {
@@ -91,23 +80,17 @@ export default class GuideScreen extends React.Component<Props, State> {
       movieId: 'tmpState', // tmp
       thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
     });
-<<<<<<< HEAD
     // TODO set movie states...
     console.log("after setState");
 
-=======
->>>>>>> 一旦
   }
 
   // public componentWillUpdate (nextProps: Props, nextState: State) {
   //   if (this.state.indoorLevel !== nextState.indoorLevel) this.setState({carouselMarker: undefined});
   // }
   public render () {
-<<<<<<< HEAD
     //onsole.log(this.state);
 
-=======
->>>>>>> 一旦
     // NITS もう少し厳密に判断した方がいい説 :thinking:
     if (this.state.indoorLevel === undefined && this.state.movieId === undefined) {
       return null;
