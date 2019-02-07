@@ -7,4 +7,4 @@ npm-debug.*
 *.mobileprovision
 yarn-error.log
 package-lock.json
-assets/movies/*
+# assets/movies/*
