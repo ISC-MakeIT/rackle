@@ -113,15 +113,15 @@ export default class MarkerComponent extends React.Component<Props, State> {
       case 'toilet':
         return require('../../../assets/images/toilet.png');
       case 'movie':
-        return require('../../../assets/images/map-movie-marker-check.png');
+        return require('../../../assets/images/map_movie_pointer.png');
       case 'elevator6seater':
-        return require('../../../assets/images/map-elevator-small-marker.png'); // TODO 画像名を 'IconNameType'に合わせたい
+        return require('../../../assets/images/map-elevator-small-marker.png');
       case 'elevator12seater':
         return require('../../../assets/images/map-elevator-big-marker.png');
       case 'gate':
         return require('../../../assets/images/map-ticket-gate.png');
       case 'carousel':
-        return require('../../../assets/images/thumb.png');
+        return require('../../../assets/images/map-movie-marker-check.png');
       default:
         return null;
     }

@@ -54,7 +54,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   };
 
   async componentDidMount () {
-    const mapData: State = await getGuidelines(2, 3);
+    const mapData: State = await getGuidelines(6, 11);
 
     this.setState({
       indoorLevel: '1',
@@ -81,11 +81,10 @@ export default class GuideScreen extends React.Component<Props, State> {
     if (this.state.indoorLevel === undefined && this.state.movieId === undefined) {
       return null;
     }
-    console.warn(this.state.toilets);
 
     const {
       indoorLevel, initializedLocation, startGate, endGate,
-      toiletMarkers, elevatorMarkers, guideLines, movies,
+      toilets, elevators, guideLines, movies,
     } = this.state;
 
     const carousel = [startGate, ...movies, endGate];
@@ -97,8 +96,8 @@ export default class GuideScreen extends React.Component<Props, State> {
           indoorLevel={indoorLevel}
           initializedLocation={initializedLocation!}
           movieMarkers={this.createMovieMarkers()}
-          toiletMarkers={toiletMarkers}
-          elevatorMarkers={elevatorMarkers}
+          toiletMarkers={toilets}
+          //elevatorMarkers={elevators}
           guideLines={guideLines}
           changeIndoorLevel={this.changeIndoorLevel}
           carouselMarker={this.state.carouselMarker}
