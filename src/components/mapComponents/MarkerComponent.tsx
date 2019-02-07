@@ -113,13 +113,15 @@ export default class MarkerComponent extends React.Component<Props, State> {
       case 'toilet':
         return require('../../../assets/images/toilet.png');
       case 'movie':
-        return require('../../../assets/images/map-pointer.png');
+        return require('../../../assets/images/map-movie-marker-check.png');
       case 'elevator6seater':
-        return require('../../../assets/images/elevator.png'); // TODO 画像名を 'IconNameType'に合わせたい
+        return require('../../../assets/images/map-elevator-small-marker.png'); // TODO 画像名を 'IconNameType'に合わせたい
       case 'elevator12seater':
-        return require('../../../assets/images/big_elevator.png');
+        return require('../../../assets/images/map-elevator-big-marker.png');
       case 'gate':
         return require('../../../assets/images/map-ticket-gate.png');
+      case 'carousel':
+        return require('../../../assets/images/thumb.png');
       default:
         return null;
     }
@@ -171,6 +173,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
 
   private createCarouselMarker(carousel: Carousel) {
     if (carousel === undefined) return null;
+    if (carousel.floor !== this.props.indoorLevel) return null;
 
     return(
       <Marker

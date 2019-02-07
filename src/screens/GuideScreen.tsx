@@ -54,7 +54,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   };
 
   async componentDidMount () {
-    const mapData: State = await getGuidelines(1, 2);
+    const mapData: State = await getGuidelines(2, 3);
 
     this.setState({
       indoorLevel: '1',
@@ -67,22 +67,21 @@ export default class GuideScreen extends React.Component<Props, State> {
       movieMarkers: this.indoorChanges(mapData.movies),
       guideLines: this.indoorChanges(mapData.movie_points),
       elevators: this.indoorChanges(mapData.elevators),
+      toilets: this.indoorChanges(mapData.toilets),
       movies: this.indoorChanges(mapData.movies),
       startGate: this.indoorChange(mapData.start_gate),
       endGate: this.indoorChange(mapData.end_gate),
-      movieId: undefined, // tmp
+      movieId: undefined,
       thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
     });
   }
 
-  // public componentWillUpdate (nextProps: Props, nextState: State) {
-  //   if (this.state.indoorLevel !== nextState.indoorLevel) this.setState({carouselMarker: undefined});
-  // }
   public render () {
     // NITS もう少し厳密に判断した方がいい説 :thinking:
     if (this.state.indoorLevel === undefined && this.state.movieId === undefined) {
       return null;
     }
+    console.warn(this.state.toilets);
 
     const {
       indoorLevel, initializedLocation, startGate, endGate,
@@ -165,7 +164,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   private closeMovieModal = () => this.setMovieModalVisible(false);
 
-  private gateChange = (gateMarker) => {
+  private gateChange = (gateMarker: Gate) => {
     if (this.state.carouselMarker !== gateMarker) return gateMarker;
     return;
   }
@@ -173,7 +172,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   private indoorChanges = (items: any) => {
     if (items == undefined) return;
 
-    return items.map(item => {
+    return items.map((item: Gate) => {
       const floor = String(item.floor).replace('-', 'B');
       item.floor = floor;
       return item;
