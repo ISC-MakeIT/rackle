@@ -34,7 +34,7 @@ export interface ActiveMapState extends BaseState{
 }
 
 interface ActiveMovieState extends BaseState {
-  movieId: string;
+  movieId: string | undefined;
   thumbnails: string[];
   // FIXME 必要なものがわからん
 }
@@ -49,10 +49,21 @@ export default class GuideScreen extends React.Component<Props, State> {
   readonly state: State = {
     showModal: false,
     carouselMarker: undefined,
+<<<<<<< HEAD
     modalVisible: false,
+=======
+    movieMarkers: undefined,
+    guideLines: undefined,
+    elevators: undefined,
+    movies: undefined,
+    startGate: undefined,
+    endGate: undefined,
+    movieId: undefined,
+    thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
+>>>>>>> 一旦
   };
 
-  async componentWillMount () {
+  async componentDidMount () {
     // FIXME 2回目以降はAsyncStorageとか使って以前のScreenを参照するようにしたい
     console.log("guidScreen didMount");
 
@@ -61,6 +72,8 @@ export default class GuideScreen extends React.Component<Props, State> {
     console.log(mapData.movies);
     console.log('--------------');
 
+    // TODO set movie states...
+    // console.log(mapData);
     this.setState({
       indoorLevel: '1',
       initializedLocation: {
@@ -78,20 +91,31 @@ export default class GuideScreen extends React.Component<Props, State> {
       movieId: 'tmpState', // tmp
       thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
     });
+<<<<<<< HEAD
     // TODO set movie states...
     console.log("after setState");
 
+=======
+>>>>>>> 一旦
   }
 
   // public componentWillUpdate (nextProps: Props, nextState: State) {
   //   if (this.state.indoorLevel !== nextState.indoorLevel) this.setState({carouselMarker: undefined});
   // }
-
   public render () {
+<<<<<<< HEAD
     //onsole.log(this.state);
 
+=======
+>>>>>>> 一旦
     // NITS もう少し厳密に判断した方がいい説 :thinking:
-    if ((this.state.indoorLevel !== undefined) && (this.state.movieId !== undefined)) return null;
+    if (this.state.indoorLevel === undefined && this.state.movieId === undefined) {
+      return null;
+    }
+
+    console.log('------------------------------');
+    console.log(JSON.stringify(this.state, undefined, 2));
+    console.log('------------------------------');
 
     const {
       indoorLevel, initializedLocation, startGate, endGate,
