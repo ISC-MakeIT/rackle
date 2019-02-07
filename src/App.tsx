@@ -49,6 +49,9 @@ export default class App extends React.Component <Props, State> {
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free to remove
         // this if you are not using it in your app
+        'MPLUS1p': require('../assets/fonts/MPLUS1p-Regular.ttf'),
+        'MPLUS1p-Medium': require('../assets/fonts/MPLUS1p-Medium.ttf'),
+        'MPLUS1p-Bold': require('../assets/fonts/MPLUS1p-Bold.ttf'),
         'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
       }),
     ]);

@@ -36,7 +36,7 @@ const styles = EStyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    height: 60,
+    height: 67,
     backgroundColor: 'transparent',
   },
   leftContainer: {
@@ -56,6 +56,7 @@ const styles = EStyleSheet.create({
     color: Color.white,
     fontSize: '1rem',
     lineHeight: 30,
+    fontFamily: 'MPLUS1p',
   },
   gateNameContainer: {
     backgroundColor: Color.white,
@@ -68,6 +69,7 @@ const styles = EStyleSheet.create({
   gateName: {
     lineHeight: 20,
     fontSize: '0.7rem',
+    fontFamily: 'MPLUS1p',
   },
   routeContainer: {
     flex: 1,
@@ -79,13 +81,15 @@ const styles = EStyleSheet.create({
     color: Color.subColorRed,
     lineHeight: 30,
     marginLeft: 5,
+    fontFamily: 'MPLUS1p',
   },
   caption: {
     marginHorizontal: 10,
     color: Color.white,
     fontSize: '1.5rem',
     lineHeight: 30,
-    fontWeight: 'bold',
+    fontWeight: '700',
+    fontFamily: 'MPLUS1p-Medium',
   },
 });
 

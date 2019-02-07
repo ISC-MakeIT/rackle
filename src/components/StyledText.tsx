@@ -7,7 +7,7 @@ interface Props {
 }
 
 const MonoText: React.FC<Props> = props => (
-  <Text {...props} style={[props.style, { fontFamily: 'space-mono' }]} />
+  <Text {...props} style={[props.style, { fontFamily: 'MPLUS1p', 'space-mono' }]} />
 );
 
 export default MonoText;
