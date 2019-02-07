@@ -168,17 +168,14 @@ export default class GuideScreen extends React.Component<Props, State> {
     );
   }
 
-<<<<<<< HEAD
   private setMovieModalVisible = (modalVisible: boolean) => this.setState({ modalVisible });
 
   private openMovieModal = () => this.setMovieModalVisible(true);
 
   private closeMovieModal = () => this.setMovieModalVisible(false);
-  private indoorChanges = (items: ElevatorMarker[] | Movie[] | GuideLine[] | undefined) => {
-=======
+
   private indoorChanges = (items: any) => {
   // private indoorChanges = (items: ElevatorMarker[] | Movie[] | GuideLine[]) => {
->>>>>>> 動かない
     if (items == undefined) return;
 
     return items.map(item => {
