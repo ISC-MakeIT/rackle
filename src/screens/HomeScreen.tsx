@@ -63,8 +63,6 @@ export default class HomeScreen extends React.Component<Props, State> {
   };
 
   async componentDidMount () {
-    console.log("homescreen DidMount");
-
     // MEMO yokohama = 1
     // const data = await getStation();
     // const station = data.station![0];
