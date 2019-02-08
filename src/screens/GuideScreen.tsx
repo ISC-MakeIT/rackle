@@ -38,11 +38,14 @@ export interface ActiveMapState extends BaseState{
 
 interface ActiveMovieState extends BaseState {
   movieId: string;
-  thumbnails: string[];
   // FIXME 必要なものがわからん
 }
 
 type State = ActiveMapState & ActiveMovieState & StartGate & EndGate;
+
+interface CarouselItem {
+  item: Gate | Movie;
+}
 
 export default class GuideScreen extends React.Component<Props, State> {
   public static navigationOptions = {
@@ -77,7 +80,6 @@ export default class GuideScreen extends React.Component<Props, State> {
       this.setState({
         currentScreen,
         movieId: 'tmpState', // tmp
-        thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
       });
     }
   }
@@ -114,9 +116,6 @@ export default class GuideScreen extends React.Component<Props, State> {
           startGate={this.state.startGate}
           endGate={this.state.endGate}
         />
-        {/* TODO
-          MapComponentは常に表示して、ビデオを出し分けるなどしたい
-        */}
         <ModalCarousel modalView={this.state.showModal}>
           <Carousel
             data={currentCarousel}
@@ -143,7 +142,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         >
           <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} />
         </Modal>
-        { currentCarousel.length !== 0 ?
+        { currentCarousel.length !== 0 ? (
           <View style={styles.showModalBottomAround}>
             <TouchableOpacity onPress={this.changeModal.bind(this, initializedLocation)} style={styles.showModalBottom} >
               {
@@ -160,7 +159,7 @@ export default class GuideScreen extends React.Component<Props, State> {
                   </View>
               }
             </TouchableOpacity>
-          </View> : null
+          </View>) : null
         }
       </View>
     );
@@ -180,23 +179,26 @@ export default class GuideScreen extends React.Component<Props, State> {
     return currentPoint;
   }
 
-  private carouselRenderItem = ({item})=> {
+  private carouselRenderItem = ({item}: CarouselItem)=> {
     const carousel = [this.state.startGate, ...this.state.movies, this.state.endGate];
 
     return (
-        <View style={styles.carousel}>
-            <View style={styles.carouselInText}>
-              <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
-            </View>    
+      <View style={styles.carousel}>
+        <View style={styles.carouselInText}>
+          <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
+        </View>
+        <View style={styles.carouselInThumbnail}>
+          <Image source={require('../../assets/images/thumbnails/KK_TY_P1.jpg')} style={styles.thumbnailImage} />
+        </View>
         {
-          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 ?
+          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 ? (
             <TouchableOpacity style={styles.carouselMovieBottom} onPress={this.openMovieModal}>
               <View style={styles.carouselMovieBottomRadius}>
                 <Image source={movieIcon} style={styles.movieIcon} />
                 <Text style={styles.carouselMovieBottomText}>再生</Text>
               </View>
-            </TouchableOpacity> 
-          : null
+            </TouchableOpacity>
+          ) : null
         }
       </View>
     );
@@ -297,8 +299,8 @@ const styles = EStyleSheet.create({
     position: 'absolute',
   },
   thumbnailImage: {
-    width: 120,
-    height: 90,
+    width: "100%",
+    height: "100%",
   },
   modal: {
     width: width * 0.79,
@@ -376,6 +378,15 @@ const styles = EStyleSheet.create({
     marginBottom: height * 0.03,
     marginTop: height * -0.025,
     zIndex: 5,
+  },
+  carouselInThumbnail: {
+    position: 'absolute',
+    width: "100%",
+    height: "100%",
+    top: 0,
+    left: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   carouselInText: {
     position: 'absolute',
