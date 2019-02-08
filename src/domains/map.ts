@@ -29,7 +29,7 @@ export interface LocationPoint {
 export interface GuideLine {
   id: string;
   name: string;
-  location_points: LocationPoint;
+  location_points: LocationPoint[];
 }
 
 export interface Region {
