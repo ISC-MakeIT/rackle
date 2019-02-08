@@ -20,10 +20,16 @@ export interface ElevatorMarker {
   useable: number;
 }
 
-export interface GuideLine {
+export interface LocationPoint {
     floor: string;
     latitude: number;
     longitude: number;
+}
+
+export interface GuideLine {
+  id: string;
+  name: string;
+  location_points: LocationPoint[];
 }
 
 export interface Region {
