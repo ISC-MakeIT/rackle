@@ -194,16 +194,16 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private carouselRenderItem = ({item})=> {
-    if (this.state.carouselMarker == undefined) return null;
     const carousel = [this.state.startGate, ...this.state.objectPoints, this.state.endGate];
-    const type = Object.keys(this.state.carouselMarker).length === 9 ? this.state.carouselMarker.type : null;
+    const type = this.state.carouselMarker ? this.state.carouselMarker.type || null :null;
+
     return (
       <View style={styles.carousel}>
         <View style={styles.carouselInText}>
           <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
         </View>
         {
-          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 && type === '動画' ?
+          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 && type === 'movie' ?
           <View style={styles.carouselMovieBottom}>
             <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
               <Image source={movieIcon} style={styles.movieIcon} />
