@@ -114,7 +114,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
   private iconChange(iconName: IconNameType) {
     switch (iconName) {
       case 'toilet':
-        return require('../../../assets/images/toilet.png');
+        return require('../../../assets/images/map-toilet-marker.png');
       case 'movie':
         return require('../../../assets/images/map_movie_pointer.png');
       case '12人乗り':
@@ -139,6 +139,7 @@ export default class MarkerComponent extends React.Component<Props, State> {
         coordinate={{latitude: GuideLineObject.latitude, longitude: GuideLineObject.longitude}}
         image={ GuideLineObject.type === 'movie' ? this.iconChange(GuideLineObject.type) : this.iconChange(GuideLineObject.caption)}
         onPress={() => this.props.changeCarousel(GuideLineObject)}
+        anchor={{x: 0.5, y: 0.5}}
       />
     ));
   }
