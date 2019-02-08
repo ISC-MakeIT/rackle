@@ -32,7 +32,7 @@ export interface ActiveMapState extends BaseState{
   carouselMarker?: Carousel;
   start_gate: Gate;
   end_gate: Gate;
-  guidelines: GuideLine;
+  guidelines: GuideLines;
 }
 
 interface ActiveMovieState extends BaseState {
@@ -40,7 +40,7 @@ interface ActiveMovieState extends BaseState {
   thumbnails: string[];
 }
 
-type State = ActiveMapState & ActiveMovieState & StartGate & EndGate & GuideScreenMapState & ObjectPoints & GuideLines;
+type State = ActiveMapState & ActiveMovieState & StartGate & EndGate & GuideScreenMapState & ObjectPoints & GuideLine;
 
 interface CarouselItem {
   item: Gate | ObjectPoints;
