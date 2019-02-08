@@ -296,7 +296,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   private carouselFirstItem = (currentCarousel: GuideLineObject[]) => {
     const carouselMarker = this.state.carouselMarker;
-    if(carouselMarker == undefined) return 0;
+    if(carouselMarker == undefined) return;
 
     return currentCarousel.indexOf(carouselMarker);
   }
