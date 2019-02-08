@@ -4,7 +4,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
 import CustomMap from '../mapComponents/CustomMap';
-import { ToiletMarker, ElevatorMarker, GuideLine, Region } from '../../domains/map';
+import { ToiletMarker, ElevatorMarker, LocationPoints, Region } from '../../domains/map';
 import { Gate } from 'src/domains/gate';
 import { GuideLineObject } from '../../domains/movie';
 
@@ -17,7 +17,7 @@ interface Props {
   movieMarkers?: GuideLineObject[];
   toiletMarkers?: ToiletMarker[];
   elevatorMarkers?: ElevatorMarker[];
-  guideLines?: GuideLine[];
+  guideLines?: LocationPoints[];
   guideLinesColor?: string;
   changeIndoorLevel: (nextIndoorLevel: string) => void;
   screenChange?: () => void;

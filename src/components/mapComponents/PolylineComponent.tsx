@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { Polyline } from 'react-native-maps';
 import Colors from '../../constants/Colors';
-import { GuideLine } from '../../domains/map';
+import { LocationPoint } from '../../domains/map';
 
 interface Props {
   indoorLevel: string;
-  guideLines: GuideLine[];
+  guideLines: LocationPoint[];
   guideLinesColor?: string;
 }
 
 interface State {
   indoorLevel: string;
-  guideLines: GuideLine[];
+  guideLines: LocationPoint[];
 }
 
 

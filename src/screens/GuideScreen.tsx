@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, Image, Modal } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { Region, ToiletMarker, ElevatorMarker, GuideLine, GuideLines, Elevators, GuideScreenMapState } from 'src/domains/map';
+import { Region, ToiletMarker, ElevatorMarker, GuideLine, GuideLines, GuideScreenMapState, LocationPoint } from 'src/domains/map';
 import { Gate, StartGate, EndGate} from 'src/domains/gate';
 import { GuideLineObject, ObjectPoints } from 'src/domains/movie';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
@@ -32,7 +32,7 @@ export interface ActiveMapState extends BaseState{
   carouselMarker?: Carousel;
   start_gate: Gate;
   end_gate: Gate;
-  guideline: GuideLine;
+  guidelines: GuideLine;
 }
 
 interface ActiveMovieState extends BaseState {
@@ -40,7 +40,7 @@ interface ActiveMovieState extends BaseState {
   thumbnails: string[];
 }
 
-type State = ActiveMapState & ActiveMovieState & StartGate & EndGate & GuideScreenMapState & ObjectPoints;
+type State = ActiveMapState & ActiveMovieState & StartGate & EndGate & GuideScreenMapState & ObjectPoints & GuideLines;
 
 interface CarouselItem {
   item: Gate | ObjectPoints;
@@ -69,7 +69,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         longitudeDelta: 0.1,
       },
       movieMarkers: this.indoorChanges(mapData.object_points),
-      guideLines: this.indoorChanges(mapData.guideline),
+      guideLines: this.indoorChanges(mapData.guidelines.location_points),
       elevators: this.indoorChanges(mapData.elevators),
       toilets: this.indoorChanges(mapData.toilets),
       objectPoints: this.indoorChanges(mapData.object_points),
