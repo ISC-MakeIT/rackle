@@ -20,7 +20,7 @@ type Carousel = Movie | Gate;
 interface BaseState {
   currentScreen: ScreenName | undefined;
   showModal: boolean;
-  modalVisible: boolean;
+  movieModalVisible: boolean;
 }
 
 export interface ActiveMapState extends BaseState{
@@ -56,7 +56,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     currentScreen: undefined,
     showModal: false,
     carouselMarker: undefined,
-    modalVisible: false,
+    movieModalVisible: false,
   };
 
   public componentDidMount () {
@@ -138,7 +138,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           animationType='slide'
           presentationStyle='fullScreen'
           transparent={false}
-          visible={this.state.modalVisible}
+          visible={this.state.movieModalVisible}
         >
           <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} />
         </Modal>
@@ -165,7 +165,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     );
   }
 
-  private setMovieModalVisible = (modalVisible: boolean) => this.setState({ modalVisible });
+  private setMovieModalVisible = (movieModalVisible: boolean) => this.setState({ movieModalVisible });
 
   private openMovieModal = () => this.setMovieModalVisible(true);
 
@@ -363,7 +363,6 @@ const styles = EStyleSheet.create({
   carousel: {
     width: width * 0.79,
     height: height * 0.33,
-    backgroundColor: '#eee',
     position: 'absolute',
     justifyContent: 'center',
     bottom: 0,
