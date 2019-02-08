@@ -214,6 +214,7 @@ export default class GuideScreen extends React.Component<Props, State> {
             <View style={styles.carouselMovieBottom}>
               <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
                 <Image source={movieIcon} style={styles.movieIcon} />
+                {/* <Text style={styles.carouselMovieBottomText}>再生</Text> */}
               </TouchableOpacity>
             </View>
           ) : null
