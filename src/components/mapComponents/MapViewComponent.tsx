@@ -6,15 +6,15 @@ import PolylineComponent from './PolylineComponent';
 import CustomMap from '../mapComponents/CustomMap';
 import { ToiletMarker, ElevatorMarker, GuideLine, Region } from '../../domains/map';
 import { Gate } from 'src/domains/gate';
-import { Movie } from '../../domains/movie';
+import { GuideLineObject } from '../../domains/movie';
 
 type ScreenNameType = 'video' | 'map';
-type Carousel = Movie | Gate;
+type Carousel = GuideLineObject | Gate;
 
 interface Props {
   indoorLevel: string;
   initializedLocation: Region;
-  movieMarkers?: Movie[];
+  movieMarkers?: GuideLineObject[];
   toiletMarkers?: ToiletMarker[];
   elevatorMarkers?: ElevatorMarker[];
   guideLines?: GuideLine[];

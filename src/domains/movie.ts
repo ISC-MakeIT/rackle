@@ -1,4 +1,4 @@
-export interface Movie {
+export interface GuideLineObject {
   id: number;
   name: string;
   file_path: string;
@@ -6,4 +6,10 @@ export interface Movie {
   latitude: number;
   longitude: number;
   floor: string;
+  type: 'movie' | 'elevator';
+  caption:'12人乗り' | '18人乗り';
+}
+
+export interface ObjectPoints {
+  objectPoints: GuideLineObject[];
 }

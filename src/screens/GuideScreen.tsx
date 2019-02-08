@@ -1,24 +1,22 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, Image, Modal } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { MapData } from '../dummydata/mapData';
-import { Region, ToiletMarker, ElevatorMarker, GuideLine } from 'src/domains/map';
+import { Region, ToiletMarker, ElevatorMarker, GuideLine, GuideLines, Elevators, GuideScreenMapState } from 'src/domains/map';
 import { Gate, StartGate, EndGate} from 'src/domains/gate';
-import { Movie } from 'src/domains/movie';
+import { GuideLineObject, ObjectPoints } from 'src/domains/movie';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { Modal as ModalCarousel } from '../components/Modal';
 import Colors from '../constants/Colors';
 import movieIcon from '../../assets/images/movie-load-icon.png';
+import { getGuidelines } from '../services/guidelines';
 
 interface Props { navigation: any; }
 
-type ScreenName = 'video' | 'map';
-type Carousel = Movie | Gate;
+type Carousel = GuideLineObject | Gate;
 
 interface BaseState {
-  currentScreen: ScreenName | undefined;
   showModal: boolean;
   movieModalVisible: boolean;
 }
@@ -26,22 +24,23 @@ interface BaseState {
 export interface ActiveMapState extends BaseState{
   indoorLevel: string;
   initializedLocation: Region | undefined;
-  movieMarkers: Movie[] | undefined;
-  toiletMarkers: ToiletMarker[] | undefined;
-  elevatorMarkers: ElevatorMarker[] | undefined;
-  guideLines: GuideLine[] | undefined;
-  movies: Movie[];
+  movieMarkers: GuideLineObject[] | undefined;
+  toilets: ToiletMarker[] | undefined;
+  elevators: ElevatorMarker[] | undefined;
+  object_points: GuideLineObject[] | undefined;
+  movies: GuideLineObject[];
   carouselMarker?: Carousel;
   start_gate: Gate;
   end_gate: Gate;
+  guideline: GuideLine;
 }
 
 interface ActiveMovieState extends BaseState {
-  movieId: string;
-  // FIXME 必要なものがわからん
+  movieId: string | undefined;
+  thumbnails: string[];
 }
 
-type State = ActiveMapState & ActiveMovieState & StartGate & EndGate;
+type State = ActiveMapState & ActiveMovieState & StartGate & EndGate & GuideScreenMapState & ObjectPoints;
 
 interface CarouselItem {
   item: Gate | Movie;
@@ -53,53 +52,47 @@ export default class GuideScreen extends React.Component<Props, State> {
   };
 
   readonly state: State = {
-    currentScreen: undefined,
     showModal: false,
     carouselMarker: undefined,
     movieModalVisible: false,
   };
 
-  public componentDidMount () {
-    // FIXME 2回目以降はAsyncStorageとか使って以前のScreenを参照するようにしたい
-    const currentScreen = this.state.currentScreen === 'video' ? 'video' : 'map'; // defaultは'map'
+  async componentDidMount () {
+    const mapData: State = await getGuidelines(6, 11);
 
-    if (currentScreen === 'map') {
-      this.setState({
-        currentScreen,
-        indoorLevel: MapData.indoorLevel,
-        initializedLocation: MapData.initializedLocation,
-        movieMarkers: MapData.movies,
-        guideLines: MapData.guideLines,
-        elevatorMarkers: MapData.elevatorMarkers,
-        movies: MapData.movies,
-        startGate: MapData.start_gate,
-        endGate: MapData.end_gate,
-      });
-    } else {
-      // TODO set movie states...
-      this.setState({
-        currentScreen,
-        movieId: 'tmpState', // tmp
-      });
-    }
-  }
-
-  public componentWillUpdate (nextProps: Props, nextState: State) {
-    if (this.state.indoorLevel !== nextState.indoorLevel) this.setState({carouselMarker: undefined});
+    this.setState({
+      indoorLevel: '1',
+      initializedLocation: {
+        latitude: 35.46588771428577,
+        longitude: 139.62227088041905,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
+      },
+      movieMarkers: this.indoorChanges(mapData.object_points),
+      guideLines: this.indoorChanges(mapData.guideline),
+      elevators: this.indoorChanges(mapData.elevators),
+      toilets: this.indoorChanges(mapData.toilets),
+      objectPoints: this.indoorChanges(mapData.object_points),
+      startGate: this.indoorChange(mapData.start_gate),
+      endGate: this.indoorChange(mapData.end_gate),
+      movieId: undefined,
+      thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
+    });
   }
 
   public render () {
     // NITS もう少し厳密に判断した方がいい説 :thinking:
-    if (this.state.currentScreen == undefined) return null; // TODO loading animation
-    if ((this.state.indoorLevel !== undefined) && (this.state.movieId !== undefined)) return null;
+    if (this.state.indoorLevel === undefined && this.state.movieId === undefined) {
+      return null;
+    }
 
     const {
       indoorLevel, initializedLocation, startGate, endGate,
-      toiletMarkers, elevatorMarkers, guideLines, movies,
+      toilets, guideLines, objectPoints,
     } = this.state;
 
-    const carousel = [startGate, ...movies, endGate];
-    const currentCarousel = carousel.filter(movie => movie.floor === this.state.indoorLevel);
+    const carousel = [startGate, ...objectPoints, endGate];
+    const currentCarousel = carousel.filter(objectPoint => objectPoint.floor === this.state.indoorLevel);
 
     return (
       <View style={styles.content_wrap}>
@@ -107,14 +100,14 @@ export default class GuideScreen extends React.Component<Props, State> {
           indoorLevel={indoorLevel}
           initializedLocation={initializedLocation!}
           movieMarkers={this.createMovieMarkers()}
-          toiletMarkers={toiletMarkers}
-          elevatorMarkers={elevatorMarkers}
+          toiletMarkers={toilets}
+          //elevatorMarkers={elevators}
           guideLines={guideLines}
           changeIndoorLevel={this.changeIndoorLevel}
           carouselMarker={this.state.carouselMarker}
           changeCarousel={this.changeCarousel.bind(this)}
-          startGate={this.state.startGate}
-          endGate={this.state.endGate}
+          startGate={this.gateChange(this.state.startGate)}
+          endGate={this.gateChange(this.state.endGate)}
         />
         <ModalCarousel modalView={this.state.showModal}>
           <Carousel
@@ -129,7 +122,7 @@ export default class GuideScreen extends React.Component<Props, State> {
             firstItem={this.carouselFirstItem(currentCarousel)}
           />
           <Pagination
-            activeDotIndex={this.carouselFirstItem(currentCarousel) ? this.currentPaginationPoint(currentCarousel) : 0}
+            activeDotIndex={this.carouselFirstItem(currentCarousel) ? this.currentPaginationPoint(currentCarousel) : 1}
             dotsLength={currentCarousel.length > 6 ? 6 : currentCarousel.length}
             dotStyle={styles.paginationDotStyle}
           />
@@ -171,6 +164,27 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   private closeMovieModal = () => this.setMovieModalVisible(false);
 
+  private gateChange = (gateMarker: Gate) => {
+    if (this.state.carouselMarker !== gateMarker) return gateMarker;
+    return;
+  }
+
+  private indoorChanges = (items: any) => {
+    if (items == undefined) return;
+
+    return items.map((item: Gate) => {
+      const floor = String(item.floor).replace('-', 'B');
+      item.floor = floor;
+      return item;
+    });
+  }
+
+  private indoorChange = (items: Gate) => {
+    const floor = String(items.floor).replace('-', 'B');
+    items.floor = floor;
+    return items;
+  }
+
   private currentPaginationPoint = (currentCarousel: Carousel[]) => {
     const currentPoint = this.carouselFirstItem(currentCarousel);
 
@@ -179,8 +193,9 @@ export default class GuideScreen extends React.Component<Props, State> {
     return currentPoint;
   }
 
-  private carouselRenderItem = ({item}: CarouselItem)=> {
-    const carousel = [this.state.startGate, ...this.state.movies, this.state.endGate];
+  private carouselRenderItem = ({item})=> {
+    const carousel = [this.state.startGate, ...this.state.objectPoints, this.state.endGate];
+    const type = this.state.carouselMarker ? this.state.carouselMarker.type || null :null;
 
     return (
       <View style={styles.carousel}>
@@ -191,12 +206,10 @@ export default class GuideScreen extends React.Component<Props, State> {
           <Image source={require('../../assets/images/thumbnails/KK_TY_P1.jpg')} style={styles.thumbnailImage} />
         </View>
         {
-          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 ? (
-            <TouchableOpacity style={styles.carouselMovieBottom} onPress={this.openMovieModal}>
-              <View style={styles.carouselMovieBottomRadius}>
-                <Image source={movieIcon} style={styles.movieIcon} />
-                <Text style={styles.carouselMovieBottomText}>再生</Text>
-              </View>
+          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 && type === 'movie' ?
+          <View style={styles.carouselMovieBottom}>
+            <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
+              <Image source={movieIcon} style={styles.movieIcon} />
             </TouchableOpacity>
           ) : null
         }
@@ -205,10 +218,10 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private carouselOnSnapToItem = (index: number) => {
-    if (this.state.movies == undefined) return;
+    if (this.state.objectPoints == undefined) return;
 
-    const carousel = [this.state.startGate, ...this.state.movies, this.state.endGate];
-    const currentCarousel = carousel.filter(movie => movie.floor === this.state.indoorLevel);
+    const carousel = [this.state.startGate, ...this.state.objectPoints, this.state.endGate];
+    const currentCarousel = carousel.filter(objectPoint => objectPoint.floor === this.state.indoorLevel);
     return this.changeInitializedLocation(currentCarousel[index]);
   }
 
@@ -333,18 +346,18 @@ const styles = EStyleSheet.create({
   },
   openText: {
     color: Colors.white,
-    fontWeight: '700', 
+    fontWeight: '700',
     fontSize: 20,
     letterSpacing: '0.05rem',
   },
   closeText: {
     color: Colors.white,
-    fontWeight: '700', 
+    fontWeight: '700',
     fontSize: 20,
     letterSpacing: '0.05rem',
   },
   closeModalBottomText: {
-    alignItems: 'center',    
+    alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.black,
     width: width * 0.44,

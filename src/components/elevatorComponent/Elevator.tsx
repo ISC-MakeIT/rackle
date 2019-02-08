@@ -5,7 +5,7 @@ import { Region, ElevatorMarker, ElevatorCapacity } from 'src/domains/map';
 import Color from '../../constants/Colors';
 
 interface Props {
-  capacity: ElevatorCapacity;
+  size: ElevatorCapacity;
   navigation: any;
   elevatorMarkers: ElevatorMarker[];
   initializedLocation: Region;
@@ -24,7 +24,7 @@ export const Elevator: React.FC<Props> = props => {
         <View style={styles.leftContainer}></View>
         <View style={styles.centerContainer}>
           <Text style={styles.centerContainerTop}>JR横浜駅西口　階段隣</Text>
-        <Text>収容人数：{props.capacity}人</Text>
+        <Text>収容人数：{props.size}人</Text>
         </View>
         <View style={styles.rightContainer}>
           <Text style={styles.rightContainerTop}>○</Text>
