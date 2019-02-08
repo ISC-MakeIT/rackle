@@ -43,7 +43,7 @@ interface ActiveMovieState extends BaseState {
 type State = ActiveMapState & ActiveMovieState & StartGate & EndGate & GuideScreenMapState & ObjectPoints;
 
 interface CarouselItem {
-  item: Gate | Movie;
+  item: Gate | ObjectPoints;
 }
 
 export default class GuideScreen extends React.Component<Props, State> {
@@ -135,24 +135,28 @@ export default class GuideScreen extends React.Component<Props, State> {
         >
           <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} />
         </Modal>
-        { currentCarousel.length !== 0 ? (
-          <View style={styles.showModalBottomAround}>
-            <TouchableOpacity onPress={this.changeModal.bind(this, initializedLocation)} style={styles.showModalBottom} >
-              {
-                this.state.showModal ?
-                  <View style={styles.closeModalBottomText}>
-                    <Text style={styles.closeText}>
-                      CLOSE
-                    </Text>
-                  </View> :
-                  <View style={styles.openModalBottomText}>
-                    <Text style={styles.openText}>
-                      OPEN
-                    </Text>
-                  </View>
-              }
-            </TouchableOpacity>
-          </View>) : null
+        {
+          currentCarousel.length !== 0 ? (
+            <View style={styles.showModalBottomAround}>
+              <TouchableOpacity onPress={this.changeModal.bind(this, initializedLocation)} style={styles.showModalBottom} >
+                {
+                  this.state.showModal ? (
+                    <View style={styles.closeModalBottomText}>
+                      <Text style={styles.closeText}>
+                        CLOSE
+                      </Text>
+                    </View>
+                  ) : (
+                    <View style={styles.openModalBottomText}>
+                      <Text style={styles.openText}>
+                        OPEN
+                      </Text>
+                    </View>
+                  )
+                }
+              </TouchableOpacity>
+            </View>
+          ) : null
         }
       </View>
     );
@@ -193,24 +197,25 @@ export default class GuideScreen extends React.Component<Props, State> {
     return currentPoint;
   }
 
-  private carouselRenderItem = ({item})=> {
+  private carouselRenderItem = ({item}: CarouselItem)=> {
     const carousel = [this.state.startGate, ...this.state.objectPoints, this.state.endGate];
     const type = this.state.carouselMarker ? this.state.carouselMarker.type || null :null;
 
     return (
       <View style={styles.carousel}>
-        <View style={styles.carouselInText}>
-          <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
-        </View>
         <View style={styles.carouselInThumbnail}>
           <Image source={require('../../assets/images/thumbnails/KK_TY_P1.jpg')} style={styles.thumbnailImage} />
         </View>
+        <View style={styles.carouselInText}>
+          <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
+        </View>
         {
-          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 && type === 'movie' ?
-          <View style={styles.carouselMovieBottom}>
-            <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
-              <Image source={movieIcon} style={styles.movieIcon} />
-            </TouchableOpacity>
+          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 && type === 'movie' ? (
+            <View style={styles.carouselMovieBottom}>
+              <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
+                <Image source={movieIcon} style={styles.movieIcon} />
+              </TouchableOpacity>
+            </View>
           ) : null
         }
       </View>
