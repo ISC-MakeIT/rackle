@@ -87,12 +87,21 @@ export default class GuideScreen extends React.Component<Props, State> {
     }
 
     const {
-      indoorLevel, initializedLocation, startGate, endGate,
-      toilets, guideLines, objectPoints,
+      indoorLevel,
+      initializedLocation,
+      startGate,
+      endGate,
+      toilets,
+      guideLines,
+      objectPoints,
     } = this.state;
 
-    const carousel = [startGate, ...objectPoints, endGate];
+    const carousel = [startGate, ...objectPoints, endGate];    
     const currentCarousel = carousel.filter(objectPoint => objectPoint.floor === this.state.indoorLevel);
+    // BUG １枚目の画像を無理やり表示させる対応
+    currentCarousel.forEach((objectPoint, index) => {
+      objectPoint.thumbnail_path = 'KK_TY_P' + (index + 1) + '.jpg';
+    });
 
     return (
       <View style={styles.content_wrap}>
@@ -200,17 +209,21 @@ export default class GuideScreen extends React.Component<Props, State> {
   private carouselRenderItem = ({item}: CarouselItem)=> {
     const carousel = [this.state.startGate, ...this.state.objectPoints, this.state.endGate];
     const type = this.state.carouselMarker ? this.state.carouselMarker.type || null :null;
+    const index = carousel.indexOf(item);
+    const isFirstItem = index === 0;
+    const isLastItem = index === carousel.length - 1;
+    const isMovie = type === 'movie';
 
     return (
       <View style={styles.carousel}>
         <View style={styles.carouselInThumbnail}>
-          <Image source={require('../../assets/images/thumbnails/KK_TY_P1.jpg')} style={styles.thumbnailImage} />
+          <Image source={{ uri: 'https://s3-ap-northeast-1.amazonaws.com/rackle/' + item.thumbnail_path }} style={styles.thumbnailImage} />
         </View>
         <View style={styles.carouselInText}>
-          <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
+          <Text style={styles.carouselText}>{index + 1}</Text>
         </View>
         {
-          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 && type === 'movie' ? (
+          !isFirstItem && !isLastItem && isMovie ? (
             <View style={styles.carouselMovieBottom}>
               <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
                 <Image source={movieIcon} style={styles.movieIcon} />
