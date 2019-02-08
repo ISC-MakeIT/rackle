@@ -6,11 +6,3 @@ export interface Gate {
   longitude: number;
   floor: string;
 }
-
-export interface StartGate {
-  startGate: Gate;
-}
-
-export interface EndGate {
-  endGate: Gate;
-}

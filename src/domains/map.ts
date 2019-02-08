@@ -1,5 +1,3 @@
-import GuideScreen from 'src/screens/GuideScreen';
-
 export interface ToiletMarker {
   id: number;
   name: string;
@@ -8,28 +6,20 @@ export interface ToiletMarker {
   longitude: number;
 }
 
-export type ElevatorCapacity = 6 | 8 | 12;
-
-export interface ElevatorMarker {
-  id: number;
-  floor: string;
-  name: string;
-  size: ElevatorCapacity;
-  latitude: number;
-  longitude: number;
-  useable: number;
-}
-
 export interface LocationPoint {
     floor: string;
     latitude: number;
     longitude: number;
 }
 
-export interface GuideLine {
+export interface GuideLines {
   id: string;
   name: string;
   location_points: LocationPoint[];
+}
+
+export interface GuideLineMarker {
+  guideLineMarkers: LocationPoint[];
 }
 
 export interface Region {
@@ -39,21 +29,14 @@ export interface Region {
   longitudeDelta: number;
 }
 
-export interface GuideLines {
-  guideLines: GuideLine[];
+export interface GuideLinePoint {
+  guideLines: GuideLines;
 }
 
 export interface Elevators {
-  elevators: ElevatorMarker[];
+  elevators: LocationPoint[];
 }
 
 export interface toilets {
   toilets: ToiletMarker;
 }
-
-export interface GuideScreenMapState {
-  guideLines: GuideLine[];
-  elevatorMarkers: ElevatorMarker[];
-  toiletMarkers: ToiletMarker[];
-}
-

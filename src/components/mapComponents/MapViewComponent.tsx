@@ -4,28 +4,26 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
 import CustomMap from '../mapComponents/CustomMap';
-import { ToiletMarker, ElevatorMarker, LocationPoints, Region } from '../../domains/map';
-import { Gate } from 'src/domains/gate';
+import { Region, ToiletMarker, LocationPoint } from 'src/domains/map';
 import { GuideLineObject } from '../../domains/movie';
 
 type ScreenNameType = 'video' | 'map';
-type Carousel = GuideLineObject | Gate;
+type Carousel = GuideLineObject;
 
 interface Props {
   indoorLevel: string;
   initializedLocation: Region;
   movieMarkers?: GuideLineObject[];
   toiletMarkers?: ToiletMarker[];
-  elevatorMarkers?: ElevatorMarker[];
-  guideLines?: LocationPoints[];
+  elevatorMarkers?: GuideLineObject[];
+  guideLines?: LocationPoint[];
   guideLinesColor?: string;
   changeIndoorLevel: (nextIndoorLevel: string) => void;
   screenChange?: () => void;
   currentScreen?: ScreenNameType;
   carouselMarker?: Carousel;
   changeCarousel: (carousel: Carousel) => void;
-  startGate?: Gate;
-  endGate?: Gate;
+  gate?: GuideLineObject[];
 }
 
 interface State { initializedLocation: Region; }
@@ -59,10 +57,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
     const carouselMarker = this.props.carouselMarker ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} carouselMarker={this.props.carouselMarker} changeCarousel={this.props.changeCarousel}/> : null;
-    const startGateMarker = this.props.startGate != undefined ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} startGate={this.props.startGate} changeCarousel={this.props.changeCarousel}/> : null;
-    const endGateMarker = this.props.endGate != undefined ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} endGate={this.props.endGate} changeCarousel={this.props.changeCarousel}/> : null;
+    const gateMarker = this.props.gate != undefined ?
+      <MarkerComponent indoorLevel={this.props.indoorLevel} gate={this.props.gate} changeCarousel={this.props.changeCarousel}/> : null;
 
     return (
       <MapView
@@ -86,8 +82,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
         {subColorPolyline}
         {mainColorPolyline}
         {carouselMarker}
-        {startGateMarker}
-        {endGateMarker}
+        {gateMarker}
       </MapView>
     );
   }

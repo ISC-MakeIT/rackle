@@ -6,8 +6,8 @@ export interface GuideLineObject {
   latitude: number;
   longitude: number;
   floor: string;
-  type: 'movie' | 'elevator';
-  caption:'12人乗り' | '18人乗り';
+  type: 'movie' | 'elevator' | 'gate';
+  caption: string;
 }
 
 export interface ObjectPoints {
