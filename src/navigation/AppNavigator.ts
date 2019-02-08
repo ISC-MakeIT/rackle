@@ -1,7 +1,14 @@
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createStackNavigator } from 'react-navigation';
 
-import MainTabNavigator from './MainTabNavigator';
+import GuideScreen from '../screens/GuideScreen';
+import HomeScreen from '../screens/HomeScreen';
 
-export default createAppContainer(createSwitchNavigator({
-  Main: MainTabNavigator,
-}));
+export default createAppContainer(
+  createStackNavigator(
+    {
+      Home: { screen: HomeScreen },
+      Guide: { screen: GuideScreen },
+    }
+  )
+);
+
