@@ -184,31 +184,19 @@ export default class GuideScreen extends React.Component<Props, State> {
     const carousel = [this.state.startGate, ...this.state.movies, this.state.endGate];
 
     return (
-      <View style={styles.carousel}>
-        {
-          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 ?
-        <TouchableOpacity style={styles.carousel} onPress={this.openMovieModal}>
+        <View style={styles.carousel}>
             <View style={styles.carouselInText}>
               <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
-            </View>
-            <View style={styles.carouselMovieBottom}>
+            </View>    
+        {
+          carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 ?
+            <TouchableOpacity style={styles.carouselMovieBottom} onPress={this.openMovieModal}>
               <View style={styles.carouselMovieBottomRadius}>
                 <Image source={movieIcon} style={styles.movieIcon} />
                 <Text style={styles.carouselMovieBottomText}>再生</Text>
               </View>
-            </View>
-        </TouchableOpacity>        
-          : 
-        <View style={styles.carousel}>
-          <View style={styles.carouselInText}>
-            <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
-          </View>
-          <View style={styles.carouselMovieBottom}>
-              {/* <TouchableOpacity style={styles.carouselMovieBottomRadius}>
-                <Image source={movieIcon} style={styles.movieIcon} />
-              </TouchableOpacity> */}
-          </View>
-        </View>  
+            </TouchableOpacity> 
+          : null
         }
       </View>
     );
