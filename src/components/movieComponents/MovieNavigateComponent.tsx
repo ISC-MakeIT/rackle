@@ -50,7 +50,7 @@ export default class MovieNavigateComponent extends React.Component<Props, State
         caption={'JR中央南改札前'}
       />
     </View>
-  ) : null;
+  ) : null
 
   private showNavigationPlate = () => this.setState({isVisibleNavigationPlate: true});
   private hideNavigationPlate = () => this.setState({isVisibleNavigationPlate: false});
