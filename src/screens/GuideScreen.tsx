@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, Image, Modal } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { Region, ToiletMarker, ElevatorMarker, GuideLine, GuideLines, GuideScreenMapState, LocationPoint } from 'src/domains/map';
+import { Region, ToiletMarker, ElevatorMarker, GuideLine, GuideLines, GuideScreenMapState } from 'src/domains/map';
 import { Gate, StartGate, EndGate} from 'src/domains/gate';
 import { GuideLineObject, ObjectPoints } from 'src/domains/movie';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
