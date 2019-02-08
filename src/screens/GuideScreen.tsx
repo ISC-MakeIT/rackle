@@ -299,8 +299,8 @@ const styles = EStyleSheet.create({
     position: 'absolute',
   },
   thumbnailImage: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   modal: {
     width: width * 0.79,
@@ -380,8 +380,8 @@ const styles = EStyleSheet.create({
   },
   carouselInThumbnail: {
     position: 'absolute',
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     top: 0,
     left: 0,
     alignItems: 'center',
