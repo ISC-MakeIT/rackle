@@ -76,8 +76,8 @@ export default class HomeScreen extends React.Component<Props, State> {
   public render() {
     return (
       <View style={styles.container}>
-      <ImageBackground source={homeImage} style={{width: '100%', height: '100%', backgroundSize: 'cover'}}>
-        <ScrollView>
+      <ScrollView style={styles.ScrollView}>
+      <ImageBackground source={homeImage} style={{width: '100%', height: '120%', backgroundSize: 'cover'}}>
         <LinearGradient
           colors={['rgba(67, 195, 142, 1)', 'rgba(250, 250, 250, 0.7)', 'rgba(250, 250, 250, 1)']}
           style={gradationStyle.gradation}
@@ -147,8 +147,8 @@ export default class HomeScreen extends React.Component<Props, State> {
             navigate={this.props.navigation.navigate}
             pageName={'Guide'}
           />
-        </ScrollView>
       </ImageBackground>
+      </ScrollView>
       </View>
     );
   }
@@ -249,10 +249,13 @@ EStyleSheet.build();
 
 const styles = EStyleSheet.create({
   container: {
-    backgroundColor: Color.subColorOffWhite,
+    backgroundColor: Color.mainColor,
     flex: 1,
     flexDirection: 'column',
-
+    height: '100%',
+  },
+  ScrollView: {
+    height: '100%',
   },
 });
 
@@ -260,6 +263,7 @@ const { height } = Dimensions.get('window');
 
 const gradationStyle = EStyleSheet.create({
   gradation: {
+    height: '100%',
     position: 'absolute',
     left: 0,
     right: 0,

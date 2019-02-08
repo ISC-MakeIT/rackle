@@ -18,7 +18,7 @@ type Carousel = GuideLineObject | Gate;
 
 interface BaseState {
   showModal: boolean;
-  modalVisible: boolean;
+  movieModalVisible: boolean;
 }
 
 export interface ActiveMapState extends BaseState{
@@ -38,10 +38,13 @@ export interface ActiveMapState extends BaseState{
 interface ActiveMovieState extends BaseState {
   movieId: string | undefined;
   thumbnails: string[];
-  // FIXME 必要なものがわからん
 }
 
 type State = ActiveMapState & ActiveMovieState & StartGate & EndGate & GuideScreenMapState & ObjectPoints;
+
+interface CarouselItem {
+  item: Gate | Movie;
+}
 
 export default class GuideScreen extends React.Component<Props, State> {
   public static navigationOptions = {
@@ -51,7 +54,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   readonly state: State = {
     showModal: false,
     carouselMarker: undefined,
-    modalVisible: false,
+    movieModalVisible: false,
   };
 
   async componentDidMount () {
@@ -106,9 +109,6 @@ export default class GuideScreen extends React.Component<Props, State> {
           startGate={this.gateChange(this.state.startGate)}
           endGate={this.gateChange(this.state.endGate)}
         />
-        {/* TODO
-          MapComponentは常に表示して、ビデオを出し分けるなどしたい
-        */}
         <ModalCarousel modalView={this.state.showModal}>
           <Carousel
             data={currentCarousel}
@@ -131,11 +131,11 @@ export default class GuideScreen extends React.Component<Props, State> {
           animationType='slide'
           presentationStyle='fullScreen'
           transparent={false}
-          visible={this.state.modalVisible}
+          visible={this.state.movieModalVisible}
         >
           <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} />
         </Modal>
-        { currentCarousel.length !== 0 ?
+        { currentCarousel.length !== 0 ? (
           <View style={styles.showModalBottomAround}>
             <TouchableOpacity onPress={this.changeModal.bind(this, initializedLocation)} style={styles.showModalBottom} >
               {
@@ -152,13 +152,13 @@ export default class GuideScreen extends React.Component<Props, State> {
                   </View>
               }
             </TouchableOpacity>
-          </View> : null
+          </View>) : null
         }
       </View>
     );
   }
 
-  private setMovieModalVisible = (modalVisible: boolean) => this.setState({ modalVisible });
+  private setMovieModalVisible = (movieModalVisible: boolean) => this.setState({ movieModalVisible });
 
   private openMovieModal = () => this.setMovieModalVisible(true);
 
@@ -202,13 +202,16 @@ export default class GuideScreen extends React.Component<Props, State> {
         <View style={styles.carouselInText}>
           <Text style={styles.carouselText}>{carousel.indexOf(item) + 1}</Text>
         </View>
+        <View style={styles.carouselInThumbnail}>
+          <Image source={require('../../assets/images/thumbnails/KK_TY_P1.jpg')} style={styles.thumbnailImage} />
+        </View>
         {
           carousel.indexOf(item) !== 0 && carousel.indexOf(item) !== carousel.length - 1 && type === 'movie' ?
           <View style={styles.carouselMovieBottom}>
             <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
               <Image source={movieIcon} style={styles.movieIcon} />
             </TouchableOpacity>
-          </View> : null
+          ) : null
         }
       </View>
     );
@@ -309,8 +312,8 @@ const styles = EStyleSheet.create({
     position: 'absolute',
   },
   thumbnailImage: {
-    width: 120,
-    height: 90,
+    width: '100%',
+    height: '100%',
   },
   modal: {
     width: width * 0.79,
@@ -373,7 +376,6 @@ const styles = EStyleSheet.create({
   carousel: {
     width: width * 0.79,
     height: height * 0.33,
-    backgroundColor: '#eee',
     position: 'absolute',
     justifyContent: 'center',
     bottom: 0,
@@ -389,6 +391,15 @@ const styles = EStyleSheet.create({
     marginTop: height * -0.025,
     zIndex: 5,
   },
+  carouselInThumbnail: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   carouselInText: {
     position: 'absolute',
     width: width * 0.12,
@@ -403,6 +414,7 @@ const styles = EStyleSheet.create({
     color: Colors.white,
     fontSize: '2rem',
     fontWeight: '700',
+    fontFamily: 'MPLUS1p-Medium',
   },
   carouselMovieBottom: {
     position: 'absolute',

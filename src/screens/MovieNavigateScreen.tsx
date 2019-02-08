@@ -139,8 +139,7 @@ export default class MovieNavigate extends  React.Component<Props, State> {
   private movieItem = () => {
     return(
       <Video
-        // source={{ uri: 'https://haduki1208-app.firebaseapp.com/tatenaga_4_3.mp4' }}
-        source={{ uri: Asset.fromModule(require('../../assets/movie/kt01.mp4')).uri }}
+        source={{ uri: Asset.fromModule(require('../../assets/movies/KK_TY_P1.mp4')).uri }}
         rate={1.0}
         volume={1.0}
         isMuted={false}

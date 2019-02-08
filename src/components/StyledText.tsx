@@ -6,8 +6,11 @@ interface Props {
   style: StyleProp<TextStyle>;
 }
 
-const MonoText: React.FC<Props> = props => (
+// HACK Textを継承するのが正しいように思える。
+export const MonoText: React.FC<Props> = props => (
   <Text {...props} style={[props.style, { fontFamily: 'space-mono' }]} />
 );
 
-export default MonoText;
+export const MplusText: React.FC<Props> = props => (
+  <Text {...props} style={[props.style, { fontFamily: 'MPLUS1p' }]} />
+);
