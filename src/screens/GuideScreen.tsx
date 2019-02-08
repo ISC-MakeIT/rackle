@@ -99,9 +99,9 @@ export default class GuideScreen extends React.Component<Props, State> {
     const carousel = [startGate, ...objectPoints, endGate];    
     const currentCarousel = carousel.filter(objectPoint => objectPoint.floor === this.state.indoorLevel);
     // BUG １枚目の画像を無理やり表示させる対応
-    currentCarousel.forEach((objectPoint, index) => {
-      objectPoint.thumbnail_path = 'KK_TY_P' + (index + 1) + '.jpg';
-    });
+    // currentCarousel.forEach((objectPoint, index) => {
+    //   objectPoint.thumbnail_path = 'KK_TY_P' + (index + 1) + '.jpg';
+    // });
 
     return (
       <View style={styles.content_wrap}>
