@@ -4,14 +4,12 @@ import { createBottomTabNavigator, createStackNavigator, TabNavigator } from 're
 import TabBarIcon from '../components/TabBarIcon';
 import GuideScreen from '../screens/GuideScreen';
 import HomeScreen from '../screens/HomeScreen';
-import MovieNavigateScreen from '../screens/MovieNavigateScreen';
 import MyPageScreen from '../screens/MyPageScreen';
 import ElevatorScreen from '../screens/ElevatorScreen';
 import MapScreen from '../screens/MapScreen';
 
 const GuideStack = createStackNavigator({ Guide: { screen: GuideScreen } });
 const HomeStack = createStackNavigator({ Home: { screen: HomeScreen } });
-const MovieNavigateStack = createStackNavigator({ MovieNavigate: { screen: MovieNavigateScreen } });
 const MyPageStack = createStackNavigator({ MyPage: { screen: MyPageScreen } });
 const ElevatorStack = createStackNavigator({ Elevator: { screen: ElevatorScreen } });
 const MapStack = createStackNavigator({ Map: { screen: MapScreen } });
@@ -32,13 +30,6 @@ MyPageStack.navigationOptions = {
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'} />
   ),
 };
-
-// MovieNavigateStack.navigationOptions = {
-//   tabBarLabel: 'Movie',
-//   tabBarIcon: ({ focused }) => (
-//     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'} />
-//   ),
-// };
 
 ElevatorStack.navigationOptions = {
   tabBarLabel: 'Elevator',
