@@ -4,28 +4,25 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
 import CustomMap from '../mapComponents/CustomMap';
-import { ToiletMarker, ElevatorMarker, LocationPoints, Region } from '../../domains/map';
-import { Gate } from 'src/domains/gate';
-import { GuideLineObject } from '../../domains/movie';
+import { Region, ToiletMarker } from 'src/domains/map';
+import { ObjectPoint } from '../../domains/object_point';
 
 type ScreenNameType = 'video' | 'map';
-type Carousel = GuideLineObject | Gate;
 
 interface Props {
   indoorLevel: string;
   initializedLocation: Region;
-  movieMarkers?: GuideLineObject[];
+  movieMarkers?: ObjectPoint[];
   toiletMarkers?: ToiletMarker[];
-  elevatorMarkers?: ElevatorMarker[];
-  guideLines?: LocationPoints[];
+  elevatorMarkers?: ObjectPoint[];
+  guideLines?: Partial<ObjectPoint>[];
   guideLinesColor?: string;
   changeIndoorLevel: (nextIndoorLevel: string) => void;
   screenChange?: () => void;
   currentScreen?: ScreenNameType;
-  carouselMarker?: Carousel;
-  changeCarousel: (carousel: Carousel) => void;
-  startGate?: Gate;
-  endGate?: Gate;
+  carouselMarker?: ObjectPoint;
+  changeCarousel: (carousel: ObjectPoint) => void;
+  gate?: ObjectPoint[];
 }
 
 interface State { initializedLocation: Region; }
@@ -47,22 +44,20 @@ export default class MapViewComponent extends React.Component<Props, State> {
   }
 
   public render() {
-    const movieMarker = this.props.movieMarkers ?
+    const movieMarkers = this.props.movieMarkers ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} movieMarkers={this.props.movieMarkers} changeCarousel={this.props.changeCarousel}/> : null;
-    const toiletMarker = this.props.toiletMarkers ?
+    const toiletMarkers = this.props.toiletMarkers ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} toiletMarkers={this.props.toiletMarkers} changeCarousel={this.props.changeCarousel}/> : null;
-    const elevatorMarker = this.props.elevatorMarkers ?
+    const elevatorMarkers = this.props.elevatorMarkers ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} elevatorMarkers={this.props.elevatorMarkers} changeCarousel={this.props.changeCarousel}/> : null;
     const mainColorPolyline = this.props.guideLines ?
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} /> : null;
     const subColorPolyline = this.props.guideLinesColor && this.props.guideLines ?
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
-    const carouselMarker = this.props.carouselMarker ?
+    const carouselMarkers = this.props.carouselMarker ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} carouselMarker={this.props.carouselMarker} changeCarousel={this.props.changeCarousel}/> : null;
-    const startGateMarker = this.props.startGate != undefined ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} startGate={this.props.startGate} changeCarousel={this.props.changeCarousel}/> : null;
-    const endGateMarker = this.props.endGate != undefined ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} endGate={this.props.endGate} changeCarousel={this.props.changeCarousel}/> : null;
+    const gateMarkers = this.props.gate != undefined ?
+      <MarkerComponent indoorLevel={this.props.indoorLevel} gate={this.props.gate} changeCarousel={this.props.changeCarousel}/> : null;
 
     return (
       <MapView
@@ -80,14 +75,13 @@ export default class MapViewComponent extends React.Component<Props, State> {
         scrollEnabled={!this.props.guideLinesColor}
         rotateEnabled={!this.props.guideLinesColor}
       >
-        {movieMarker}
-        {toiletMarker}
-        {elevatorMarker}
+        {movieMarkers}
+        {toiletMarkers}
+        {elevatorMarkers}
         {subColorPolyline}
         {mainColorPolyline}
-        {carouselMarker}
-        {startGateMarker}
-        {endGateMarker}
+        {carouselMarkers}
+        {gateMarkers}
       </MapView>
     );
   }
