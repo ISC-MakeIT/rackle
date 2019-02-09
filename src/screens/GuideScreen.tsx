@@ -77,6 +77,8 @@ export default class GuideScreen extends React.Component<Props, State> {
       objectPoints,
     } = this.state;
 
+    const {height, width} = Dimensions.get('screen');
+
     const currentCarousel: ObjectPoint[] = objectPoints.filter((objectPoint: ObjectPoint) => objectPoint.floor === indoorLevel);
     // BUG １枚目の画像を無理やり表示させる対応
     // currentCarousel.forEach((objectPoint, index) => {
@@ -102,9 +104,9 @@ export default class GuideScreen extends React.Component<Props, State> {
         <ModalCarousel modalView={this.state.showModal}>
           <Carousel
             data={currentCarousel}
-            itemWidth={Dimensions.get('screen').width * 0.8}
-            sliderWidth={Dimensions.get('screen').width}
-            sliderHeight={Dimensions.get('screen').height}
+            itemWidth={width * 0.8}
+            sliderWidth={width}
+            sliderHeight={height}
             renderItem={this.carouselRenderItem}
             lockScrollWhileSnapping={true}
             onSnapToItem={this.carouselOnSnapToItem}
