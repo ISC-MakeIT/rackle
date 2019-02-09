@@ -44,19 +44,19 @@ export default class MapViewComponent extends React.Component<Props, State> {
   }
 
   public render() {
-    const movieMarker = this.props.movieMarkers ?
+    const movieMarkers = this.props.movieMarkers ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} movieMarkers={this.props.movieMarkers} changeCarousel={this.props.changeCarousel}/> : null;
-    const toiletMarker = this.props.toiletMarkers ?
+    const toiletMarkers = this.props.toiletMarkers ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} toiletMarkers={this.props.toiletMarkers} changeCarousel={this.props.changeCarousel}/> : null;
-    const elevatorMarker = this.props.elevatorMarkers ?
+    const elevatorMarkers = this.props.elevatorMarkers ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} elevatorMarkers={this.props.elevatorMarkers} changeCarousel={this.props.changeCarousel}/> : null;
     const mainColorPolyline = this.props.guideLines ?
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} /> : null;
     const subColorPolyline = this.props.guideLinesColor && this.props.guideLines ?
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
-    const carouselMarker = this.props.carouselMarker ?
+    const carouselMarkers = this.props.carouselMarker ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} carouselMarker={this.props.carouselMarker} changeCarousel={this.props.changeCarousel}/> : null;
-    const gateMarker = this.props.gate != undefined ?
+    const gateMarkers = this.props.gate != undefined ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} gate={this.props.gate} changeCarousel={this.props.changeCarousel}/> : null;
 
     return (
@@ -75,13 +75,13 @@ export default class MapViewComponent extends React.Component<Props, State> {
         scrollEnabled={!this.props.guideLinesColor}
         rotateEnabled={!this.props.guideLinesColor}
       >
-        {movieMarker}
-        {toiletMarker}
-        {elevatorMarker}
+        {movieMarkers}
+        {toiletMarkers}
+        {elevatorMarkers}
         {subColorPolyline}
         {mainColorPolyline}
-        {carouselMarker}
-        {gateMarker}
+        {carouselMarkers}
+        {gateMarkers}
       </MapView>
     );
   }
