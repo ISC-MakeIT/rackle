@@ -101,7 +101,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         />
         <ModalCarousel
           modalView={this.state.showModal}
-          changeTopModal={this.changeTopModal.bind(this)}
+          hideModal={this.hideModal}
         >
           <Carousel
             data={currentCarousel}
@@ -291,7 +291,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     return currentCarousel.indexOf(carouselMarker);
   }
 
-  private changeTopModal = () => {
+  private hideModal = () => {
     this.setState({
       showModal: false,
     });

@@ -3,7 +3,7 @@ import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { LinearGradient } from 'expo';
 
-interface Props { modalView: boolean; changeTopModal: () => void; }
+interface Props { modalView: boolean; hideModal: () => void; }
 
 export const Modal: React.FC<Props> = props => {
     const modalStyle = props.modalView ? styles.appear : styles.hidden;
@@ -12,12 +12,12 @@ export const Modal: React.FC<Props> = props => {
       <LinearGradient
         colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
         start={{ x: 1, y: 1 }}
-        end={{ x: 1, y: 0.5 }}
+        end={{ x: 1, y: 0 }}
         style={modalStyle}
       >
         <TouchableOpacity
           style={topModalStyle}
-          onPress={props.changeTopModal}
+          onPress={props.hideModal}
         >
         </TouchableOpacity>
         {props.children}
