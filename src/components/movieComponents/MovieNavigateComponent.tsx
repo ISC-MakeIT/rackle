@@ -13,7 +13,8 @@ import NavigationPlate from '../../components/NavigationPlate';
 import VideoPlayer from '@expo/videoplayer';
 import Color from '../../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { ObjectPoint } from 'src/domains/object_point';
+import { ObjectPoint } from '../../domains/object_point';
+import { S3MoviePath, S3ThumbnailPath } from '../../services/s3_manager';
 
 interface Props {
   setMovieModalVisible: () => void;
@@ -51,10 +52,10 @@ export default class MovieNavigateComponent extends React.Component<Props, State
   private hideNavigationPlate = () => this.setState({isVisibleNavigationPlate: false});
 
   public render() {
-    const S3_PATH = 'https://s3-ap-northeast-1.amazonaws.com/rackle/movies/';
     const { file_path, thumbnail_path } = this.props.carouselMarker;
 
-    const url = S3_PATH + file_path;
+    const url = S3MoviePath(file_path);
+    const thumbnailUrl = S3ThumbnailPath(thumbnail_path);
 
     return(
       <View style={styles.content_wrap}>
@@ -70,7 +71,7 @@ export default class MovieNavigateComponent extends React.Component<Props, State
             showControlsOnLoad={true}
             playIcon={this.playIcon}
             pauseIcon={this.pauseIcon}
-            thumbImage={require('../../../assets/images/thumb.png')}
+            thumbImage={thumbnailUrl}
             trackImage={require('../../../assets/images/track.png')}
             textStyle={{
               color: Color.white,
