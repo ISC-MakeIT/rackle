@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, Image, Modal } from 'react-native';
-import EStyleSheet from 'react-native-extended-stylesheet';
+import EStyleSheet, { flatten } from 'react-native-extended-stylesheet';
 import { Region, ToiletMarker } from 'src/domains/map';
 import { Gate } from 'src/domains/gate';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
@@ -99,7 +99,10 @@ export default class GuideScreen extends React.Component<Props, State> {
           changeCarousel={this.changeCarousel.bind(this)}
           gate={this.createMarkers(currentCarousel, indoorLevel, 'gate')}
         />
-        <ModalCarousel modalView={this.state.showModal}>
+        <ModalCarousel
+          modalView={this.state.showModal}
+          changeTopModal={this.changeTopModal.bind(this)}
+        >
           <Carousel
             data={currentCarousel}
             itemWidth={Dimensions.get('screen').width * 0.8}
@@ -286,6 +289,12 @@ export default class GuideScreen extends React.Component<Props, State> {
     if(carouselMarker == undefined) return 0;
 
     return currentCarousel.indexOf(carouselMarker);
+  }
+
+  private changeTopModal = () => {
+    this.setState({
+      showModal: false,
+    });
   }
 }
 
