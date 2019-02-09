@@ -55,6 +55,7 @@ export default class MarkerComponent extends React.Component<Props, {}> {
         image={item.type === 'elevator' ? this.iconChange(item.caption) : this.iconChange(item.type)}
         onPress={() => this.props.changeCarousel(item)}
         anchor={item.type === 'movie' ? {x: 0.5, y: 0.5} : undefined}
+        stopPropagation={true}
       />
     ));
   }
@@ -67,6 +68,7 @@ export default class MarkerComponent extends React.Component<Props, {}> {
           key={`toiletMarker_${index}`}
           coordinate={{latitude: toiletMarker.latitude, longitude: toiletMarker.longitude}}
           image={this.iconChange('toilet')}
+          stopPropagation={true}
         />
       );
     });
@@ -80,6 +82,7 @@ export default class MarkerComponent extends React.Component<Props, {}> {
         key={'carouselMarker'}
         coordinate={{latitude: carousel.latitude, longitude: carousel.longitude}}
         image={this.iconChange('carousel')}
+        stopPropagation={true}
       />
     );
   }

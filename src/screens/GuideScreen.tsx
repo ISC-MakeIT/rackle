@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, Image, Modal } from 'react-native';
-import EStyleSheet from 'react-native-extended-stylesheet';
+import EStyleSheet, { flatten } from 'react-native-extended-stylesheet';
 import { Region, ToiletMarker } from 'src/domains/map';
 import { Gate } from 'src/domains/gate';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
@@ -12,6 +12,7 @@ import movieIcon from '../../assets/images/movie-load-icon.png';
 import { getGuidelines } from '../services/guidelines';
 import { ObjectPoint } from '../domains/object_point';
 import { LocationPoint } from '../domains/location_point';
+import {S3MoviePath, S3ThumbnailPath} from '../services/s3_manager';
 import { Ionicons } from '@expo/vector-icons';
 
 interface Props { navigation: any; }
@@ -96,6 +97,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           carouselMarker={this.state.carouselMarker}
           changeCarousel={this.changeCarousel.bind(this)}
           gate={this.createMarkers(currentCarousel, indoorLevel, 'gate')}
+          hideModal={this.hideModal}
         />
         <ModalCarousel modalView={this.state.showModal}>
           <Carousel
@@ -178,22 +180,18 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   private carouselRenderItem = ({item}: any)=> {
     const carousel = this.state.objectPoints;
-    const type = this.state.carouselMarker ? this.state.carouselMarker.type || null :null;
     const index = carousel.indexOf(item);
-    const isFirstItem = index === 0;
-    const isLastItem = index === carousel.length - 1;
-    const isMovie = type === 'movie';
 
     return (
       <View style={styles.carousel}>
         <View style={styles.carouselInThumbnail}>
-          <Image source={{ uri: 'https://s3-ap-northeast-1.amazonaws.com/rackle/' + item.thumbnail_path }} style={styles.thumbnailImage} />
+          <Image source={{ uri: S3ThumbnailPath(item.thumbnail_path) }} style={styles.thumbnailImage} />
         </View>
         <View style={styles.carouselInText}>
           <Text style={styles.carouselText}>{index + 1}</Text>
         </View>
         {
-          !isFirstItem && !isLastItem && isMovie ? (
+          item.type === 'movie' || item.type === 'gate' ? (
             <View style={styles.carouselMovieBottom}>
               <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
                 <Image source={movieIcon} style={styles.movieIcon} />
@@ -290,6 +288,12 @@ export default class GuideScreen extends React.Component<Props, State> {
     if(carouselMarker == undefined) return 0;
 
     return currentCarousel.indexOf(carouselMarker);
+  }
+
+  private hideModal = () => {
+    this.setState({
+      showModal: false,
+    });
   }
 }
 
