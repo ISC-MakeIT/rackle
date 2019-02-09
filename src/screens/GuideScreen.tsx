@@ -111,7 +111,7 @@ export default class GuideScreen extends React.Component<Props, State> {
             firstItem={this.carouselFirstItem(currentCarousel)}
           />
           <Pagination
-            activeDotIndex={this.carouselFirstItem(currentCarousel) ? this.currentPaginationPoint(currentCarousel) : 1}
+            activeDotIndex={this.carouselFirstItem(currentCarousel) ? this.currentPaginationPoint(currentCarousel) : 0}
             dotsLength={currentCarousel.length > 6 ? 6 : currentCarousel.length}
             dotStyle={styles.paginationDotStyle}
           />
@@ -170,8 +170,8 @@ export default class GuideScreen extends React.Component<Props, State> {
   private currentPaginationPoint = (currentCarousel: ObjectPoint[]) => {
     const currentPoint = this.carouselFirstItem(currentCarousel);
 
-    if (currentPoint == undefined) return undefined;
-    if (currentPoint > 6 ) return Math.round((6 / currentPoint) * 6);
+    if (currentPoint == undefined) return 0;
+    if (currentCarousel.length > 6 ) return Math.round(((currentPoint + 1) / currentCarousel.length) * 6 - 1);
     return currentPoint;
   }
 
@@ -286,7 +286,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   private carouselFirstItem = (currentCarousel: ObjectPoint[]) => {
     const carouselMarker = this.state.carouselMarker;
-    if(carouselMarker == undefined) return;
+    if(carouselMarker == undefined) return 0;
 
     return currentCarousel.indexOf(carouselMarker);
   }
