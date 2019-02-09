@@ -13,29 +13,24 @@ import NavigationPlate from '../../components/NavigationPlate';
 import VideoPlayer from '@expo/videoplayer';
 import Color from '../../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import { ObjectPoint } from 'src/domains/object_point';
 
 interface Props {
   setMovieModalVisible: () => void;
+  carouselMarker: ObjectPoint;
 }
 
 interface State {
-  thumbnails: string[];
   isVisibleNavigationPlate: boolean;
 }
 
 export default class MovieNavigateComponent extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
-      isVisibleNavigationPlate: false,
-    };
-  }
+  readonly state = {
+    isVisibleNavigationPlate: false,
+  };
 
   private playbackCallback = (playbackStatus: PlaybackStatus) => {
-    if (playbackStatus.didJustFinish) {
-      return;
-    }
+    if (playbackStatus.didJustFinish) return;
   }
 
   private playIcon = () => ( <Ionicons name={'ios-play'} size={36} color={Color.white} style={{ textAlign: 'center' }} /> );
@@ -56,7 +51,10 @@ export default class MovieNavigateComponent extends React.Component<Props, State
   private hideNavigationPlate = () => this.setState({isVisibleNavigationPlate: false});
 
   public render() {
-    const url = 'https://s3-ap-northeast-1.amazonaws.com/rackle/movies/KK_TY_P1.mp4';
+    const S3_PATH = 'https://s3-ap-northeast-1.amazonaws.com/rackle/movies/';
+    const { file_path, thumbnail_path } = this.props.carouselMarker;
+
+    const url = S3_PATH + file_path;
 
     return(
       <View style={styles.content_wrap}>

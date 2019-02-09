@@ -122,7 +122,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           transparent={false}
           visible={this.state.movieModalVisible}
         >
-          <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} />
+          <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} carouselMarker={this.state.carouselMarker} />
         </Modal>
         {
           currentCarousel.length !== 0 ? (
