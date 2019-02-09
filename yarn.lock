@@ -1842,7 +1842,7 @@ cosmiconfig@^5.0.5:
     js-yaml "^3.9.0"
     parse-json "^4.0.0"
 
-create-react-class@^15.6.3:
+create-react-class@^15.6.0, create-react-class@^15.6.3:
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   dependencies:
@@ -4988,6 +4988,14 @@ react-native-maps@expo/react-native-maps#v0.22.0-exp.0:
   dependencies:
     babel-plugin-module-resolver "^3.1.0"
     babel-preset-react-native "1.9.0"
+
+react-native-modalbox@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/react-native-modalbox/-/react-native-modalbox-1.7.1.tgz#cdb623ecd1cbe8699a450217c25b2d6666dc63e6"
+  integrity sha512-Jqn12MKQaT5OSb1uMAEeDQF02xHS+WWdgKl55ecoIknrDy+FIoC3fXHMEoRZH6agADDg9eVBqx8w+P7+EwXTbQ==
+  dependencies:
+    create-react-class "^15.6.0"
+    prop-types "^15.5.10"
 
 react-native-picker-select@^5.2.2:
   version "5.2.2"
