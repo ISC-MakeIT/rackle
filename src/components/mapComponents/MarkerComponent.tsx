@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Marker } from 'react-native-maps';
 import {ToiletMarker }from '../../domains/map';
-import { GuideLineObject, ObjectPoints }from '../../domains/movie';
-import { Gate } from 'src/domains/gate';
+import { GuideLineObject }from '../../domains/movie';
 
 type Carousel = GuideLineObject;
 
@@ -57,7 +56,7 @@ export default class MarkerComponent extends React.Component<Props, {}> {
         coordinate={{latitude: item.latitude, longitude: item.longitude}}
         image={item.type === 'elevator' ? this.iconChange(item.caption) : this.iconChange(item.type)}
         onPress={() => this.props.changeCarousel(item)}
-        anchor={{x: 0.5, y: 0.5}}
+        anchor={item.type === 'movie' ? {x: 0.5, y: 0.5} : undefined}
       />
     ));
   }
