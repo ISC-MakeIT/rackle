@@ -7,19 +7,14 @@ interface Props { modalView: boolean; hideModal: () => void; }
 
 export const Modal: React.FC<Props> = props => {
     const modalStyle = props.modalView ? styles.appear : styles.hidden;
-    const topModalStyle = props.modalView ? styles.topModal : styles.hidden;
+    //const topModalStyle = props.modalView ? styles.topModal : styles.hidden;
     return (
       <LinearGradient
         colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
-        start={{ x: 1, y: 1 }}
-        end={{ x: 1, y: 0 }}
+        start={{ x: 0, y: 1 }}
+        end={{ x: 0, y: 0 }}
         style={modalStyle}
       >
-        <TouchableOpacity
-          style={topModalStyle}
-          onPress={props.hideModal}
-        >
-        </TouchableOpacity>
         {props.children}
       </LinearGradient>
     );
@@ -32,7 +27,7 @@ const styles = EStyleSheet.create({
   appear: {
     flex: 1,
     width: width,
-    height: height,
+    height: height * 0.5,
     position: 'absolute',
     paddingBottom: '0.5rem',
     bottom: 0,

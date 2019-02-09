@@ -23,6 +23,7 @@ interface Props {
   carouselMarker?: ObjectPoint;
   changeCarousel: (carousel: ObjectPoint) => void;
   gate?: ObjectPoint[];
+  hideModal: () => void;
 }
 
 interface State { initializedLocation: Region; }
@@ -74,6 +75,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
         loadingEnabled={true}
         scrollEnabled={!this.props.guideLinesColor}
         rotateEnabled={!this.props.guideLinesColor}
+        onPress={this.props.hideModal}
       >
         {movieMarkers}
         {toiletMarkers}
