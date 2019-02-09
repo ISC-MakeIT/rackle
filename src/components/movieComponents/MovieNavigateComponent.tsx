@@ -13,29 +13,25 @@ import NavigationPlate from '../../components/NavigationPlate';
 import VideoPlayer from '@expo/videoplayer';
 import Color from '../../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import { ObjectPoint } from '../../domains/object_point';
+import { S3MoviePath, S3ThumbnailPath } from '../../services/s3_manager';
 
 interface Props {
   setMovieModalVisible: () => void;
+  carouselMarker: ObjectPoint;
 }
 
 interface State {
-  thumbnails: string[];
   isVisibleNavigationPlate: boolean;
 }
 
 export default class MovieNavigateComponent extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
-      isVisibleNavigationPlate: false,
-    };
-  }
+  readonly state = {
+    isVisibleNavigationPlate: false,
+  };
 
   private playbackCallback = (playbackStatus: PlaybackStatus) => {
-    if (playbackStatus.didJustFinish) {
-      return;
-    }
+    if (playbackStatus.didJustFinish) return;
   }
 
   private playIcon = () => ( <Ionicons name={'ios-play'} size={36} color={Color.white} style={{ textAlign: 'center' }} /> );
@@ -56,6 +52,11 @@ export default class MovieNavigateComponent extends React.Component<Props, State
   private hideNavigationPlate = () => this.setState({isVisibleNavigationPlate: false});
 
   public render() {
+    const { file_path, thumbnail_path } = this.props.carouselMarker;
+
+    const url = S3MoviePath(file_path);
+    const thumbnailUrl = S3ThumbnailPath(thumbnail_path);
+
     return(
       <View style={styles.content_wrap}>
         <TouchableOpacity style={styles.header__controller_back_wrap} onPress={this.props.setMovieModalVisible}>
@@ -64,13 +65,13 @@ export default class MovieNavigateComponent extends React.Component<Props, State
         <View style={styles.content__movie_wrap}>
           <VideoPlayer
             videoProps={{
-              source: { uri: Asset.fromModule(require('../../../assets/movies/KK_TY_P1.mp4')).uri, },
+              source: { uri: url, },
               resizeMode: Video.RESIZE_MODE_COVER,
             }}
             showControlsOnLoad={true}
             playIcon={this.playIcon}
             pauseIcon={this.pauseIcon}
-            thumbImage={require('../../../assets/images/thumb.png')}
+            thumbImage={thumbnailUrl}
             trackImage={require('../../../assets/images/track.png')}
             textStyle={{
               color: Color.white,
