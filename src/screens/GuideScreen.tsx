@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, Dimensions, Image, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
+import Modal from 'react-native-modalbox';
 import EStyleSheet, { flatten } from 'react-native-extended-stylesheet';
 import { Region, ToiletMarker } from 'src/domains/map';
 import { Gate } from 'src/domains/gate';
@@ -118,10 +119,8 @@ export default class GuideScreen extends React.Component<Props, State> {
           />
         </ModalCarousel>
         <Modal
-          animationType='slide'
-          presentationStyle='fullScreen'
-          transparent={false}
-          visible={this.state.movieModalVisible}
+          isOpen={this.state.movieModalVisible}
+          swipeToClose={true}
         >
           <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} carouselMarker={this.state.carouselMarker} />
         </Modal>
