@@ -1,19 +1,17 @@
 import * as React from 'react';
 import { Marker } from 'react-native-maps';
 import {ToiletMarker }from '../../domains/map';
-import { GuideLineObject }from '../../domains/movie';
-
-type Carousel = GuideLineObject;
+import { ObjectPoint } from 'src/domains/object_point';
 
 interface Props {
   indoorLevel: string;
-  movieMarkers?: GuideLineObject[];
+  movieMarkers?: ObjectPoint[];
   toiletMarkers?: ToiletMarker[];
-  elevatorMarkers?: GuideLineObject[];
+  elevatorMarkers?: ObjectPoint[];
   pinColor?: string;
-  carouselMarker?: Carousel;
-  changeCarousel: (carousel: Carousel) => void;
-  gate?: GuideLineObject[];
+  carouselMarker?: ObjectPoint;
+  changeCarousel: (carousel: ObjectPoint) => void;
+  gate?: ObjectPoint[];
 }
 
 export default class MarkerComponent extends React.Component<Props, {}> {
@@ -49,7 +47,7 @@ export default class MarkerComponent extends React.Component<Props, {}> {
     }
   }
 
-  private createMarker = (items: GuideLineObject[]) => {
+  private createMarker = (items: ObjectPoint[]) => {
     return items.map((item, index: number) =>  (
       <Marker
         key={`movieMarker_${index}`}
@@ -74,7 +72,7 @@ export default class MarkerComponent extends React.Component<Props, {}> {
     });
   }
 
-  private createCarouselMarker(carousel: Carousel) {
+  private createCarouselMarker(carousel: ObjectPoint) {
     if (carousel.floor !== this.props.indoorLevel) return null;
 
     return(

@@ -4,26 +4,25 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MarkerComponent from './MarkerComponent';
 import PolylineComponent from './PolylineComponent';
 import CustomMap from '../mapComponents/CustomMap';
-import { Region, ToiletMarker, LocationPoint } from 'src/domains/map';
-import { GuideLineObject } from '../../domains/movie';
+import { Region, ToiletMarker } from 'src/domains/map';
+import { ObjectPoint } from '../../domains/object_point';
 
 type ScreenNameType = 'video' | 'map';
-type Carousel = GuideLineObject;
 
 interface Props {
   indoorLevel: string;
   initializedLocation: Region;
-  movieMarkers?: GuideLineObject[];
+  movieMarkers?: ObjectPoint[];
   toiletMarkers?: ToiletMarker[];
-  elevatorMarkers?: GuideLineObject[];
-  guideLines?: LocationPoint[];
+  elevatorMarkers?: ObjectPoint[];
+  guideLines?: Partial<ObjectPoint>[];
   guideLinesColor?: string;
   changeIndoorLevel: (nextIndoorLevel: string) => void;
   screenChange?: () => void;
   currentScreen?: ScreenNameType;
-  carouselMarker?: Carousel;
-  changeCarousel: (carousel: Carousel) => void;
-  gate?: GuideLineObject[];
+  carouselMarker?: ObjectPoint;
+  changeCarousel: (carousel: ObjectPoint) => void;
+  gate?: ObjectPoint[];
 }
 
 interface State { initializedLocation: Region; }

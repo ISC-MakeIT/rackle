@@ -1,4 +1,4 @@
-export interface GuideLineObject {
+export interface ObjectPoint {
   id: number;
   name: string;
   file_path: string;
@@ -8,8 +8,4 @@ export interface GuideLineObject {
   floor: string;
   type: 'movie' | 'elevator' | 'gate';
   caption: string;
-}
-
-export interface ObjectPoints {
-  objectPoints: GuideLineObject[];
 }

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, Image, Modal } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { Region, ToiletMarker, GuideLineMarker, GuideLines, LocationPoint } from 'src/domains/map';
+import { Region, ToiletMarker } from 'src/domains/map';
 import { Gate } from 'src/domains/gate';
-import { GuideLineObject, ObjectPoints } from 'src/domains/movie';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -11,36 +10,28 @@ import { Modal as ModalCarousel } from '../components/Modal';
 import Colors from '../constants/Colors';
 import movieIcon from '../../assets/images/movie-load-icon.png';
 import { getGuidelines } from '../services/guidelines';
+import { ObjectPoint } from '../domains/object_point';
+import { LocationPoint } from '../domains/location_point';
+
 
 interface Props { navigation: any; }
 
-type Carousel = GuideLineObject;
 type Type = 'movie' | 'gate' | 'elevator';
 
-interface BaseState {
+interface State {
   showModal: boolean;
   movieModalVisible: boolean;
-}
-
-export interface ActiveMapState extends BaseState{
   indoorLevel: string;
   initializedLocation: Region | undefined;
-  objectPoint: GuideLineObject[] | undefined;
+  objectPoint: ObjectPoint[] | undefined;
   toilets: ToiletMarker[] | undefined;
-  object_points: GuideLineObject[] | undefined;
-  guidelines: GuideLines;
+  object_points: ObjectPoint[] | undefined;
+  guidelines: Partial<ObjectPoint>[];
   carouselMarker: Carousel | undefined;
-}
-
-interface ActiveMovieState extends BaseState {
   movieId: string | undefined;
   thumbnails: string[];
-}
-
-type State = ActiveMapState & ActiveMovieState & ObjectPoints & GuideLineMarker;
-
-interface CarouselItem {
-  item: GuideLineObject;
+  objectPoints: ObjectPoint[];
+  guideLineMarkers: LocationPoint[];
 }
 
 export default class GuideScreen extends React.Component<Props, State> {
@@ -87,7 +78,7 @@ export default class GuideScreen extends React.Component<Props, State> {
       objectPoints,
     } = this.state;
 
-    const currentCarousel: GuideLineObject[] = objectPoints.filter((objectPoint: GuideLineObject) => objectPoint.floor === indoorLevel);
+    const currentCarousel: ObjectPoint[] = objectPoints.filter((objectPoint: ObjectPoint) => objectPoint.floor === indoorLevel);
     // BUG １枚目の画像を無理やり表示させる対応
     // currentCarousel.forEach((objectPoint, index) => {
     //   objectPoint.thumbnail_path = 'KK_TY_P' + (index + 1) + '.jpg';
@@ -176,7 +167,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     });
   }
 
-  private currentPaginationPoint = (currentCarousel: GuideLineObject[]) => {
+  private currentPaginationPoint = (currentCarousel: ObjectPoint[]) => {
     const currentPoint = this.carouselFirstItem(currentCarousel);
 
     if (currentPoint == undefined) return undefined;
@@ -184,7 +175,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     return currentPoint;
   }
 
-  private carouselRenderItem = ({item}: CarouselItem)=> {
+  private carouselRenderItem = ({item}: any)=> {
     const carousel = this.state.objectPoints;
     const type = this.state.carouselMarker ? this.state.carouselMarker.type || null :null;
     const index = carousel.indexOf(item);
@@ -217,7 +208,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   private carouselOnSnapToItem = (index: number) => {
     if (this.state.objectPoints == undefined) return;
 
-    const currentCarousel = this.state.objectPoints.filter((objectPoint: GuideLineObject) => objectPoint.floor === this.state.indoorLevel);
+    const currentCarousel = this.state.objectPoints.filter((objectPoint: ObjectPoint) => objectPoint.floor === this.state.indoorLevel);
     return this.changeInitializedLocation(currentCarousel[index]);
   }
 
@@ -243,7 +234,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     this.setState({ indoorLevel });
   }
 
-  private changeInitializedLocation = (carousel: GuideLineObject) => {
+  private changeInitializedLocation = (carousel: ObjectPoint) => {
     const centerLatitude = -0.0006;
     const latitude = carousel.latitude + centerLatitude;
     this.setState({
@@ -257,7 +248,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     });
   }
 
-  private createMarkers = (objectPoints: GuideLineObject[], indoorLevel: string, type: Type) => {
+  private createMarkers = (objectPoints: ObjectPoint[], indoorLevel: string, type: Type) => {
     if (objectPoints == undefined) return;
 
     const markerPoints = objectPoints.filter(objectPoint => objectPoint.type === type);
@@ -278,7 +269,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     return toiletMarkers.filter(toiletMarker => toiletMarker.floor === indoorLevel);
   }
 
-  private changeCarousel = (carouselMarker: GuideLineObject) => {
+  private changeCarousel = (carouselMarker: ObjectPoint) => {
     const centerLatitude = -0.0006;
     const latitude = carouselMarker.latitude + centerLatitude;
     this.setState({
@@ -293,7 +284,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     });
   }
 
-  private carouselFirstItem = (currentCarousel: GuideLineObject[]) => {
+  private carouselFirstItem = (currentCarousel: ObjectPoint[]) => {
     const carouselMarker = this.state.carouselMarker;
     if(carouselMarker == undefined) return;
 
