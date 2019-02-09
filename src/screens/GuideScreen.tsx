@@ -12,7 +12,7 @@ import movieIcon from '../../assets/images/movie-load-icon.png';
 import { getGuidelines } from '../services/guidelines';
 import { ObjectPoint } from '../domains/object_point';
 import { LocationPoint } from '../domains/location_point';
-
+import { Ionicons } from '@expo/vector-icons';
 
 interface Props { navigation: any; }
 
@@ -66,9 +66,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   public render () {
     // NITS もう少し厳密に判断した方がいい説 :thinking:
-    if (this.state.indoorLevel === undefined && this.state.movieId === undefined) {
-      return null;
-    }
+    if (this.state.indoorLevel === undefined && this.state.movieId === undefined) return null;
 
     const {
       indoorLevel,
@@ -86,6 +84,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
     return (
       <View style={styles.content_wrap}>
+        <Ionicons name='md-arrow-back' size={45} style={styles.backBtn} onPress={this.goBack}/>
         <MapViewComponent
           indoorLevel={indoorLevel}
           initializedLocation={initializedLocation!}
@@ -150,6 +149,8 @@ export default class GuideScreen extends React.Component<Props, State> {
       </View>
     );
   }
+
+  private goBack = () => this.props.navigation.goBack();
 
   private setMovieModalVisible = (movieModalVisible: boolean) => this.setState({ movieModalVisible });
 
@@ -300,7 +301,16 @@ const styles = EStyleSheet.create({
     flex: 1,
     top: 0,
     position: 'relative',
-    //marginBottom: height * 0.07,
+  },
+  backBtn: {
+    position: 'absolute',
+    height: 45,
+    width: 45,
+    left: 20,
+    top: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
   },
   thumbnails: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
