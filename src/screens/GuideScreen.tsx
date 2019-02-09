@@ -12,6 +12,7 @@ import movieIcon from '../../assets/images/movie-load-icon.png';
 import { getGuidelines } from '../services/guidelines';
 import { ObjectPoint } from '../domains/object_point';
 import { LocationPoint } from '../domains/location_point';
+import {S3MoviePath, S3ThumbnailPath} from '../services/s3_manager';
 
 
 interface Props { navigation: any; }
@@ -177,22 +178,18 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   private carouselRenderItem = ({item}: any)=> {
     const carousel = this.state.objectPoints;
-    const type = this.state.carouselMarker ? this.state.carouselMarker.type || null :null;
     const index = carousel.indexOf(item);
-    const isFirstItem = index === 0;
-    const isLastItem = index === carousel.length - 1;
-    const isMovie = type === 'movie';
 
     return (
       <View style={styles.carousel}>
         <View style={styles.carouselInThumbnail}>
-          <Image source={{ uri: 'https://s3-ap-northeast-1.amazonaws.com/rackle/' + item.thumbnail_path }} style={styles.thumbnailImage} />
+          <Image source={{ uri: S3ThumbnailPath(item.thumbnail_path) }} style={styles.thumbnailImage} />
         </View>
         <View style={styles.carouselInText}>
           <Text style={styles.carouselText}>{index + 1}</Text>
         </View>
         {
-          !isFirstItem && !isLastItem && isMovie ? (
+          item.type === 'movie' || item.type === 'gate' ? (
             <View style={styles.carouselMovieBottom}>
               <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
                 <Image source={movieIcon} style={styles.movieIcon} />
