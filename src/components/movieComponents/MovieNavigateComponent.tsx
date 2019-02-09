@@ -56,6 +56,8 @@ export default class MovieNavigateComponent extends React.Component<Props, State
   private hideNavigationPlate = () => this.setState({isVisibleNavigationPlate: false});
 
   public render() {
+    const url = 'https://s3-ap-northeast-1.amazonaws.com/rackle/movies/KK_TY_P1.mp4';
+
     return(
       <View style={styles.content_wrap}>
         <TouchableOpacity style={styles.header__controller_back_wrap} onPress={this.props.setMovieModalVisible}>
@@ -64,7 +66,7 @@ export default class MovieNavigateComponent extends React.Component<Props, State
         <View style={styles.content__movie_wrap}>
           <VideoPlayer
             videoProps={{
-              source: { uri: Asset.fromModule(require('../../../assets/movies/KK_TY_P1.mp4')).uri, },
+              source: { uri: url, },
               resizeMode: Video.RESIZE_MODE_COVER,
             }}
             showControlsOnLoad={true}
