@@ -100,10 +100,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           gate={this.createMarkers(currentCarousel, indoorLevel, 'gate')}
           hideModal={this.hideModal}
         />
-        <ModalCarousel
-          modalView={this.state.showModal}
-          hideModal={this.hideModal}
-        >
+        <ModalCarousel modalView={this.state.showModal}>
           <Carousel
             data={currentCarousel}
             itemWidth={Dimensions.get('screen').width * 0.8}

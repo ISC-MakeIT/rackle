@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import { Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { LinearGradient } from 'expo';
 
-interface Props { modalView: boolean; hideModal: () => void; }
+interface Props { modalView: boolean; }
 
 export const Modal: React.FC<Props> = props => {
     const modalStyle = props.modalView ? styles.appear : styles.hidden;
-    //const topModalStyle = props.modalView ? styles.topModal : styles.hidden;
     return (
       <LinearGradient
-        colors={['rgba(0, 0, 0, 0.5)', 'rgba(0, 0, 0, 0)']}
+        colors={['rgba(0, 0, 0, 0.8)', 'rgba(0, 0, 0, 0.5)']}
         start={{ x: 0, y: 1 }}
         end={{ x: 0, y: 0 }}
         style={modalStyle}
@@ -33,13 +32,6 @@ const styles = EStyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     zIndex: 0,
-  },
-  topModal: {
-    width: width,
-    height: height * 0.5,
-    position: 'absolute',
-    top: 0,
-    zIndex: 10,
   },
   hidden: {
     display: 'none',
