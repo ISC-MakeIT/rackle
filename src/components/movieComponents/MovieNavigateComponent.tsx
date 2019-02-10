@@ -6,7 +6,6 @@ import {
 import {
   Video,
   PlaybackStatus,
-  Asset,
 } from 'expo';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import NavigationPlate from '../../components/NavigationPlate';
@@ -52,11 +51,9 @@ export default class MovieNavigateComponent extends React.Component<Props, State
   private hideNavigationPlate = () => this.setState({isVisibleNavigationPlate: false});
 
   public render() {
-    const { file_path, thumbnail_path } = this.props.carouselMarker;
-
+    const { file_path } = this.props.carouselMarker;
     const url = S3MoviePath(file_path);
-    const thumbnailUrl = S3ThumbnailPath(thumbnail_path);
-
+ 
     return(
       <View style={styles.content_wrap}>
         <TouchableOpacity style={styles.header__controller_back_wrap} onPress={this.props.setMovieModalVisible}>
@@ -71,7 +68,8 @@ export default class MovieNavigateComponent extends React.Component<Props, State
             showControlsOnLoad={true}
             playIcon={this.playIcon}
             pauseIcon={this.pauseIcon}
-            thumbImage={thumbnailUrl}
+            // thumbnailの"thumb"じゃなくてseekbar thumbの"thumb"なんです
+            thumbImage={require('../../../assets/images/thumb.png')}
             trackImage={require('../../../assets/images/track.png')}
             textStyle={{
               color: Color.white,
@@ -82,7 +80,7 @@ export default class MovieNavigateComponent extends React.Component<Props, State
             playbackCallback={this.playbackCallback}
             showControlsCallback={this.showNavigationPlate}
             hideControlsCallback={this.hideNavigationPlate}
-            hideControlsTimerDuration={5000}
+            hideControlsTimerDuration={Number.MAX_SAFE_INTEGER}
           />
         </View>
         {this.renderNavigationPlate()}
