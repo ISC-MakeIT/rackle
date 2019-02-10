@@ -13,7 +13,7 @@ import movieIcon from '../../assets/images/movie-load-icon.png';
 import { getGuidelines } from '../services/guidelines';
 import { ObjectPoint } from '../domains/object_point';
 import { LocationPoint } from '../domains/location_point';
-import {S3MoviePath, S3ThumbnailPath} from '../services/s3_manager';
+import { S3MoviePath, S3ThumbnailPath } from '../services/s3_manager';
 import { Ionicons } from '@expo/vector-icons';
 
 interface Props { navigation: any; }
@@ -124,7 +124,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           presentationStyle='fullScreen'
           isVisible={this.state.movieModalVisible}
           swipeDirection='down'
-          onSwipe={() => this.setState({ movieModalVisible: false })}
+          onSwipe={this.closeMovieModal}
           deviceHeight={height}
           deviceWidth={width}
         >
