@@ -7,13 +7,13 @@ import { Gate } from 'src/domains/gate';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { Modal as ModalCarousel } from '../components/Modal';
+import { Modal as CarouselModal } from '../components/Modal';
 import Colors from '../constants/Colors';
 import movieIcon from '../../assets/images/movie-load-icon.png';
 import { getGuidelines } from '../services/guidelines';
 import { ObjectPoint } from '../domains/object_point';
 import { LocationPoint } from '../domains/location_point';
-import {S3MoviePath, S3ThumbnailPath} from '../services/s3_manager';
+import { S3ThumbnailPath } from '../services/s3_manager';
 import { Ionicons } from '@expo/vector-icons';
 
 interface Props { navigation: any; }
@@ -27,12 +27,9 @@ interface State {
   initializedLocation: Region | undefined;
   objectPoint: ObjectPoint[] | undefined;
   toilets: ToiletMarker[] | undefined;
-  object_points: ObjectPoint[] | undefined;
   guidelines: Partial<ObjectPoint>[];
-  carouselMarker: Carousel | undefined;
-  movieId: string | undefined;
-  thumbnails: string[];
   objectPoints: ObjectPoint[];
+  carouselMarker: Carousel | undefined;
   guideLineMarkers: LocationPoint[];
 }
 
@@ -48,7 +45,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   };
 
   async componentDidMount () {
-    const mapData: State = await getGuidelines(6, 11);
+    const mapData = await getGuidelines(6, 11);
 
     this.setState({
       indoorLevel: '1',
@@ -60,15 +57,13 @@ export default class GuideScreen extends React.Component<Props, State> {
       },
       guideLineMarkers: this.indoorChanges(mapData.guidelines.location_points),
       toilets: this.indoorChanges(mapData.toilets),
-      objectPoints: this.indoorChanges(mapData.object_points),
-      movieId: undefined,
-      thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
+      objectPoints: this.indoorChanges(mapData.object_points), // cast CamelCase from json
+      carouselMarker: mapData['object_points'].find(e => e.id === 1), // FIXME id === 1とは限らない
     });
   }
 
   public render () {
-    // NITS もう少し厳密に判断した方がいい説 :thinking:
-    if (this.state.indoorLevel === undefined && this.state.movieId === undefined) return null;
+    if (this.state.indoorLevel === undefined ) return null;
 
     const {
       indoorLevel,
@@ -81,10 +76,6 @@ export default class GuideScreen extends React.Component<Props, State> {
     const {height, width} = Dimensions.get('screen');
 
     const currentCarousel: ObjectPoint[] = objectPoints.filter((objectPoint: ObjectPoint) => objectPoint.floor === indoorLevel);
-    // BUG １枚目の画像を無理やり表示させる対応
-    // currentCarousel.forEach((objectPoint, index) => {
-    //   objectPoint.thumbnail_path = 'KK_TY_P' + (index + 1) + '.jpg';
-    // });
 
     return (
       <View style={styles.content_wrap}>
@@ -98,11 +89,11 @@ export default class GuideScreen extends React.Component<Props, State> {
           guideLines={this.createGuideLineMarkers(guideLineMarkers, indoorLevel)}
           changeIndoorLevel={this.changeIndoorLevel}
           carouselMarker={this.state.carouselMarker}
-          changeCarousel={this.changeCarousel.bind(this)}
+          changeCarousel={this.changeCarousel}
           gate={this.createMarkers(currentCarousel, indoorLevel, 'gate')}
           hideModal={this.hideModal}
         />
-        <ModalCarousel modalView={this.state.showModal}>
+        <CarouselModal modalView={this.state.showModal}>
           <Carousel
             data={currentCarousel}
             itemWidth={width * 0.8}
@@ -119,7 +110,7 @@ export default class GuideScreen extends React.Component<Props, State> {
             dotsLength={currentCarousel.length > 6 ? 6 : currentCarousel.length}
             dotStyle={styles.paginationDotStyle}
           />
-        </ModalCarousel>
+        </CarouselModal>
         <Modal
           presentationStyle='fullScreen'
           isVisible={this.state.movieModalVisible}
@@ -212,7 +203,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   private carouselOnSnapToItem = (index: number) => {
     if (this.state.objectPoints == undefined) return;
 
-    const currentCarousel = this.state.objectPoints.filter((objectPoint: ObjectPoint) => objectPoint.floor === this.state.indoorLevel);
+    const currentCarousel = this.state.objectPoints.filter(objectPoint => objectPoint.floor === this.state.indoorLevel);
     return this.changeInitializedLocation(currentCarousel[index]);
   }
 
