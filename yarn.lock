@@ -565,9 +565,9 @@
     lodash "^4.17.4"
     react-native-vector-icons "6.0.0"
 
-"@expo/videoplayer@ISC-MakeIT/videoplayer":
+"@expo/videoplayer@ISC-MakeIT/videoplayer#pauseVideoWhenOnceTap":
   version "0.4.0"
-  resolved "https://codeload.github.com/ISC-MakeIT/videoplayer/tar.gz/a3e69b01a27f0e0e405d668808daa37aa6bc1649"
+  resolved "https://codeload.github.com/ISC-MakeIT/videoplayer/tar.gz/0646d80d0d4775ee1e1dd60f645df8f4c5c492df"
   dependencies:
     prop-types "^15.6.0"
     react-mixin "^3.1.1"
