@@ -27,7 +27,7 @@ interface State {
   initializedLocation: Region | undefined;
   objectPoint: ObjectPoint[] | undefined;
   toilets: ToiletMarker[] | undefined;
-  object_points: ObjectPoint[] | undefined;
+  object_points: ObjectPoint[];
   guidelines: Partial<ObjectPoint>[];
   carouselMarker: Carousel | undefined;
   movieId: string | undefined;
@@ -101,6 +101,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           changeCarousel={this.changeCarousel.bind(this)}
           gate={this.createMarkers(currentCarousel, indoorLevel, 'gate')}
           hideModal={this.hideModal}
+          showModal={this.state.showModal}
         />
         <ModalCarousel modalView={this.state.showModal}>
           <Carousel
@@ -217,18 +218,26 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private changeModal = (initializedLocation: Region) => {
-    const centerLatitude = 0.0006;
+    const centerLatitude = -0.0006;
+    const carouselMarker = this.state.carouselMarker == undefined ? this.state.objectPoints[0] : this.state.carouselMarker;
     this.state.showModal ?
     this.setState({
       showModal: false,
       initializedLocation: {
-        latitude: initializedLocation.latitude + centerLatitude,
+        latitude: initializedLocation.latitude - centerLatitude,
         longitude: initializedLocation.longitude,
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
       },
     }) : this.setState({
       showModal: true,
+      carouselMarker,
+      initializedLocation: {
+        latitude: initializedLocation.latitude + centerLatitude,
+        longitude: initializedLocation.longitude,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
+      },
     });
   }
 

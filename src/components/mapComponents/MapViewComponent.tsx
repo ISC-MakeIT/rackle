@@ -24,6 +24,7 @@ interface Props {
   changeCarousel: (carousel: ObjectPoint) => void;
   gate?: ObjectPoint[];
   hideModal: () => void;
+  showModal: boolean;
 }
 
 interface State { initializedLocation: Region; }
@@ -34,14 +35,14 @@ export default class MapViewComponent extends React.Component<Props, State> {
   public shouldComponentUpdate(nextProps: Props, nextState: State) {
     const moveCarousel = this.props.carouselMarker !== nextProps.carouselMarker && nextProps.carouselMarker != undefined;
     const changeIndoorLevelCarousel = nextProps.carouselMarker == undefined && this.props.carouselMarker !== nextProps.carouselMarker;
-    if (moveCarousel || changeIndoorLevelCarousel) return true;
+    const changeModal = this.props.showModal !== nextProps.showModal;
+    if (moveCarousel || changeIndoorLevelCarousel || changeModal) return true;
     return this.props.indoorLevel !== nextProps.indoorLevel ? true : false;
   }
 
   public componentWillReceiveProps (nextProps: Props, nextState: State) {
-    if (this.props.carouselMarker !== nextProps.carouselMarker && nextProps.carouselMarker != undefined) {
-      this.setState({initializedLocation: nextProps.initializedLocation});
-    }
+    if (this.props.showModal !== nextProps.showModal) this.setState({initializedLocation: nextProps.initializedLocation});
+    if (this.props.carouselMarker !== nextProps.carouselMarker) this.setState({initializedLocation: nextProps.initializedLocation});
   }
 
   public render() {
