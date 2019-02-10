@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, Dimensions, Image, Modal } from 'react-native';
-import EStyleSheet, { flatten } from 'react-native-extended-stylesheet';
+import { View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
+import Modal from 'react-native-modal';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import { Region, ToiletMarker } from 'src/domains/map';
 import { Gate } from 'src/domains/gate';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
@@ -77,6 +78,8 @@ export default class GuideScreen extends React.Component<Props, State> {
       objectPoints,
     } = this.state;
 
+    const {height, width} = Dimensions.get('screen');
+
     const currentCarousel: ObjectPoint[] = objectPoints.filter((objectPoint: ObjectPoint) => objectPoint.floor === indoorLevel);
     // BUG １枚目の画像を無理やり表示させる対応
     // currentCarousel.forEach((objectPoint, index) => {
@@ -102,9 +105,9 @@ export default class GuideScreen extends React.Component<Props, State> {
         <ModalCarousel modalView={this.state.showModal}>
           <Carousel
             data={currentCarousel}
-            itemWidth={Dimensions.get('screen').width * 0.8}
-            sliderWidth={Dimensions.get('screen').width}
-            sliderHeight={Dimensions.get('screen').height}
+            itemWidth={width * 0.8}
+            sliderWidth={width}
+            sliderHeight={height}
             renderItem={this.carouselRenderItem}
             lockScrollWhileSnapping={true}
             onSnapToItem={this.carouselOnSnapToItem}
@@ -118,10 +121,12 @@ export default class GuideScreen extends React.Component<Props, State> {
           />
         </ModalCarousel>
         <Modal
-          animationType='slide'
           presentationStyle='fullScreen'
-          transparent={false}
-          visible={this.state.movieModalVisible}
+          isVisible={this.state.movieModalVisible}
+          swipeDirection='down'
+          onSwipe={() => this.setState({ movieModalVisible: false })}
+          deviceHeight={height}
+          deviceWidth={width}
         >
           <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} carouselMarker={this.state.carouselMarker} />
         </Modal>

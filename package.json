@@ -21,6 +21,7 @@
     "react-native-elements": "^1.0.0-beta7",
     "react-native-extended-stylesheet": "^0.11.1",
     "react-native-icons": "^0.7.1",
+    "react-native-modal": "^7.0.2",
     "react-native-picker-select": "^5.2.2",
     "react-native-progress": "^3.5.0",
     "react-native-status-bar-height": "^2.2.0",
