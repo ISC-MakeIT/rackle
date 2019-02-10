@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
-    "@expo/videoplayer": "ISC-MakeIT/videoplayer",
+    "@expo/videoplayer": "ISC-MakeIT/videoplayer#pauseVideoWhenOnceTap",
     "eslint-plugin-react": "^7.12.4",
     "expo": "31.0.0",
     "react": "16.5.0",
