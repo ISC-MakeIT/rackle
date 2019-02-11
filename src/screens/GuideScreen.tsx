@@ -45,7 +45,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   };
 
   async componentDidMount () {
-    const mapData: State = await getGuidelines(6, 11);
+    const mapData = await getGuidelines(6, 11);
     const objectPoints = this.indoorChanges(mapData.object_points);
 
     this.setState({
