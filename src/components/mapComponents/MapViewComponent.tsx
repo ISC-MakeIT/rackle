@@ -20,10 +20,11 @@ interface Props {
   changeIndoorLevel: (nextIndoorLevel: string) => void;
   screenChange?: () => void;
   currentScreen?: ScreenNameType;
-  carouselMarker?: ObjectPoint;
+  currentCarousel?: ObjectPoint;
   changeCarousel: (carousel: ObjectPoint) => void;
   gate?: ObjectPoint[];
   hideModal: () => void;
+  modalChange: boolean;
 }
 
 interface State { initializedLocation: Region; }
@@ -32,16 +33,18 @@ export default class MapViewComponent extends React.Component<Props, State> {
   readonly state = { initializedLocation: this.props.initializedLocation };
 
   public shouldComponentUpdate(nextProps: Props, nextState: State) {
-    const moveCarousel = this.props.carouselMarker !== nextProps.carouselMarker && nextProps.carouselMarker != undefined;
-    const changeIndoorLevelCarousel = nextProps.carouselMarker == undefined && this.props.carouselMarker !== nextProps.carouselMarker;
-    if (moveCarousel || changeIndoorLevelCarousel) return true;
+    // FIXME 個々の処理がカオスになってる
+    const hasNextCarouselAndChanged = this.props.currentCarousel !== nextProps.currentCarousel && nextProps.currentCarousel != undefined;
+    const indoorLevelCarouselChanged = nextProps.currentCarousel == undefined && this.props.currentCarousel !== nextProps.currentCarousel;
+    const modalChanged = this.props.modalChange !== nextProps.modalChange;
+    if (hasNextCarouselAndChanged || indoorLevelCarouselChanged || modalChanged) return true;
+
     return this.props.indoorLevel !== nextProps.indoorLevel ? true : false;
   }
 
   public componentWillReceiveProps (nextProps: Props, nextState: State) {
-    if (this.props.carouselMarker !== nextProps.carouselMarker && nextProps.carouselMarker != undefined) {
-      this.setState({initializedLocation: nextProps.initializedLocation});
-    }
+    if (this.props.modalChange !== nextProps.modalChange) this.setState({initializedLocation: nextProps.initializedLocation});
+    if (this.props.currentCarousel !== nextProps.currentCarousel) this.setState({initializedLocation: nextProps.initializedLocation});
   }
 
   public render() {
@@ -55,8 +58,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} /> : null;
     const subColorPolyline = this.props.guideLinesColor && this.props.guideLines ?
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
-    const carouselMarkers = this.props.carouselMarker ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} carouselMarker={this.props.carouselMarker} changeCarousel={this.props.changeCarousel}/> : null;
+    const carouselMarkers = this.props.currentCarousel ?
+      <MarkerComponent indoorLevel={this.props.indoorLevel} carouselMarker={this.props.currentCarousel} changeCarousel={this.props.changeCarousel}/> : null;
     const gateMarkers = this.props.gate != undefined ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} gate={this.props.gate} changeCarousel={this.props.changeCarousel}/> : null;
 
