@@ -35,8 +35,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
   public shouldComponentUpdate(nextProps: Props, nextState: State) {
     const carouselMovie = this.props.currentCarousel !== nextProps.currentCarousel && nextProps.currentCarousel != undefined;
     const changeIndoorLevelCarousel = nextProps.currentCarousel == undefined && this.props.currentCarousel !== nextProps.currentCarousel;
-    const changeModal = this.props.modalChange !== nextProps.modalChange;
-    if (carouselMovie || changeIndoorLevelCarousel || changeModal) return true;
+    const modalChange = this.props.modalChange !== nextProps.modalChange;
+    if (carouselMovie || changeIndoorLevelCarousel || modalChange) return true;
     return this.props.indoorLevel !== nextProps.indoorLevel ? true : false;
   }
 
