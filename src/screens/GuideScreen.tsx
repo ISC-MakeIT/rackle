@@ -101,7 +101,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           changeCarousel={this.changeCarousel.bind(this)}
           gate={this.createMarkers(currentCarousel, indoorLevel, 'gate')}
           hideModal={this.hideModal}
-          showModal={this.state.showModal}
+          modalChange={this.state.showModal}
         />
         <ModalCarousel modalView={this.state.showModal}>
           <Carousel
