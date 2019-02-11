@@ -7,7 +7,7 @@ import { Gate } from 'src/domains/gate';
 import MovieNavigateComponent from '../components/movieComponents/MovieNavigateComponent';
 import MapViewComponent from '../components/mapComponents/MapViewComponent';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { Modal as ModalCarousel } from '../components/Modal';
+import { Modal as CarouselModal } from '../components/Modal';
 import Colors from '../constants/Colors';
 import movieIcon from '../../assets/images/movie-load-icon.png';
 import { getGuidelines } from '../services/guidelines';
@@ -100,7 +100,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           hideModal={this.hideModal}
           modalChange={this.state.showModal}
         />
-        <ModalCarousel modalView={this.state.showModal}>
+        <CarouselModal modalView={this.state.showModal}>
           <Carousel
             data={currentCarousel}
             itemWidth={width * 0.8}
@@ -117,7 +117,7 @@ export default class GuideScreen extends React.Component<Props, State> {
             dotsLength={currentCarousel.length > 6 ? 6 : currentCarousel.length}
             dotStyle={styles.paginationDotStyle}
           />
-        </ModalCarousel>
+        </CarouselModal>
         <Modal
           presentationStyle='fullScreen'
           isVisible={this.state.movieModalVisible}
