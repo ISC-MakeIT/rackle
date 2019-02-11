@@ -13,7 +13,7 @@ import movieIcon from '../../assets/images/movie-load-icon.png';
 import { getGuidelines } from '../services/guidelines';
 import { ObjectPoint } from '../domains/object_point';
 import { LocationPoint } from '../domains/location_point';
-import { S3MoviePath, S3ThumbnailPath } from '../services/s3_manager';
+import { S3ThumbnailPath } from '../services/s3_manager';
 import { Ionicons } from '@expo/vector-icons';
 
 interface Props { navigation: any; }
@@ -27,7 +27,6 @@ interface State {
   initializedLocation: Region;
   objectPoint: ObjectPoint[] | undefined;
   toilets: ToiletMarker[] | undefined;
-  object_points: ObjectPoint[];
   guidelines: Partial<ObjectPoint>[];
   currentCarousel: Carousel;
   objectPoints: ObjectPoint[];
@@ -64,7 +63,6 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   public render () {
-    // NITS もう少し厳密に判断した方がいい説 :thinking:
     if (this.state.indoorLevel == undefined) return null;
 
     const {
@@ -78,10 +76,6 @@ export default class GuideScreen extends React.Component<Props, State> {
     const {height, width} = Dimensions.get('screen');
 
     const currentCarousel: ObjectPoint[] = objectPoints.filter((objectPoint: ObjectPoint) => objectPoint.floor === indoorLevel);
-    // BUG １枚目の画像を無理やり表示させる対応
-    // currentCarousel.forEach((objectPoint, index) => {
-    //   objectPoint.thumbnail_path = 'KK_TY_P' + (index + 1) + '.jpg';
-    // });
 
     return (
       <View style={styles.content_wrap}>
@@ -177,8 +171,9 @@ export default class GuideScreen extends React.Component<Props, State> {
     const currentPoint = this.carouselFirstItem(currentCarousel);
 
     if (currentPoint == undefined) return 0;
-    if (currentCarousel.length > 6 ) return Math.round(((currentPoint + 1) / currentCarousel.length) * 6 - 1);
-    return currentPoint;
+    if (currentCarousel.length <= 6) return currentPoint;
+
+    return Math.round(((currentPoint + 1) / currentCarousel.length) * 6 - 1);
   }
 
   private carouselRenderItem = ({item}: any)=> {
