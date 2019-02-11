@@ -210,7 +210,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   private carouselOnSnapToItem = (index: number) => {
     if (this.state.objectPoints == undefined) return;
 
-    const currentCarousel = this.state.objectPoints.filter((objectPoint: ObjectPoint) => objectPoint.floor === this.state.indoorLevel);
+    const currentCarousel = this.state.objectPoints.filter(objectPoint => objectPoint.floor === this.state.indoorLevel);
     return this.changeInitializedLocation(currentCarousel[index]);
   }
 
