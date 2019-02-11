@@ -24,14 +24,12 @@ interface State {
   showModal: boolean;
   movieModalVisible: boolean;
   indoorLevel: string;
-  initializedLocation: Region | undefined;
+  initializedLocation: Region;
   objectPoint: ObjectPoint[] | undefined;
   toilets: ToiletMarker[] | undefined;
   object_points: ObjectPoint[];
   guidelines: Partial<ObjectPoint>[];
-  carouselMarker: Carousel | undefined;
-  movieId: string | undefined;
-  thumbnails: string[];
+  currentCarousel: Carousel;
   objectPoints: ObjectPoint[];
   guideLineMarkers: LocationPoint[];
 }
@@ -43,12 +41,12 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   readonly state: State = {
     showModal: false,
-    carouselMarker: undefined,
     movieModalVisible: false,
   };
 
   async componentDidMount () {
     const mapData: State = await getGuidelines(6, 11);
+    const objectPoints = this.indoorChanges(mapData.object_points);
 
     this.setState({
       indoorLevel: '1',
@@ -60,15 +58,14 @@ export default class GuideScreen extends React.Component<Props, State> {
       },
       guideLineMarkers: this.indoorChanges(mapData.guidelines.location_points),
       toilets: this.indoorChanges(mapData.toilets),
-      objectPoints: this.indoorChanges(mapData.object_points),
-      movieId: undefined,
-      thumbnails: ['OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM', 'OwSekWSe7NM'],
+      objectPoints,
+      currentCarousel: objectPoints[0],
     });
   }
 
   public render () {
     // NITS もう少し厳密に判断した方がいい説 :thinking:
-    if (this.state.indoorLevel === undefined && this.state.movieId === undefined) return null;
+    if (this.state.indoorLevel == undefined) return null;
 
     const {
       indoorLevel,
@@ -97,8 +94,8 @@ export default class GuideScreen extends React.Component<Props, State> {
           elevatorMarkers={this.createMarkers(currentCarousel, indoorLevel, 'elevator')}
           guideLines={this.createGuideLineMarkers(guideLineMarkers, indoorLevel)}
           changeIndoorLevel={this.changeIndoorLevel}
-          carouselMarker={this.state.carouselMarker}
-          changeCarousel={this.changeCarousel.bind(this)}
+          currentCarousel={this.state.currentCarousel}
+          changeCarousel={this.changeCarousel}
           gate={this.createMarkers(currentCarousel, indoorLevel, 'gate')}
           hideModal={this.hideModal}
           modalChange={this.state.showModal}
@@ -129,7 +126,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           deviceHeight={height}
           deviceWidth={width}
         >
-          <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} carouselMarker={this.state.carouselMarker} />
+          <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} carouselMarker={this.state.currentCarousel} />
         </Modal>
         {
           currentCarousel.length !== 0 ? (
@@ -219,7 +216,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   private changeModal = (initializedLocation: Region) => {
     const centerLatitude = -0.0006;
-    const carouselMarker = this.state.carouselMarker == undefined ? this.state.objectPoints[0] : this.state.carouselMarker;
+    const currentCarousel = this.state.currentCarousel == undefined ? this.state.objectPoints[0] : this.state.currentCarousel;
     this.state.showModal ?
     this.setState({
       showModal: false,
@@ -231,7 +228,7 @@ export default class GuideScreen extends React.Component<Props, State> {
       },
     }) : this.setState({
       showModal: true,
-      carouselMarker,
+      currentCarousel,
       initializedLocation: {
         latitude: initializedLocation.latitude + centerLatitude,
         longitude: initializedLocation.longitude,
@@ -257,7 +254,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
       },
-      carouselMarker: carousel,
+      currentCarousel: carousel,
     });
   }
 
@@ -265,8 +262,8 @@ export default class GuideScreen extends React.Component<Props, State> {
     if (objectPoints == undefined) return;
 
     const markerPoints = objectPoints.filter(objectPoint => objectPoint.type === type);
-    if (this.state.carouselMarker == undefined) return markerPoints.filter(markerPoint => markerPoint.floor === indoorLevel);
-    if (this.state.carouselMarker.type === type) return markerPoints.filter(markerPoint => markerPoint !== this.state.carouselMarker);
+    if (this.state.currentCarousel == undefined) return markerPoints.filter(markerPoint => markerPoint.floor === indoorLevel);
+    if (this.state.currentCarousel.type === type) return markerPoints.filter(markerPoint => markerPoint !== this.state.currentCarousel);
     return markerPoints;
   }
 
@@ -282,26 +279,24 @@ export default class GuideScreen extends React.Component<Props, State> {
     return toiletMarkers.filter(toiletMarker => toiletMarker.floor === indoorLevel);
   }
 
-  private changeCarousel = (carouselMarker: ObjectPoint) => {
+  private changeCarousel = (currentCarousel: ObjectPoint) => {
     const centerLatitude = -0.0006;
-    const latitude = carouselMarker.latitude + centerLatitude;
+    const latitude = currentCarousel.latitude + centerLatitude;
     this.setState({
       showModal: true,
-      carouselMarker: carouselMarker,
+      currentCarousel,
       initializedLocation: {
         latitude: latitude,
-        longitude: carouselMarker.longitude,
+        longitude: currentCarousel.longitude,
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
       },
     });
   }
 
-  private carouselFirstItem = (currentCarousel: ObjectPoint[]) => {
-    const carouselMarker = this.state.carouselMarker;
-    if(carouselMarker == undefined) return 0;
-
-    return currentCarousel.indexOf(carouselMarker);
+  private carouselFirstItem = (currentCarousels: ObjectPoint[]) => {
+    const currentCarousel = this.state.currentCarousel;
+    return currentCarousels.indexOf(currentCarousel);
   }
 
   private hideModal = () => {

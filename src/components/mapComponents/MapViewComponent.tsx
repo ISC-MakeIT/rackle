@@ -20,7 +20,7 @@ interface Props {
   changeIndoorLevel: (nextIndoorLevel: string) => void;
   screenChange?: () => void;
   currentScreen?: ScreenNameType;
-  carouselMarker?: ObjectPoint;
+  currentCarousel?: ObjectPoint;
   changeCarousel: (carousel: ObjectPoint) => void;
   gate?: ObjectPoint[];
   hideModal: () => void;
@@ -33,8 +33,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
   readonly state = { initializedLocation: this.props.initializedLocation };
 
   public shouldComponentUpdate(nextProps: Props, nextState: State) {
-    const carouselMovie = this.props.carouselMarker !== nextProps.carouselMarker && nextProps.carouselMarker != undefined;
-    const changeIndoorLevelCarousel = nextProps.carouselMarker == undefined && this.props.carouselMarker !== nextProps.carouselMarker;
+    const carouselMovie = this.props.currentCarousel !== nextProps.currentCarousel && nextProps.currentCarousel != undefined;
+    const changeIndoorLevelCarousel = nextProps.currentCarousel == undefined && this.props.currentCarousel !== nextProps.currentCarousel;
     const changeModal = this.props.modalChange !== nextProps.modalChange;
     if (carouselMovie || changeIndoorLevelCarousel || changeModal) return true;
     return this.props.indoorLevel !== nextProps.indoorLevel ? true : false;
@@ -42,7 +42,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
 
   public componentWillReceiveProps (nextProps: Props, nextState: State) {
     if (this.props.modalChange !== nextProps.modalChange) this.setState({initializedLocation: nextProps.initializedLocation});
-    if (this.props.carouselMarker !== nextProps.carouselMarker) this.setState({initializedLocation: nextProps.initializedLocation});
+    if (this.props.currentCarousel !== nextProps.currentCarousel) this.setState({initializedLocation: nextProps.initializedLocation});
   }
 
   public render() {
@@ -56,8 +56,8 @@ export default class MapViewComponent extends React.Component<Props, State> {
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} /> : null;
     const subColorPolyline = this.props.guideLinesColor && this.props.guideLines ?
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
-    const carouselMarkers = this.props.carouselMarker ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} carouselMarker={this.props.carouselMarker} changeCarousel={this.props.changeCarousel}/> : null;
+    const carouselMarkers = this.props.currentCarousel ?
+      <MarkerComponent indoorLevel={this.props.indoorLevel} carouselMarker={this.props.currentCarousel} changeCarousel={this.props.changeCarousel}/> : null;
     const gateMarkers = this.props.gate != undefined ?
       <MarkerComponent indoorLevel={this.props.indoorLevel} gate={this.props.gate} changeCarousel={this.props.changeCarousel}/> : null;
 
