@@ -295,8 +295,16 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private hideModal = () => {
+    const centerLatitude = 0.0006;
+    const initializedLocation = this.state.initializedLocation;
     this.setState({
       showModal: false,
+      initializedLocation: {
+        latitude: initializedLocation.latitude  + centerLatitude,
+        longitude: initializedLocation.longitude,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
+      },
     });
   }
 }
