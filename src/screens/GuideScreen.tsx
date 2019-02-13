@@ -189,6 +189,12 @@ export default class GuideScreen extends React.Component<Props, State> {
           <Text style={styles.carouselText}>{index + 1}</Text>
         </View>
         {
+          item.type === 'elevator' ?
+          <View style={styles.carouselElevatorLabel}>
+            <Text>{item.caption}</Text>
+          </View> : null
+        }
+        {
           item.type === 'movie' || item.type === 'gate' ? (
             <View style={styles.carouselMovieBottom}>
               <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
@@ -456,5 +462,9 @@ const styles = EStyleSheet.create({
   movieIcon: {
     width: width * 0.085,
     height: width * 0.085,
+  },
+  carouselElevatorLabel: {
+    position: 'absolute',
+    top: 0,
   },
 });
