@@ -19,6 +19,7 @@ import { Ionicons } from '@expo/vector-icons';
 interface Props { navigation: any; }
 
 type ObjectType = 'movie' | 'gate' | 'elevator';
+type PlusOrMinus = 'plus' | 'minus';
 
 interface State {
   showModal: boolean;
@@ -202,6 +203,10 @@ export default class GuideScreen extends React.Component<Props, State> {
     );
   }
 
+  private centerLatitude = (type: PlusOrMinus) => {
+    return type === 'plus' ? 0.0006 : -0.0006;
+  }
+
   private carouselOnSnapToItem = (index: number) => {
     if (this.state.objectPoints == undefined) return;
 
@@ -210,13 +215,13 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private changeModal = (initializedLocation: Region) => {
-    const centerLatitude = -0.0006;
     const currentCarousel = this.state.currentCarousel == undefined ? this.state.objectPoints[0] : this.state.currentCarousel;
+    const centerLatitude = this.centerLatitude('minus');
     this.state.showModal ?
     this.setState({
       showModal: false,
       initializedLocation: {
-        latitude: initializedLocation.latitude - centerLatitude,
+        latitude: initializedLocation.latitude + centerLatitude,
         longitude: initializedLocation.longitude,
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
@@ -240,7 +245,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private changeInitializedLocation = (carousel: ObjectPoint) => {
-    const centerLatitude = -0.0006;
+    const centerLatitude = this.centerLatitude('minus');
     const latitude = carousel.latitude + centerLatitude;
     this.setState({
       initializedLocation: {
@@ -275,8 +280,9 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private changeCarousel = (currentCarousel: ObjectPoint) => {
-    const centerLatitude = -0.0006;
-    const latitude = currentCarousel.latitude + centerLatitude;
+    const centerLatitude = this.centerLatitude('minus');
+    const latitude = selectedCarousel.latitude + centerLatitude;
+
     this.setState({
       showModal: true,
       currentCarousel,
