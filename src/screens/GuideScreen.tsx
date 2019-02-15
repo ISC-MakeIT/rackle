@@ -84,14 +84,14 @@ export default class GuideScreen extends React.Component<Props, State> {
         <MapViewComponent
           indoorLevel={indoorLevel}
           initializedLocation={initializedLocation!}
-          movieMarkers={this.createMarkers(carouselFilteredByFloor, indoorLevel, 'movie')}
+          movieMarkers={this.createMarkers('movie')}
           toiletMarkers={this.createToiletMarkers(toilets, indoorLevel)}
-          elevatorMarkers={this.createMarkers(carouselFilteredByFloor, indoorLevel, 'elevator')}
+          elevatorMarkers={this.createMarkers('elevator')}
           guideLines={this.createGuideLineMarkers(guideLineMarkers, indoorLevel)}
           changeIndoorLevel={this.changeIndoorLevel}
           currentCarousel={this.state.selectedCarousel}
           changeCarousel={this.changeCarousel}
-          gate={this.createMarkers(carouselFilteredByFloor, indoorLevel, 'gate')}
+          gate={this.createMarkers('gate')}
           hideModal={this.hideModal}
           modalChange={this.state.showModal}
         />
@@ -269,9 +269,11 @@ export default class GuideScreen extends React.Component<Props, State> {
     });
   }
 
-  private createMarkers = (objectPoints: ObjectPoint[], indoorLevel: string, type: ObjectType) => {
+  private createMarkers = (type: ObjectType) => {
+    const objectPoints = this.carouselFilteredByIndoorLevel();
     if (objectPoints == undefined) return;
 
+    const indoorLevel = this.state.indoorLevel;
     const markerPoints = objectPoints.filter(objectPoint => objectPoint.type === type);
 
     if (this.state.selectedCarousel == undefined) {
