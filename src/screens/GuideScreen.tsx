@@ -15,6 +15,7 @@ import { ObjectPoint } from '../domains/object_point';
 import { LocationPoint } from '../domains/location_point';
 import { S3ThumbnailPath } from '../services/s3_manager';
 import { Ionicons } from '@expo/vector-icons';
+import * as _ from 'lodash';
 
 interface Props { navigation: any; }
 
@@ -105,13 +106,10 @@ export default class GuideScreen extends React.Component<Props, State> {
             lockScrollWhileSnapping={true}
             onSnapToItem={this.carouselOnSnapToItem}
             inactiveSlideShift={0.1}
-            firstItem={this.carouselFirstItem(carouselFilteredByFloor)}
+            firstItem={carouselFilteredByFloor.indexOf(this.state.selectedCarousel)}
           />
           <Pagination
-            activeDotIndex={
-              this.carouselFirstItem(carouselFilteredByFloor) ?
-                this.currentPaginationPoint(carouselFilteredByFloor) : 0
-            }
+            activeDotIndex={this.currentPaginationPoint(carouselFilteredByFloor)}
             dotsLength={carouselFilteredByFloor.length > 6 ? 6 : carouselFilteredByFloor.length}
             dotStyle={styles.paginationDotStyle}
           />
@@ -152,13 +150,13 @@ export default class GuideScreen extends React.Component<Props, State> {
     });
   }
 
-  private currentPaginationPoint = (currentCarousel: ObjectPoint[]) => {
-    const currentPoint = this.carouselFirstItem(currentCarousel);
+  private currentPaginationPoint = (carouselFilteredByFloor: ObjectPoint[]) => {
+    const selectedCarouselIndex = _.findIndex(
+      carouselFilteredByFloor,carousel => carousel === this.state.selectedCarousel
+    );
+    if (carouselFilteredByFloor.length <= 6) return selectedCarouselIndex;
 
-    if (currentPoint == undefined) return 0;
-    if (currentCarousel.length <= 6) return currentPoint;
-
-    return Math.round(((currentPoint + 1) / currentCarousel.length) * 6 - 1);
+    return Math.round(((selectedCarouselIndex + 1) / carouselFilteredByFloor.length) * 6 - 1);
   }
 
   private carouselRenderItem = ({item}: any)=> {
@@ -311,10 +309,6 @@ export default class GuideScreen extends React.Component<Props, State> {
         longitudeDelta: 0.1,
       },
     });
-  }
-
-  private carouselFirstItem = (currentCarousels: ObjectPoint[]) => {
-    return currentCarousels.indexOf(this.state.selectedCarousel);
   }
 
   private hideModal = () => {
