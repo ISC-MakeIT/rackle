@@ -22,7 +22,7 @@ type ObjectType = 'movie' | 'gate' | 'elevator';
 type PlusOrMinus = 'plus' | 'minus';
 
 interface State {
-  showModal: boolean;
+  showCarouselModalVisible: boolean;
   movieModalVisible: boolean;
   indoorLevel: string;
   initializedLocation: Region;
@@ -40,7 +40,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   };
 
   readonly state: State = {
-    showModal: false,
+    showCarouselModalVisible: false,
     movieModalVisible: false,
   };
 
@@ -93,9 +93,9 @@ export default class GuideScreen extends React.Component<Props, State> {
           changeCarousel={this.changeCarousel}
           gate={this.createMarkers('gate')}
           hideModal={this.hideModal}
-          modalChange={this.state.showModal}
+          modalChange={this.state.showCarouselModalVisible}
         />
-        <CarouselModal modalView={this.state.showModal}>
+        <CarouselModal modalView={this.state.showCarouselModalVisible}>
           <Carousel
             data={carouselFilteredByFloor}
             itemWidth={width * 0.8}
@@ -129,32 +129,7 @@ export default class GuideScreen extends React.Component<Props, State> {
             carouselMarker={this.state.selectedCarousel}
           />
         </Modal>
-        {
-          carouselFilteredByFloor.length !== 0 ? (
-            <View style={styles.showModalBottomAround}>
-              <TouchableOpacity
-                onPress={() => this.changeModal(initializedLocation)}
-                style={styles.showModalBottom}
-              >
-                {
-                  this.state.showModal ? (
-                    <View style={styles.closeModalBottomText}>
-                      <Text style={styles.closeText}>
-                        CLOSE
-                      </Text>
-                    </View>
-                  ) : (
-                    <View style={styles.openModalBottomText}>
-                      <Text style={styles.openText}>
-                        OPEN
-                      </Text>
-                    </View>
-                  )
-                }
-              </TouchableOpacity>
-            </View>
-          ) : null
-        }
+        {this.renderCarouselModalButton()}
       </View>
     );
   }
@@ -212,6 +187,36 @@ export default class GuideScreen extends React.Component<Props, State> {
     );
   }
 
+  private renderCarouselModalButton = () => {
+    const carousels = this.carouselFilteredByIndoorLevel();
+    if (carousels.length === 0) return;
+
+    return (
+      <View style={styles.showModalBottomAround}>
+        <TouchableOpacity
+          onPress={() => this.changeModal(this.state.initializedLocation)}
+          style={styles.showModalBottom}
+        >
+          {
+            this.state.showCarouselModalVisible ? (
+              <View style={styles.closeModalBottomText}>
+                <Text style={styles.closeText}>
+                  CLOSE
+                </Text>
+              </View>
+            ) : (
+                <View style={styles.openModalBottomText}>
+                  <Text style={styles.openText}>
+                    OPEN
+                </Text>
+                </View>
+              )
+          }
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   private centerLatitude = (type: PlusOrMinus) => {
     return type === 'plus' ? 0.0006 : -0.0006;
   }
@@ -228,9 +233,9 @@ export default class GuideScreen extends React.Component<Props, State> {
   private changeModal = (initializedLocation: Region) => {
     const centerLatitude = this.centerLatitude('minus');
     const selectedCarousel = this.state.selectedCarousel || this.state.objectPoints[0];
-    this.state.showModal ?
+    this.state.showCarouselModalVisible ?
     this.setState({
-      showModal: false,
+      showCarouselModalVisible: false,
       initializedLocation: {
         latitude: initializedLocation.latitude + centerLatitude,
         longitude: initializedLocation.longitude,
@@ -238,7 +243,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         longitudeDelta: 0.1,
       },
     }) : this.setState({
-      showModal: true,
+      showCarouselModalVisible: true,
       selectedCarousel,
       initializedLocation: {
         latitude: initializedLocation.latitude + centerLatitude,
@@ -303,7 +308,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     const latitude = selectedCarousel.latitude + centerLatitude;
 
     this.setState({
-      showModal: true,
+      showCarouselModalVisible: true,
       selectedCarousel,
       initializedLocation: {
         latitude: latitude,
@@ -322,7 +327,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     const centerLatitude = 0.0006;
     const initializedLocation = this.state.initializedLocation;
     this.setState({
-      showModal: false,
+      showCarouselModalVisible: false,
       initializedLocation: {
         latitude: initializedLocation.latitude  + centerLatitude,
         longitude: initializedLocation.longitude,
