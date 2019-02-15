@@ -223,27 +223,27 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private changeModal = (initializedLocation: Region) => {
-    const centerLatitude = this.centerLatitude('minus');
     const selectedCarousel = this.state.selectedCarousel || this.state.objectPoints[0];
+
     this.state.showCarouselModalVisible ?
-    this.setState({
-      showCarouselModalVisible: false,
-      initializedLocation: {
-        latitude: initializedLocation.latitude + centerLatitude,
-        longitude: initializedLocation.longitude,
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1,
-      },
-    }) : this.setState({
-      showCarouselModalVisible: true,
-      selectedCarousel,
-      initializedLocation: {
-        latitude: initializedLocation.latitude + centerLatitude,
-        longitude: initializedLocation.longitude,
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1,
-      },
-    });
+      this.setState({
+        showCarouselModalVisible: false,
+        initializedLocation: {
+          latitude: initializedLocation.latitude + this.centerLatitude('plus'),
+          longitude: initializedLocation.longitude,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
+        },
+      }) : this.setState({
+        showCarouselModalVisible: true,
+        selectedCarousel,
+        initializedLocation: {
+          latitude: initializedLocation.latitude + this.centerLatitude('minus'),
+          longitude: initializedLocation.longitude,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
+        },
+      });
   }
 
   private changeIndoorLevel = (nextIndoorLevel: string) => {
@@ -253,8 +253,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private changeInitializedLocation = (carousel: ObjectPoint) => {
-    const centerLatitude = this.centerLatitude('minus');
-    const latitude = carousel.latitude + centerLatitude;
+    const latitude = carousel.latitude + this.centerLatitude('minus');
     this.setState({
       initializedLocation: {
         latitude: latitude,
@@ -296,8 +295,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private changeCarousel = (selectedCarousel: ObjectPoint) => {
-    const centerLatitude = this.centerLatitude('minus');
-    const latitude = selectedCarousel.latitude + centerLatitude;
+    const latitude = selectedCarousel.latitude + this.centerLatitude('minus');
 
     this.setState({
       showCarouselModalVisible: true,
@@ -312,12 +310,11 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private hideModal = () => {
-    const centerLatitude = 0.0006;
     const initializedLocation = this.state.initializedLocation;
     this.setState({
       showCarouselModalVisible: false,
       initializedLocation: {
-        latitude: initializedLocation.latitude  + centerLatitude,
+        latitude: initializedLocation.latitude  + this.centerLatitude('plus'),
         longitude: initializedLocation.longitude,
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
