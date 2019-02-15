@@ -18,7 +18,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 interface Props { navigation: any; }
 
-type Type = 'movie' | 'gate' | 'elevator';
+type ObjectType = 'movie' | 'gate' | 'elevator';
 
 interface State {
   showModal: boolean;
@@ -253,7 +253,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     });
   }
 
-  private createMarkers = (objectPoints: ObjectPoint[], indoorLevel: string, type: Type) => {
+  private createMarkers = (objectPoints: ObjectPoint[], indoorLevel: string, type: ObjectType) => {
     if (objectPoints == undefined) return;
 
     const markerPoints = objectPoints.filter(objectPoint => objectPoint.type === type);
