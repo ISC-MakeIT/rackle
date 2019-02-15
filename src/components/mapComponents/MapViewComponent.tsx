@@ -34,7 +34,9 @@ export default class MapViewComponent extends React.Component<Props, State> {
 
   public shouldComponentUpdate(nextProps: Props, nextState: State) {
     // FIXME 個々の処理がカオスになってる
+    // tslint:disable-next-line:max-line-length
     const hasNextCarouselAndChanged = this.props.currentCarousel !== nextProps.currentCarousel && nextProps.currentCarousel != undefined;
+    // tslint:disable-next-line:max-line-length
     const indoorLevelCarouselChanged = nextProps.currentCarousel == undefined && this.props.currentCarousel !== nextProps.currentCarousel;
     const modalChanged = this.props.modalChange !== nextProps.modalChange;
     if (hasNextCarouselAndChanged || indoorLevelCarouselChanged || modalChanged) return true;
@@ -43,25 +45,53 @@ export default class MapViewComponent extends React.Component<Props, State> {
   }
 
   public componentWillReceiveProps (nextProps: Props, nextState: State) {
-    if (this.props.modalChange !== nextProps.modalChange) this.setState({initializedLocation: nextProps.initializedLocation});
-    if (this.props.currentCarousel !== nextProps.currentCarousel) this.setState({initializedLocation: nextProps.initializedLocation});
+    if (this.props.modalChange !== nextProps.modalChange) {
+      this.setState({initializedLocation: nextProps.initializedLocation});
+    }
+    if (this.props.currentCarousel !== nextProps.currentCarousel) {
+      this.setState({initializedLocation: nextProps.initializedLocation});
+    }
   }
 
   public render() {
     const movieMarkers = this.props.movieMarkers ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} movieMarkers={this.props.movieMarkers} changeCarousel={this.props.changeCarousel}/> : null;
+      <MarkerComponent
+        indoorLevel={this.props.indoorLevel}
+        movieMarkers={this.props.movieMarkers}
+        changeCarousel={this.props.changeCarousel}
+      /> : null;
     const toiletMarkers = this.props.toiletMarkers ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} toiletMarkers={this.props.toiletMarkers} changeCarousel={this.props.changeCarousel}/> : null;
+      <MarkerComponent
+        indoorLevel={this.props.indoorLevel}
+        toiletMarkers={this.props.toiletMarkers}
+        changeCarousel={this.props.changeCarousel}
+      /> : null;
     const elevatorMarkers = this.props.elevatorMarkers ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} elevatorMarkers={this.props.elevatorMarkers} changeCarousel={this.props.changeCarousel}/> : null;
+      <MarkerComponent
+        indoorLevel={this.props.indoorLevel}
+        elevatorMarkers={this.props.elevatorMarkers}
+        changeCarousel={this.props.changeCarousel}
+      /> : null;
     const mainColorPolyline = this.props.guideLines ?
       <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} /> : null;
     const subColorPolyline = this.props.guideLinesColor && this.props.guideLines ?
-      <PolylineComponent indoorLevel={this.props.indoorLevel} guideLines={this.props.guideLines} guideLinesColor={this.props.guideLinesColor} /> : null;
+      <PolylineComponent
+        indoorLevel={this.props.indoorLevel}
+        guideLines={this.props.guideLines}
+        guideLinesColor={this.props.guideLinesColor}
+      /> : null;
     const carouselMarkers = this.props.currentCarousel ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} carouselMarker={this.props.currentCarousel} changeCarousel={this.props.changeCarousel}/> : null;
+      <MarkerComponent
+        indoorLevel={this.props.indoorLevel}
+        carouselMarker={this.props.currentCarousel}
+        changeCarousel={this.props.changeCarousel}
+      /> : null;
     const gateMarkers = this.props.gate != undefined ?
-      <MarkerComponent indoorLevel={this.props.indoorLevel} gate={this.props.gate} changeCarousel={this.props.changeCarousel}/> : null;
+      <MarkerComponent
+        indoorLevel={this.props.indoorLevel}
+        gate={this.props.gate}
+        changeCarousel={this.props.changeCarousel}
+      /> : null;
 
     return (
       <MapView
