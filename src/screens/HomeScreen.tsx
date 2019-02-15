@@ -77,7 +77,7 @@ export default class HomeScreen extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
       <ScrollView style={styles.ScrollView}>
-      <ImageBackground source={homeImage} style={{width: '100%', height: '120%', backgroundSize: 'cover'}}>
+      <ImageBackground source={homeImage} style={{width: '100%', height: '130%', backgroundSize: 'cover'}}>
         <LinearGradient
           colors={['rgba(67, 195, 142, 1)', 'rgba(250, 250, 250, 0.7)', 'rgba(250, 250, 250, 1)']}
           style={gradationStyle.gradation}
