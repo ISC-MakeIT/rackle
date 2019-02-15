@@ -191,27 +191,21 @@ export default class GuideScreen extends React.Component<Props, State> {
     const carousels = this.carouselFilteredByIndoorLevel();
     if (carousels.length === 0) return;
 
+    const carouselModalVisible = this.state.showCarouselModalVisible;
+    const containerStyle = carouselModalVisible ? styles.closeModalButtonContainer : styles.openModalButtonContainer;
+    const textStyle = carouselModalVisible ? styles.closeText : styles.openText;
+
     return (
       <View style={styles.showModalBottomAround}>
         <TouchableOpacity
           onPress={() => this.changeModal(this.state.initializedLocation)}
           style={styles.showModalBottom}
         >
-          {
-            this.state.showCarouselModalVisible ? (
-              <View style={styles.closeModalBottomText}>
-                <Text style={styles.closeText}>
-                  CLOSE
-                </Text>
-              </View>
-            ) : (
-                <View style={styles.openModalBottomText}>
-                  <Text style={styles.openText}>
-                    OPEN
-                </Text>
-                </View>
-              )
-          }
+          <View style={containerStyle}>
+            <Text style={textStyle}>
+              {carouselModalVisible ? 'CLOSE' : 'OPEN'}
+            </Text>
+          </View>
         </TouchableOpacity>
       </View>
     );
@@ -389,7 +383,7 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
   },
-  openModalBottomText: {
+  openModalButtonContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.subColorRed,
@@ -410,7 +404,7 @@ const styles = EStyleSheet.create({
     fontSize: 20,
     letterSpacing: '0.05rem',
   },
-  closeModalBottomText: {
+  closeModalButtonContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.black,
