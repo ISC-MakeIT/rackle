@@ -29,7 +29,7 @@ interface State {
   objectPoint: ObjectPoint[] | undefined;
   toilets: ToiletMarker[] | undefined;
   guidelines: Partial<ObjectPoint>[];
-  currentCarousel: Carousel;
+  selectedCarousel: Carousel;
   objectPoints: ObjectPoint[];
   guideLineMarkers: LocationPoint[];
 }
@@ -59,7 +59,7 @@ export default class GuideScreen extends React.Component<Props, State> {
       guideLineMarkers: this.indoorChanges(mapData.guidelines.location_points),
       toilets: this.indoorChanges(mapData.toilets),
       objectPoints,
-      currentCarousel: objectPoints[0],
+      selectedCarousel: initialSelectedCarousel,
     });
   }
 
@@ -215,8 +215,8 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private changeModal = (initializedLocation: Region) => {
-    const currentCarousel = this.state.currentCarousel == undefined ? this.state.objectPoints[0] : this.state.currentCarousel;
     const centerLatitude = this.centerLatitude('minus');
+    const selectedCarousel = this.state.selectedCarousel || this.state.objectPoints[0];
     this.state.showModal ?
     this.setState({
       showModal: false,
@@ -228,7 +228,7 @@ export default class GuideScreen extends React.Component<Props, State> {
       },
     }) : this.setState({
       showModal: true,
-      currentCarousel,
+      selectedCarousel,
       initializedLocation: {
         latitude: initializedLocation.latitude + centerLatitude,
         longitude: initializedLocation.longitude,
@@ -254,7 +254,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
       },
-      currentCarousel: carousel,
+      selectedCarousel: carousel,
     });
   }
 
@@ -262,8 +262,14 @@ export default class GuideScreen extends React.Component<Props, State> {
     if (objectPoints == undefined) return;
 
     const markerPoints = objectPoints.filter(objectPoint => objectPoint.type === type);
-    if (this.state.currentCarousel == undefined) return markerPoints.filter(markerPoint => markerPoint.floor === indoorLevel);
-    if (this.state.currentCarousel.type === type) return markerPoints.filter(markerPoint => markerPoint !== this.state.currentCarousel);
+
+    if (this.state.selectedCarousel == undefined) {
+      return markerPoints.filter(markerPoint => markerPoint.floor === indoorLevel);
+    }
+
+    if (this.state.selectedCarousel.type === type) {
+      return markerPoints.filter(markerPoint => markerPoint !== this.state.selectedCarousel);
+    }
     return markerPoints;
   }
 
@@ -279,16 +285,16 @@ export default class GuideScreen extends React.Component<Props, State> {
     return toiletMarkers.filter(toiletMarker => toiletMarker.floor === indoorLevel);
   }
 
-  private changeCarousel = (currentCarousel: ObjectPoint) => {
+  private changeCarousel = (selectedCarousel: ObjectPoint) => {
     const centerLatitude = this.centerLatitude('minus');
     const latitude = selectedCarousel.latitude + centerLatitude;
 
     this.setState({
       showModal: true,
-      currentCarousel,
+      selectedCarousel,
       initializedLocation: {
         latitude: latitude,
-        longitude: currentCarousel.longitude,
+        longitude: selectedCarousel.longitude,
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
       },
@@ -296,8 +302,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private carouselFirstItem = (currentCarousels: ObjectPoint[]) => {
-    const currentCarousel = this.state.currentCarousel;
-    return currentCarousels.indexOf(currentCarousel);
+    return currentCarousels.indexOf(this.state.selectedCarousel);
   }
 
   private hideModal = () => {
