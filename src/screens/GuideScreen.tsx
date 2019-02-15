@@ -47,6 +47,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   async componentDidMount () {
     const mapData = await getGuidelines(6, 11);
     const objectPoints = this.indoorChanges(mapData.object_points);
+    const initialSelectedCarousel = objectPoints[0];
 
     this.setState({
       indoorLevel: '1',
@@ -71,12 +72,11 @@ export default class GuideScreen extends React.Component<Props, State> {
       initializedLocation,
       toilets,
       guideLineMarkers,
-      objectPoints,
     } = this.state;
 
     const {height, width} = Dimensions.get('screen');
 
-    const currentCarousel: ObjectPoint[] = objectPoints.filter((objectPoint: ObjectPoint) => objectPoint.floor === indoorLevel);
+    const carouselFilteredByFloor = this.carouselFilteredByIndoorLevel();
 
     return (
       <View style={styles.content_wrap}>
@@ -84,20 +84,20 @@ export default class GuideScreen extends React.Component<Props, State> {
         <MapViewComponent
           indoorLevel={indoorLevel}
           initializedLocation={initializedLocation!}
-          movieMarkers={this.createMarkers(currentCarousel, indoorLevel, 'movie')}
+          movieMarkers={this.createMarkers(carouselFilteredByFloor, indoorLevel, 'movie')}
           toiletMarkers={this.createToiletMarkers(toilets, indoorLevel)}
-          elevatorMarkers={this.createMarkers(currentCarousel, indoorLevel, 'elevator')}
+          elevatorMarkers={this.createMarkers(carouselFilteredByFloor, indoorLevel, 'elevator')}
           guideLines={this.createGuideLineMarkers(guideLineMarkers, indoorLevel)}
           changeIndoorLevel={this.changeIndoorLevel}
-          currentCarousel={this.state.currentCarousel}
+          currentCarousel={this.state.selectedCarousel}
           changeCarousel={this.changeCarousel}
-          gate={this.createMarkers(currentCarousel, indoorLevel, 'gate')}
+          gate={this.createMarkers(carouselFilteredByFloor, indoorLevel, 'gate')}
           hideModal={this.hideModal}
           modalChange={this.state.showModal}
         />
         <CarouselModal modalView={this.state.showModal}>
           <Carousel
-            data={currentCarousel}
+            data={carouselFilteredByFloor}
             itemWidth={width * 0.8}
             sliderWidth={width}
             sliderHeight={height}
@@ -105,11 +105,14 @@ export default class GuideScreen extends React.Component<Props, State> {
             lockScrollWhileSnapping={true}
             onSnapToItem={this.carouselOnSnapToItem}
             inactiveSlideShift={0.1}
-            firstItem={this.carouselFirstItem(currentCarousel)}
+            firstItem={this.carouselFirstItem(carouselFilteredByFloor)}
           />
           <Pagination
-            activeDotIndex={this.carouselFirstItem(currentCarousel) ? this.currentPaginationPoint(currentCarousel) : 0}
-            dotsLength={currentCarousel.length > 6 ? 6 : currentCarousel.length}
+            activeDotIndex={
+              this.carouselFirstItem(carouselFilteredByFloor) ?
+                this.currentPaginationPoint(carouselFilteredByFloor) : 0
+            }
+            dotsLength={carouselFilteredByFloor.length > 6 ? 6 : carouselFilteredByFloor.length}
             dotStyle={styles.paginationDotStyle}
           />
         </CarouselModal>
@@ -121,12 +124,18 @@ export default class GuideScreen extends React.Component<Props, State> {
           deviceHeight={height}
           deviceWidth={width}
         >
-          <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} carouselMarker={this.state.currentCarousel} />
+          <MovieNavigateComponent
+            setMovieModalVisible={this.closeMovieModal}
+            carouselMarker={this.state.selectedCarousel}
+          />
         </Modal>
         {
-          currentCarousel.length !== 0 ? (
+          carouselFilteredByFloor.length !== 0 ? (
             <View style={styles.showModalBottomAround}>
-              <TouchableOpacity onPress={this.changeModal.bind(this, initializedLocation)} style={styles.showModalBottom} >
+              <TouchableOpacity
+                onPress={() => this.changeModal(initializedLocation)}
+                style={styles.showModalBottom}
+              >
                 {
                   this.state.showModal ? (
                     <View style={styles.closeModalBottomText}>
@@ -208,10 +217,12 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private carouselOnSnapToItem = (index: number) => {
-    if (this.state.objectPoints == undefined) return;
+    if (this.state.objectPoints == undefined) return ;
+    return this.changeInitializedLocation(this.carouselFilteredByIndoorLevel()[index]);
+  }
 
-    const currentCarousel = this.state.objectPoints.filter(objectPoint => objectPoint.floor === this.state.indoorLevel);
-    return this.changeInitializedLocation(currentCarousel[index]);
+  private carouselFilteredByIndoorLevel = () => {
+    return this.state.objectPoints.filter(point => point.floor === this.state.indoorLevel);
   }
 
   private changeModal = (initializedLocation: Region) => {
