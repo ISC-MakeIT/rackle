@@ -15,6 +15,7 @@ import { ObjectPoint } from '../domains/object_point';
 import { LocationPoint } from '../domains/location_point';
 import { S3ThumbnailPath } from '../services/s3_manager';
 import { Ionicons } from '@expo/vector-icons';
+import { AnnounceModal } from '../components/AnnounceModal';
 import * as _ from 'lodash';
 
 interface Props { navigation: any; }
@@ -24,6 +25,7 @@ type PlusOrMinus = 'plus' | 'minus';
 
 interface State {
   showCarouselModalVisible: boolean;
+  showAnnounceModalVisible: boolean;
   movieModalVisible: boolean;
   indoorLevel: string;
   initializedLocation: Region;
@@ -42,6 +44,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   readonly state: State = {
     showCarouselModalVisible: false,
+    showAnnounceModalVisible: false,
     movieModalVisible: false,
   };
 
@@ -81,6 +84,7 @@ export default class GuideScreen extends React.Component<Props, State> {
 
     return (
       <View style={styles.content_wrap}>
+        {this.state.showAnnounceModalVisible && <AnnounceModal text='hogehoge' />}
         <Ionicons name='md-arrow-back' size={45} style={styles.backBtn} onPress={this.goBack}/>
         <MapViewComponent
           indoorLevel={indoorLevel}
