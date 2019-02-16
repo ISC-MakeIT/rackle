@@ -15,20 +15,22 @@ import { ObjectPoint } from '../domains/object_point';
 import { LocationPoint } from '../domains/location_point';
 import { S3ThumbnailPath } from '../services/s3_manager';
 import { Ionicons } from '@expo/vector-icons';
+import * as _ from 'lodash';
 
 interface Props { navigation: any; }
 
-type Type = 'movie' | 'gate' | 'elevator';
+type ObjectType = 'movie' | 'gate' | 'elevator';
+type PlusOrMinus = 'plus' | 'minus';
 
 interface State {
-  showModal: boolean;
+  showCarouselModalVisible: boolean;
   movieModalVisible: boolean;
   indoorLevel: string;
   initializedLocation: Region;
   objectPoint: ObjectPoint[] | undefined;
   toilets: ToiletMarker[] | undefined;
   guidelines: Partial<ObjectPoint>[];
-  currentCarousel: Carousel;
+  selectedCarousel: Carousel;
   objectPoints: ObjectPoint[];
   guideLineMarkers: LocationPoint[];
 }
@@ -39,13 +41,14 @@ export default class GuideScreen extends React.Component<Props, State> {
   };
 
   readonly state: State = {
-    showModal: false,
+    showCarouselModalVisible: false,
     movieModalVisible: false,
   };
 
   async componentDidMount () {
     const mapData = await getGuidelines(6, 11);
     const objectPoints = this.indoorChanges(mapData.object_points);
+    const initialSelectedCarousel = objectPoints[0];
 
     this.setState({
       indoorLevel: '1',
@@ -58,7 +61,7 @@ export default class GuideScreen extends React.Component<Props, State> {
       guideLineMarkers: this.indoorChanges(mapData.guidelines.location_points),
       toilets: this.indoorChanges(mapData.toilets),
       objectPoints,
-      currentCarousel: objectPoints[0],
+      selectedCarousel: initialSelectedCarousel,
     });
   }
 
@@ -70,12 +73,11 @@ export default class GuideScreen extends React.Component<Props, State> {
       initializedLocation,
       toilets,
       guideLineMarkers,
-      objectPoints,
     } = this.state;
 
     const {height, width} = Dimensions.get('screen');
 
-    const currentCarousel: ObjectPoint[] = objectPoints.filter((objectPoint: ObjectPoint) => objectPoint.floor === indoorLevel);
+    const carouselFilteredByFloor = this.carouselFilteredByIndoorLevel();
 
     return (
       <View style={styles.content_wrap}>
@@ -83,20 +85,20 @@ export default class GuideScreen extends React.Component<Props, State> {
         <MapViewComponent
           indoorLevel={indoorLevel}
           initializedLocation={initializedLocation!}
-          movieMarkers={this.createMarkers(currentCarousel, indoorLevel, 'movie')}
+          movieMarkers={this.createMarkers('movie')}
           toiletMarkers={this.createToiletMarkers(toilets, indoorLevel)}
-          elevatorMarkers={this.createMarkers(currentCarousel, indoorLevel, 'elevator')}
+          elevatorMarkers={this.createMarkers('elevator')}
           guideLines={this.createGuideLineMarkers(guideLineMarkers, indoorLevel)}
           changeIndoorLevel={this.changeIndoorLevel}
-          currentCarousel={this.state.currentCarousel}
+          currentCarousel={this.state.selectedCarousel}
           changeCarousel={this.changeCarousel}
-          gate={this.createMarkers(currentCarousel, indoorLevel, 'gate')}
+          gate={this.createMarkers('gate')}
           hideModal={this.hideModal}
-          modalChange={this.state.showModal}
+          modalChange={this.state.showCarouselModalVisible}
         />
-        <CarouselModal modalView={this.state.showModal}>
+        <CarouselModal modalView={this.state.showCarouselModalVisible}>
           <Carousel
-            data={currentCarousel}
+            data={carouselFilteredByFloor}
             itemWidth={width * 0.8}
             sliderWidth={width}
             sliderHeight={height}
@@ -104,11 +106,11 @@ export default class GuideScreen extends React.Component<Props, State> {
             lockScrollWhileSnapping={true}
             onSnapToItem={this.carouselOnSnapToItem}
             inactiveSlideShift={0.1}
-            firstItem={this.carouselFirstItem(currentCarousel)}
+            firstItem={carouselFilteredByFloor.indexOf(this.state.selectedCarousel)}
           />
           <Pagination
-            activeDotIndex={this.carouselFirstItem(currentCarousel) ? this.currentPaginationPoint(currentCarousel) : 0}
-            dotsLength={currentCarousel.length > 6 ? 6 : currentCarousel.length}
+            activeDotIndex={this.currentPaginationPoint(carouselFilteredByFloor)}
+            dotsLength={carouselFilteredByFloor.length > 6 ? 6 : carouselFilteredByFloor.length}
             dotStyle={styles.paginationDotStyle}
           />
         </CarouselModal>
@@ -120,31 +122,12 @@ export default class GuideScreen extends React.Component<Props, State> {
           deviceHeight={height}
           deviceWidth={width}
         >
-          <MovieNavigateComponent setMovieModalVisible={this.closeMovieModal} carouselMarker={this.state.currentCarousel} />
+          <MovieNavigateComponent
+            setMovieModalVisible={this.closeMovieModal}
+            carouselMarker={this.state.selectedCarousel}
+          />
         </Modal>
-        {
-          currentCarousel.length !== 0 ? (
-            <View style={styles.showModalBottomAround}>
-              <TouchableOpacity onPress={this.changeModal.bind(this, initializedLocation)} style={styles.showModalBottom} >
-                {
-                  this.state.showModal ? (
-                    <View style={styles.closeModalBottomText}>
-                      <Text style={styles.closeText}>
-                        CLOSE
-                      </Text>
-                    </View>
-                  ) : (
-                    <View style={styles.openModalBottomText}>
-                      <Text style={styles.openText}>
-                        OPEN
-                      </Text>
-                    </View>
-                  )
-                }
-              </TouchableOpacity>
-            </View>
-          ) : null
-        }
+        {this.renderCarouselModalButton()}
       </View>
     );
   }
@@ -167,13 +150,13 @@ export default class GuideScreen extends React.Component<Props, State> {
     });
   }
 
-  private currentPaginationPoint = (currentCarousel: ObjectPoint[]) => {
-    const currentPoint = this.carouselFirstItem(currentCarousel);
+  private currentPaginationPoint = (carouselFilteredByFloor: ObjectPoint[]) => {
+    const selectedCarouselIndex = _.findIndex(
+      carouselFilteredByFloor,carousel => carousel === this.state.selectedCarousel
+    );
+    if (carouselFilteredByFloor.length <= 6) return selectedCarouselIndex;
 
-    if (currentPoint == undefined) return 0;
-    if (currentCarousel.length <= 6) return currentPoint;
-
-    return Math.round(((currentPoint + 1) / currentCarousel.length) * 6 - 1);
+    return Math.round(((selectedCarouselIndex + 1) / carouselFilteredByFloor.length) * 6 - 1);
   }
 
   private carouselRenderItem = ({item}: any)=> {
@@ -208,35 +191,65 @@ export default class GuideScreen extends React.Component<Props, State> {
     );
   }
 
-  private carouselOnSnapToItem = (index: number) => {
-    if (this.state.objectPoints == undefined) return;
+  private renderCarouselModalButton = () => {
+    const carousels = this.carouselFilteredByIndoorLevel();
+    if (carousels.length === 0) return;
 
-    const currentCarousel = this.state.objectPoints.filter(objectPoint => objectPoint.floor === this.state.indoorLevel);
-    return this.changeInitializedLocation(currentCarousel[index]);
+    const carouselModalVisible = this.state.showCarouselModalVisible;
+    const containerStyle = carouselModalVisible ? styles.closeModalButtonContainer : styles.openModalButtonContainer;
+    const textStyle = carouselModalVisible ? styles.closeText : styles.openText;
+
+    return (
+      <View style={styles.showModalBottomAround}>
+        <TouchableOpacity
+          onPress={() => this.changeModal(this.state.initializedLocation)}
+          style={styles.showModalBottom}
+        >
+          <View style={containerStyle}>
+            <Text style={textStyle}>
+              {carouselModalVisible ? 'CLOSE' : 'OPEN'}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  private centerLatitude = (type: PlusOrMinus) => {
+    return type === 'plus' ? 0.0006 : -0.0006;
+  }
+
+  private carouselOnSnapToItem = (index: number) => {
+    if (this.state.objectPoints == undefined) return ;
+    return this.changeInitializedLocation(this.carouselFilteredByIndoorLevel()[index]);
+  }
+
+  private carouselFilteredByIndoorLevel = () => {
+    return this.state.objectPoints.filter(point => point.floor === this.state.indoorLevel);
   }
 
   private changeModal = (initializedLocation: Region) => {
-    const centerLatitude = -0.0006;
-    const currentCarousel = this.state.currentCarousel == undefined ? this.state.objectPoints[0] : this.state.currentCarousel;
-    this.state.showModal ?
-    this.setState({
-      showModal: false,
-      initializedLocation: {
-        latitude: initializedLocation.latitude - centerLatitude,
-        longitude: initializedLocation.longitude,
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1,
-      },
-    }) : this.setState({
-      showModal: true,
-      currentCarousel,
-      initializedLocation: {
-        latitude: initializedLocation.latitude + centerLatitude,
-        longitude: initializedLocation.longitude,
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1,
-      },
-    });
+    const selectedCarousel = this.state.selectedCarousel || this.state.objectPoints[0];
+
+    this.state.showCarouselModalVisible ?
+      this.setState({
+        showCarouselModalVisible: false,
+        initializedLocation: {
+          latitude: initializedLocation.latitude + this.centerLatitude('plus'),
+          longitude: initializedLocation.longitude,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
+        },
+      }) : this.setState({
+        showCarouselModalVisible: true,
+        selectedCarousel,
+        initializedLocation: {
+          latitude: initializedLocation.latitude + this.centerLatitude('minus'),
+          longitude: initializedLocation.longitude,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
+        },
+      });
   }
 
   private changeIndoorLevel = (nextIndoorLevel: string) => {
@@ -246,8 +259,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   private changeInitializedLocation = (carousel: ObjectPoint) => {
-    const centerLatitude = -0.0006;
-    const latitude = carousel.latitude + centerLatitude;
+    const latitude = carousel.latitude + this.centerLatitude('minus');
     this.setState({
       initializedLocation: {
         latitude: latitude,
@@ -255,16 +267,24 @@ export default class GuideScreen extends React.Component<Props, State> {
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
       },
-      currentCarousel: carousel,
+      selectedCarousel: carousel,
     });
   }
 
-  private createMarkers = (objectPoints: ObjectPoint[], indoorLevel: string, type: Type) => {
+  private createMarkers = (type: ObjectType) => {
+    const objectPoints = this.carouselFilteredByIndoorLevel();
     if (objectPoints == undefined) return;
 
+    const indoorLevel = this.state.indoorLevel;
     const markerPoints = objectPoints.filter(objectPoint => objectPoint.type === type);
-    if (this.state.currentCarousel == undefined) return markerPoints.filter(markerPoint => markerPoint.floor === indoorLevel);
-    if (this.state.currentCarousel.type === type) return markerPoints.filter(markerPoint => markerPoint !== this.state.currentCarousel);
+
+    if (this.state.selectedCarousel == undefined) {
+      return markerPoints.filter(markerPoint => markerPoint.floor === indoorLevel);
+    }
+
+    if (this.state.selectedCarousel.type === type) {
+      return markerPoints.filter(markerPoint => markerPoint !== this.state.selectedCarousel);
+    }
     return markerPoints;
   }
 
@@ -280,29 +300,31 @@ export default class GuideScreen extends React.Component<Props, State> {
     return toiletMarkers.filter(toiletMarker => toiletMarker.floor === indoorLevel);
   }
 
-  private changeCarousel = (currentCarousel: ObjectPoint) => {
-    const centerLatitude = -0.0006;
-    const latitude = currentCarousel.latitude + centerLatitude;
+  private changeCarousel = (selectedCarousel: ObjectPoint) => {
+    const latitude = selectedCarousel.latitude + this.centerLatitude('minus');
+
     this.setState({
-      showModal: true,
-      currentCarousel,
+      showCarouselModalVisible: true,
+      selectedCarousel,
       initializedLocation: {
         latitude: latitude,
-        longitude: currentCarousel.longitude,
+        longitude: selectedCarousel.longitude,
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
       },
     });
   }
 
-  private carouselFirstItem = (currentCarousels: ObjectPoint[]) => {
-    const currentCarousel = this.state.currentCarousel;
-    return currentCarousels.indexOf(currentCarousel);
-  }
-
   private hideModal = () => {
+    const initializedLocation = this.state.initializedLocation;
     this.setState({
-      showModal: false,
+      showCarouselModalVisible: false,
+      initializedLocation: {
+        latitude: initializedLocation.latitude  + this.centerLatitude('plus'),
+        longitude: initializedLocation.longitude,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
+      },
     });
   }
 }
@@ -358,7 +380,7 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
   },
-  openModalBottomText: {
+  openModalButtonContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.subColorRed,
@@ -379,7 +401,7 @@ const styles = EStyleSheet.create({
     fontSize: 20,
     letterSpacing: '0.05rem',
   },
-  closeModalBottomText: {
+  closeModalButtonContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.black,

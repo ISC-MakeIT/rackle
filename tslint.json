@@ -11,7 +11,7 @@
     "linterOptions": {
       "exclude": [ "node_modules/**/*.ts" ]
     },
-    "max-line-length": [true, 220],
+    "max-line-length": [true, 120],
     "no-empty-interface": false,
     "no-console": {
         "severity": "warning",
