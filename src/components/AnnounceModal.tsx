@@ -5,14 +5,16 @@ import { Entypo } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 
 interface Props {
-  announceText: string;
+  announceText: string | null;
 }
 
 export const AnnounceModal: React.FC<Props> = props => {
+  if (props.announceText == null) { return null; }
+
   return (
     <View style={styles.backGround}>
       <View style={styles.container}>
-        <Text>{props.announceText}</Text>
+        <Text style={styles.announceText}>{props.announceText}</Text>
         <Entypo name='triangle-down' style={styles.triangle}/>
       </View>
     </View>
@@ -52,5 +54,7 @@ const styles = StyleSheet.create({
   },
   announceText: {
     color: Colors.black,
+    textAlign: 'center',
+    lineHeight: 50,
   },
 });

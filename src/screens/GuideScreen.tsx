@@ -44,14 +44,14 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   readonly state: State = {
     showCarouselModalVisible: false,
-    showAnnounceModalVisible: false,
+    showAnnounceModalVisible: true,
     movieModalVisible: false,
   };
 
   async componentDidMount () {
     const mapData = await getGuidelines(6, 11);
     const objectPoints = this.indoorChanges(mapData.object_points);
-    const initialSelectedCarousel = objectPoints[0];
+    const initialSelectedCarousel: ObjectPoint = objectPoints[0];
 
     this.setState({
       indoorLevel: '1',
@@ -65,6 +65,7 @@ export default class GuideScreen extends React.Component<Props, State> {
       toilets: this.indoorChanges(mapData.toilets),
       objectPoints,
       selectedCarousel: initialSelectedCarousel,
+      showAnnounceModalVisible: initialSelectedCarousel.floor !== '1',
     });
   }
 
@@ -76,15 +77,20 @@ export default class GuideScreen extends React.Component<Props, State> {
       initializedLocation,
       toilets,
       guideLineMarkers,
+      showAnnounceModalVisible,
     } = this.state;
 
     const {height, width} = Dimensions.get('screen');
 
     const carouselFilteredByFloor = this.carouselFilteredByIndoorLevel();
 
+    if (showAnnounceModalVisible) {
+      this.hideAnnounceModal();
+    }
+
     return (
       <View style={styles.content_wrap}>
-        {this.state.showAnnounceModalVisible && <AnnounceModal text='hogehoge' />}
+        {this.state.showAnnounceModalVisible && <AnnounceModal announceText={this.announceMessage()} />}
         <Ionicons name='md-arrow-back' size={45} style={styles.backBtn} onPress={this.goBack}/>
         <MapViewComponent
           indoorLevel={indoorLevel}
@@ -328,6 +334,23 @@ export default class GuideScreen extends React.Component<Props, State> {
         longitudeDelta: 0.1,
       },
     });
+  }
+
+  private announceMessage = () => {
+    const carouselFilteredByFloor = this.carouselFilteredByIndoorLevel();
+
+    const suffix = 'へ移動してください';
+    if (carouselFilteredByFloor.length === 0) {
+      const nextFloor = this.state.objectPoints[0].floor;
+      return nextFloor + suffix;
+    }
+    return null;
+  }
+
+  hideAnnounceModal = () => {
+    setTimeout(() => {
+      this.setState({showAnnounceModalVisible: false});
+    }, 4000);
   }
 }
 
