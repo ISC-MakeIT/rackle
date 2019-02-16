@@ -172,15 +172,19 @@ export default class GuideScreen extends React.Component<Props, State> {
           <Text style={styles.carouselText}>{index + 1}</Text>
         </View>
         {
-          item.type === 'movie' || item.type === 'gate' ? (
-            <View style={styles.carouselMovieBottom}>
-              <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
-                <Image source={movieIcon} style={styles.movieIcon} />
-                {/* <Text style={styles.carouselMovieBottomText}>再生</Text> */}
-              </TouchableOpacity>
-            </View>
-          ) : null
+          item.type === 'elevator' ?
+            <View style={styles.carouselElevatorLabel}>
+              <Text style={styles.carouselElevatorLabelText}>{item.caption}</Text>
+            </View> : null
         }
+        <View style={styles.carouselMovieBottom}>
+          <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
+            <View style={styles.carouselMovieBottomTextAround}>
+              <Image source={movieIcon} style={styles.movieIcon} />
+              <Text style={styles.carouselMovieBottomText}>再生</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -443,7 +447,7 @@ const styles = EStyleSheet.create({
     position: 'absolute',
     width: width * 0.12,
     height: width * 0.12,
-    top: 0,
+    bottom: 0,
     left: 0,
     alignItems: 'center',
     justifyContent: 'center',
@@ -457,9 +461,9 @@ const styles = EStyleSheet.create({
   },
   carouselMovieBottom: {
     position: 'absolute',
-    bottom: 5,
-    right: 5,
-    // backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    top: -10,
+    right: -10,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
     borderRadius: 50,
     zIndex: 100,
   },
@@ -475,8 +479,25 @@ const styles = EStyleSheet.create({
     color: Colors.white,
     fontWeight: '700',
   },
+  carouselMovieBottomTextAround: {
+    alignItems: 'center',
+    height: width * 0.13,
+  },
   movieIcon: {
     width: width * 0.085,
     height: width * 0.085,
+  },
+  carouselElevatorLabel: {
+    position: 'absolute',
+    bottom: 0,
+    left: width * 0.15,
+    height: width * 0.12,
+    justifyContent: 'center',
+  },
+  carouselElevatorLabelText: {
+    fontSize: '1rem',
+    fontWeight: '700',
+    fontFamily: 'MPLUS1p-Medium',
+    color: Colors.white,
   },
 });
