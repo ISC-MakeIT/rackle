@@ -603,13 +603,15 @@
     react-native-safe-area-view "^0.11.0"
     react-native-screens "^1.0.0 || ^1.0.0-alpha"
 
-"@types/expo@31.0.0":
-  version "31.0.0"
-  resolved "https://registry.yarnpkg.com/@types/expo/-/expo-31.0.0.tgz#42883ad84bac86a6724c70c90d1eea87522d7a00"
+"@types/expo@32.0.0":
+  version "32.0.0"
+  resolved "https://registry.yarnpkg.com/@types/expo/-/expo-32.0.0.tgz#88ecb4bc2417febd5b26647e766781e180b09e34"
+  integrity sha512-hTHZ/Da/VBjYAvfFw8xfnuO2RFS6vgcLOew/zoM+lGDqszgXSbByS3rFeGJ1sCeGp0rl75bYN6U7CglJfZPINA==
   dependencies:
     "@types/fbemitter" "*"
     "@types/react" "*"
     "@types/react-native" "*"
+    react-native-maps "*"
 
 "@types/expo__vector-icons@6.2.3":
   version "6.2.3"
@@ -5093,7 +5095,12 @@ react-native-icons@^0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/react-native-icons/-/react-native-icons-0.7.1.tgz#a05c6c87bff7bfd883903bb9b7156f5ba568f977"
 
-"react-native-maps@github:expo/react-native-maps#v0.22.1-exp.0":
+react-native-maps@*:
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.23.0.tgz#edbfdcad0e42190627eb1c8067eaba5965c8f81e"
+  integrity sha512-qxOIQGsDtQXQlSJdXMW1wg8pvLaVYdbiIolB7tZTTgTGgIA/hDxXwZbQZ08c4KDD6/VTk8krfd1APaHkqvh6og==
+
+react-native-maps@expo/react-native-maps#v0.22.1-exp.0:
   version "0.22.1"
   resolved "https://codeload.github.com/expo/react-native-maps/tar.gz/e6f98ff7272e5d0a7fe974a41f28593af2d77bb2"
 
