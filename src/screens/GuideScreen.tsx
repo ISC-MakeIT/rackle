@@ -173,20 +173,18 @@ export default class GuideScreen extends React.Component<Props, State> {
         </View>
         {
           item.type === 'elevator' ?
-          <View style={styles.carouselElevatorLabel}>
-            <Text style={styles.carouselElevatorLabelText}>{item.caption}</Text>
-          </View> : null
+            <View style={styles.carouselElevatorLabel}>
+              <Text style={styles.carouselElevatorLabelText}>{item.caption}</Text>
+            </View> : null
         }
-        {
-          <View style={styles.carouselMovieBottom}>
-            <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
-              <View style={styles.carouselMovieBottomTextAround}>
-                <Image source={movieIcon} style={styles.movieIcon} />
-                <Text style={styles.carouselMovieBottomText}>再生</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        }
+        <View style={styles.carouselMovieBottom}>
+          <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
+            <View style={styles.carouselMovieBottomTextAround}>
+              <Image source={movieIcon} style={styles.movieIcon} />
+              <Text style={styles.carouselMovieBottomText}>再生</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
