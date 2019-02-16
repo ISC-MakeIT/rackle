@@ -1,7 +1,8 @@
 import {AppLoading, Asset, Font, Icon} from 'expo';
 import * as React from 'react';
-import {Platform, StatusBar, StyleSheet, View} from 'react-native';
+import {Platform, StatusBar, StyleSheet, View, AsyncStorage} from 'react-native';
 import AppNavigator from './navigation/AppNavigator';
+import AsyncStorageKey from './constants/AsyncStorageKey';
 
 interface Props {
   skipLoadingScreen: boolean;
@@ -71,7 +72,8 @@ export default class App extends React.Component <Props, State> {
     console.warn(error);
   }
 
-  private handleFinishLoading = () => {
+  private handleFinishLoading = async () => {
+    await AsyncStorage.setItem(AsyncStorageKey.mapInitialized, 'false');
     this.setState({isLoadingComplete: true});
   }
 }

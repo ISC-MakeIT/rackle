@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Image, AsyncStorage } from 'react-native';
 import Modal from 'react-native-modal';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Region, ToiletMarker } from 'src/domains/map';
@@ -17,8 +17,9 @@ import { S3ThumbnailPath } from '../services/s3_manager';
 import { Ionicons } from '@expo/vector-icons';
 import { AnnounceModal } from '../components/AnnounceModal';
 import * as _ from 'lodash';
+import AsyncStorageKey from '../constants/AsyncStorageKey';
 
-interface Props { navigation: any; }
+interface Props { navigation: any;}
 
 type ObjectType = 'movie' | 'gate' | 'elevator';
 type PlusOrMinus = 'plus' | 'minus';
@@ -35,6 +36,7 @@ interface State {
   selectedCarousel: Carousel;
   objectPoints: ObjectPoint[];
   guideLineMarkers: LocationPoint[];
+  mapInitialized: boolean;
 }
 
 export default class GuideScreen extends React.Component<Props, State> {
@@ -46,12 +48,18 @@ export default class GuideScreen extends React.Component<Props, State> {
     showCarouselModalVisible: false,
     showAnnounceModalVisible: true,
     movieModalVisible: false,
+    mapInitialized: false,
   };
 
   async componentDidMount () {
+    console.log('GuideScreenComponentDidMount');
+
     const mapData = await getGuidelines(6, 11);
     const objectPoints = this.indoorChanges(mapData.object_points);
     const initialSelectedCarousel: ObjectPoint = objectPoints[0];
+
+    const mapInitialized = await AsyncStorage.getItem(AsyncStorageKey.mapInitialized);
+    const announceModalVisible = (initialSelectedCarousel.floor !== '1');
 
     this.setState({
       indoorLevel: '1',
@@ -65,7 +73,8 @@ export default class GuideScreen extends React.Component<Props, State> {
       toilets: this.indoorChanges(mapData.toilets),
       objectPoints,
       selectedCarousel: initialSelectedCarousel,
-      showAnnounceModalVisible: initialSelectedCarousel.floor !== '1',
+      mapInitialized: mapInitialized === 'true',
+      showAnnounceModalVisible: announceModalVisible,
     });
   }
 
@@ -77,20 +86,18 @@ export default class GuideScreen extends React.Component<Props, State> {
       initializedLocation,
       toilets,
       guideLineMarkers,
-      showAnnounceModalVisible,
     } = this.state;
 
     const {height, width} = Dimensions.get('screen');
 
     const carouselFilteredByFloor = this.carouselFilteredByIndoorLevel();
 
-    if (showAnnounceModalVisible) {
-      this.hideAnnounceModal();
-    }
-
     return (
       <View style={styles.content_wrap}>
-        {this.state.showAnnounceModalVisible && <AnnounceModal announceText={this.announceMessage()} />}
+        {
+          this.state.showAnnounceModalVisible &&
+           <AnnounceModal announceText={this.announceMessage()} />
+        }
         <Ionicons name='md-arrow-back' size={45} style={styles.backBtn} onPress={this.goBack}/>
         <MapViewComponent
           indoorLevel={indoorLevel}
@@ -105,6 +112,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           gate={this.createMarkers('gate')}
           hideModal={this.hideModal}
           modalChange={this.state.showCarouselModalVisible}
+          checkInitialization={this.checkInitialization}
         />
         <CarouselModal modalView={this.state.showCarouselModalVisible}>
           <Carousel
@@ -232,8 +240,8 @@ export default class GuideScreen extends React.Component<Props, State> {
     return this.changeInitializedLocation(this.carouselFilteredByIndoorLevel()[index]);
   }
 
-  private carouselFilteredByIndoorLevel = () => {
-    return this.state.objectPoints.filter(point => point.floor === this.state.indoorLevel);
+  private carouselFilteredByIndoorLevel = (indoorLevel = this.state.indoorLevel) => {
+    return this.state.objectPoints.filter(point => point.floor === indoorLevel);
   }
 
   private changeModal = (initializedLocation: Region) => {
@@ -260,10 +268,25 @@ export default class GuideScreen extends React.Component<Props, State> {
       });
   }
 
-  private changeIndoorLevel = (nextIndoorLevel: string) => {
+  private changeIndoorLevel = async (nextIndoorLevel: string) => {
     const validatedIndoorLevel = nextIndoorLevel.replace(/階/, '');
     const indoorLevel = validatedIndoorLevel.substr(-2);
-    this.setState({ indoorLevel });
+
+    const mapInitialized: string = await AsyncStorage.getItem(AsyncStorageKey.mapInitialized) || 'false';
+
+    const includeSelectedCarousel = _.includes(
+      this.carouselFilteredByIndoorLevel(nextIndoorLevel),
+      this.state.selectedCarousel
+    );
+
+    if ( mapInitialized === 'true' && !includeSelectedCarousel) {
+      this.setState({
+        indoorLevel,
+        showAnnounceModalVisible: true,
+      });
+    } else {
+      this.setState({ indoorLevel, showAnnounceModalVisible: false });
+    }
   }
 
   private changeInitializedLocation = (carousel: ObjectPoint) => {
@@ -344,13 +367,26 @@ export default class GuideScreen extends React.Component<Props, State> {
       const nextFloor = this.state.objectPoints[0].floor;
       return nextFloor + suffix;
     }
+
+    if (this.state.selectedCarousel) {
+      const nextFloor = this.state.selectedCarousel.floor;
+      return nextFloor + suffix;
+    }
+
     return null;
   }
 
-  hideAnnounceModal = () => {
-    setTimeout(() => {
-      this.setState({showAnnounceModalVisible: false});
-    }, 4000);
+  private checkInitialization = async () => {
+    const mapInitialized = await AsyncStorage.getItem(AsyncStorageKey.mapInitialized);
+    console.log(`mapInitialized: ${typeof(mapInitialized)}, ${mapInitialized}`);
+
+    if (!mapInitialized) return;
+
+    this.setState({ mapInitialized: true }, async () =>
+      await AsyncStorage.setItem(AsyncStorageKey.mapInitialized, 'true')
+    );
+
+    console.log(`after ${this.state.mapInitialized}`);
   }
 }
 
