@@ -32,7 +32,6 @@ interface State { initializedLocation: Region; }
 
 export default class MapViewComponent extends React.Component<Props, State> {
   readonly state = { initializedLocation: this.props.initializedLocation };
-  mapRef: T | null;
 
   public shouldComponentUpdate(nextProps: Props, nextState: State) {
     // FIXME 個々の処理がカオスになってる

@@ -52,8 +52,6 @@ export default class GuideScreen extends React.Component<Props, State> {
   };
 
   async componentDidMount () {
-    console.log('GuideScreenComponentDidMount');
-
     const mapData = await getGuidelines(6, 11);
     const objectPoints = this.indoorChanges(mapData.object_points);
     const initialSelectedCarousel: ObjectPoint = objectPoints[0];
@@ -378,15 +376,12 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   private checkInitialization = async () => {
     const mapInitialized = await AsyncStorage.getItem(AsyncStorageKey.mapInitialized);
-    console.log(`mapInitialized: ${typeof(mapInitialized)}, ${mapInitialized}`);
 
     if (!mapInitialized) return;
 
     this.setState({ mapInitialized: true }, async () =>
       await AsyncStorage.setItem(AsyncStorageKey.mapInitialized, 'true')
     );
-
-    console.log(`after ${this.state.mapInitialized}`);
   }
 }
 
