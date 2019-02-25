@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Region, ElevatorMarker, ElevatorCapacity } from 'src/domains/map';
 import Color from '../../constants/Colors';
@@ -7,7 +7,7 @@ import Color from '../../constants/Colors';
 interface Props {
   size: ElevatorCapacity;
   navigation: any;
-  elevatorMarkers: ElevatorMarker[];
+  elevatorMarkers: any;
   initializedLocation: Region;
 }
 
@@ -18,19 +18,20 @@ export const Elevator: React.FC<Props> = props => {
   };
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={navigateMapScreen}>
-        <View style={styles.leftContainer}></View>
+    <View style={styles.container} >
+        <Image
+          source={require('../../../assets/images/elevator_setting_big.png')}
+          style={styles.leftContainer}
+        ></Image>
         <View style={styles.centerContainer}>
-          <Text style={styles.centerContainerTop}>JR横浜駅西口　階段隣</Text>
-        <Text>収容人数：{props.size}人</Text>
+          <Text style={styles.centerContainerTop}>{props.elevatorMarkers.name}</Text>
+        <Text>収容人数：{props.size}</Text>
         </View>
         <View style={styles.rightContainer}>
           <Text style={styles.rightContainerTop}>○</Text>
           <Text style={styles.rightContainerBottom}>使用可能</Text>
         </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
@@ -51,7 +52,6 @@ const styles = EStyleSheet.create({
   leftContainer: {
     width: `${width} * 0.14`,
     height: `${height} * 0.08`,
-    backgroundColor: Color.mainColor,
   },
   centerContainer: {
     marginLeft: 20,

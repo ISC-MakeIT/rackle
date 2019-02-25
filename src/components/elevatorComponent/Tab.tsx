@@ -20,7 +20,7 @@ export const Tab: React.FC<Props> = props => {
       style={styles.container}
       onPress={changeCapacity}
     >
-      <Text style={styles.containerText}>{props.size}人乗り</Text>
+      <Text style={styles.containerText}>{props.size}</Text>
     </TouchableOpacity>
   );
 };
@@ -35,6 +35,7 @@ const styles = EStyleSheet.create({
     borderColor: Color.mainColor,
     borderWidth: 1,
     backgroundColor: Color.white,
+    //borderRadius: '0.5em',
   },
   containerText: {
     marginLeft: 'auto',
