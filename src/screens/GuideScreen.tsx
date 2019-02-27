@@ -194,16 +194,23 @@ export default class GuideScreen extends React.Component<Props, State> {
           item.type === 'elevator' ?
             <View style={styles.carouselElevatorLabel}>
               <Text style={styles.carouselElevatorLabelText}>{item.caption}</Text>
-            </View> : null
+            </View>
+          :
+            <View style={styles.carouselElevatorLabel}>
+              <Text style={styles.carouselElevatorLabelText}>{item.name}</Text>
+          </View>
         }
-        <View style={styles.carouselMovieBottom}>
+        <View style={styles.imageMessage}>
+          <Text style={styles.imageMessageText}>※これはイメージです</Text>
+        </View>
+        {/* <View style={styles.carouselMovieBottom}>
           <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
-            {/* <View style={styles.carouselMovieBottomTextAround}>
+            <View style={styles.carouselMovieBottomTextAround}>
               <Image source={movieIcon} style={styles.movieIcon} />
               <Text style={styles.carouselMovieBottomText}>再生</Text>
-            </View> */}
+            </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     );
   }
@@ -480,8 +487,6 @@ const styles = EStyleSheet.create({
   },
   guideBottom: {
     flexDirection: 'column',
-    // marginBottom: -10,
-    // marginRight: -10,
     marginTop: 10,
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
     borderRadius: 50,
@@ -527,5 +532,16 @@ const styles = EStyleSheet.create({
     height: height * 0.22,
     top: height * 0.03,
     marginRight: 10,
+  },
+  imageMessage: {
+    marginBottom: 'auto',
+    marginTop: 'auto',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+  },
+  imageMessageText: {
+    color: Colors.white,
+    fontSize: '1.5rem',
+    fontFamily: 'MPLUS1p-Medium',
   },
 });
