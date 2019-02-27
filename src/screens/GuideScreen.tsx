@@ -10,7 +10,7 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { Modal as CarouselModal } from '../components/Modal';
 import Colors from '../constants/Colors';
 import movieIcon from '../../assets/images/movie-load-icon.png';
-import elevatorIcon from '../../assets/images/elevator_setting_big.png';
+import elevatorIcon from '../../assets/images/elevator_button.png';
 import { getGuidelines } from '../services/guidelines';
 import { ObjectPoint } from '../domains/object_point';
 import { LocationPoint } from '../domains/location_point';
@@ -107,7 +107,10 @@ export default class GuideScreen extends React.Component<Props, State> {
             </TouchableOpacity>
           </View>
           <View style={styles.guideBottom}>
-            <TouchableOpacity style={styles.carouselMovieBottomRadius}>
+            <TouchableOpacity
+              style={styles.carouselMovieBottomRadius}
+              onPress={this.moveElevatorScreen}
+            >
               <View style={styles.carouselMovieBottomTextAround}>
                 <Image source={elevatorIcon} style={styles.movieIcon} />
                 <Text style={styles.carouselMovieBottomText}>一覧</Text>
@@ -150,6 +153,8 @@ export default class GuideScreen extends React.Component<Props, State> {
       </View>
     );
   }
+
+  private moveElevatorScreen = () => this.props.navigation.navigate('Elevator');
 
   private goBack = () => this.props.navigation.goBack();
 
@@ -203,14 +208,6 @@ export default class GuideScreen extends React.Component<Props, State> {
         <View style={styles.imageMessage}>
           <Text style={styles.imageMessageText}>※これはイメージです</Text>
         </View>
-        {/* <View style={styles.carouselMovieBottom}>
-          <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
-            <View style={styles.carouselMovieBottomTextAround}>
-              <Image source={movieIcon} style={styles.movieIcon} />
-              <Text style={styles.carouselMovieBottomText}>再生</Text>
-            </View>
-          </TouchableOpacity>
-        </View> */}
       </View>
     );
   }
@@ -526,7 +523,6 @@ const styles = EStyleSheet.create({
   },
   guideButtonAround: {
     position: 'absolute',
-    //backgroundColor: 'red',
     right: 0,
     width: width * 0.16,
     height: height * 0.22,

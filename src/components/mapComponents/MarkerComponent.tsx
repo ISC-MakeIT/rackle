@@ -41,7 +41,7 @@ export default class MarkerComponent extends React.Component<Props, {}> {
       case 'gate':
         return require('../../../assets/images/map-ticket-gate.png');
       case 'carousel':
-        return require('../../../assets/images/map-movie-marker-check.png');
+        return require('../../../assets/images/map-pointer.png');
       default:
         return null;
     }
