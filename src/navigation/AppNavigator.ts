@@ -7,9 +7,9 @@ import ElevatorScreen from '../screens/ElevatorScreen';
 export default createAppContainer(
   createStackNavigator(
     {
-      Elevator: { screen: ElevatorScreen },
       Home: { screen: HomeScreen },
       Guide: { screen: GuideScreen },
+      Elevator: { screen: ElevatorScreen },
     }
   )
 );

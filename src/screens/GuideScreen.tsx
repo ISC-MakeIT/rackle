@@ -10,6 +10,7 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { Modal as CarouselModal } from '../components/Modal';
 import Colors from '../constants/Colors';
 import movieIcon from '../../assets/images/movie-load-icon.png';
+import elevatorIcon from '../../assets/images/elevator_setting_big.png';
 import { getGuidelines } from '../services/guidelines';
 import { ObjectPoint } from '../domains/object_point';
 import { LocationPoint } from '../domains/location_point';
@@ -96,6 +97,24 @@ export default class GuideScreen extends React.Component<Props, State> {
           hideModal={this.hideModal}
           modalChange={this.state.showCarouselModalVisible}
         />
+        <View style={styles.guideButtonAround}>
+          <View style={styles.guideBottom}>
+            <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
+              <View style={styles.carouselMovieBottomTextAround}>
+                <Image source={movieIcon} style={styles.movieIcon} />
+                <Text style={styles.carouselMovieBottomText}>再生</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.guideBottom}>
+            <TouchableOpacity style={styles.carouselMovieBottomRadius}>
+              <View style={styles.carouselMovieBottomTextAround}>
+                <Image source={elevatorIcon} style={styles.movieIcon} />
+                <Text style={styles.carouselMovieBottomText}>一覧</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
         <CarouselModal modalView={this.state.showCarouselModalVisible}>
           <Carousel
             data={carouselFilteredByFloor}
@@ -179,10 +198,10 @@ export default class GuideScreen extends React.Component<Props, State> {
         }
         <View style={styles.carouselMovieBottom}>
           <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
-            <View style={styles.carouselMovieBottomTextAround}>
+            {/* <View style={styles.carouselMovieBottomTextAround}>
               <Image source={movieIcon} style={styles.movieIcon} />
               <Text style={styles.carouselMovieBottomText}>再生</Text>
-            </View>
+            </View> */}
           </TouchableOpacity>
         </View>
       </View>
@@ -459,13 +478,13 @@ const styles = EStyleSheet.create({
     fontWeight: '700',
     fontFamily: 'MPLUS1p-Medium',
   },
-  carouselMovieBottom: {
-    position: 'absolute',
-    top: -10,
-    right: -10,
+  guideBottom: {
+    flexDirection: 'column',
+    // marginBottom: -10,
+    // marginRight: -10,
+    marginTop: 10,
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
     borderRadius: 50,
-    zIndex: 100,
   },
   carouselMovieBottomRadius: {
     borderRadius: 50,
@@ -499,5 +518,14 @@ const styles = EStyleSheet.create({
     fontWeight: '700',
     fontFamily: 'MPLUS1p-Medium',
     color: Colors.white,
+  },
+  guideButtonAround: {
+    position: 'absolute',
+    //backgroundColor: 'red',
+    right: 0,
+    width: width * 0.16,
+    height: height * 0.22,
+    top: height * 0.03,
+    marginRight: 10,
   },
 });
