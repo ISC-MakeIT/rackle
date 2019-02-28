@@ -178,7 +178,7 @@ export default class GuideScreen extends React.Component<Props, State> {
         {this.renderCarouselModalButton()}
         <ElevatorModal elevatorModalView={this.state.elevatorModalView}>
           <ElevatorList
-            elevatorObjectPoints={this.elevatorObjectPointPickOut()}
+            elevatorObjectPoints={this.getElevatorObjectPoint()}
             startGate={this.state.startGate}
             endGate={this.state.endGate}
             elevatorListChange={this.elevatorListChange}
@@ -189,7 +189,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     );
   }
 
-  private elevatorObjectPointPickOut = () => {
+  private getElevatorObjectPoint = () => {
     return this.state.objectPoints.filter(objectPoint => objectPoint.type === 'elevator');
   }
 
