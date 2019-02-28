@@ -14,7 +14,6 @@ interface Props {
 const NavigationPlate: React.FC<Props> = props => (
   <View style={styles.container}>
     <View style={styles.leftContainer}>
-      {/* <FontAwesome name={'map-marker'} size={16} color={Color.subColorRed} style={styles.mapMarkerIcon} /> */}
       <Image source={mapMarker} style={styles.mapMarkerIcon}/>
       <Text style={styles.stationName}>{props.stationName}</Text>
       <View style={styles.routeContainer}>
@@ -27,7 +26,6 @@ const NavigationPlate: React.FC<Props> = props => (
         </TouchableOpacity>
       </View>
     </View>
-    {/* <Text style={styles.caption}>{props.caption}</Text> */}
   </View>
 );
 
