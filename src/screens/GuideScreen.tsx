@@ -135,7 +135,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           <View style={styles.guideBottom}>
             <TouchableOpacity
               style={styles.carouselMovieBottomRadius}
-              onPress={this.elevatorListChangeFlg}
+              onPress={this.elevatorListChange}
             >
               <View style={styles.carouselMovieBottomTextAround}>
                 <Image source={elevatorIcon} style={styles.movieIcon} />
@@ -182,7 +182,7 @@ export default class GuideScreen extends React.Component<Props, State> {
             elevatorObjectPoints={this.elevatorObjectPointPickOut()}
             startGate={this.state.startGate}
             endGate={this.state.endGate}
-            elevatorListChangeFlg={this.elevatorListChangeFlg}
+            elevatorListChange={this.elevatorListChange}
           >
           </ElevatorList>
         </ElevatorModal>
@@ -194,7 +194,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     return this.state.objectPoints.filter(objectPoint => objectPoint.type === 'elevator');
   }
 
-  private elevatorListChangeFlg = () => {
+  private elevatorListChange = () => {
     const elevatorModalViewFlg = this.state.elevatorModalView ? false: true;
     this.setState({
       elevatorModalView: elevatorModalViewFlg,

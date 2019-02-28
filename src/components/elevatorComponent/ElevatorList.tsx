@@ -16,7 +16,7 @@ interface Props {
   elevatorObjectPoints: ObjectPoint[];
   startGate: Gate;
   endGate:Gate;
-  elevatorListChangeFlg: () => void;
+  elevatorListChange: () => void;
  }
 
 interface State {
@@ -45,7 +45,7 @@ export default class ElevatorList extends React.Component<Props, State> {
         </View>
         <TouchableOpacity
           style={styles.modalChangeButton}
-          onPress={this.props.elevatorListChangeFlg}
+          onPress={this.props.elevatorListChange}
         >
           <View style={styles.modalChangeButtonAround}>
             <Text style={styles.modalChangeButtonText}>×</Text>
