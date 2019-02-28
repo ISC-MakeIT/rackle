@@ -20,6 +20,7 @@ import * as _ from 'lodash';
 import { ElevatorModal } from '../components/elevatorComponent/ElevatorModal';
 import ElevatorList from '../components/elevatorComponent/ElevatorList';
 import NavigationPlate from '../components/NavigationPlate';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 interface Props { navigation: any; }
 
@@ -78,6 +79,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   public render () {
     if (this.state.indoorLevel == undefined) return null;
 
+    console.log(getStatusBarHeight(true));
     const {
       indoorLevel,
       initializedLocation,
@@ -93,12 +95,7 @@ export default class GuideScreen extends React.Component<Props, State> {
       <View style={styles.content_wrap}>
         {
           !this.state.elevatorModalView ?
-            <TouchableOpacity
-              style={styles.backBtn}
-              onPress={this.goBack}
-            >
-              <Text style={styles.backBtnText}>{'＜案内終了'}</Text>
-            </TouchableOpacity>
+          <Ionicons name='md-arrow-back' size={45} style={styles.backBtn} onPress={this.goBack}/>
           : null
         }
         <MapViewComponent
@@ -412,7 +409,7 @@ const styles = EStyleSheet.create({
     position: 'absolute',
     height: 45,
     width: width * 0.3,
-    //left: width * 0.01,
+    left: width * 0.03,
     top: height * 0.06,
     justifyContent: 'center',
     alignItems: 'center',
