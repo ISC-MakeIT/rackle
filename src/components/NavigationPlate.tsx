@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Color from '../constants/Colors';
 import { FontAwesome } from '@expo/vector-icons';
@@ -9,7 +9,6 @@ interface Props {
   stationName: string;
   startGateName: string;
   endGateName: string;
-  caption: string;
 }
 
 const NavigationPlate: React.FC<Props> = props => (
@@ -28,18 +27,21 @@ const NavigationPlate: React.FC<Props> = props => (
         </TouchableOpacity>
       </View>
     </View>
-    <Text style={styles.caption}>{props.caption}</Text>
+    {/* <Text style={styles.caption}>{props.caption}</Text> */}
   </View>
 );
 
 EStyleSheet.build({});
+const {width, height} = Dimensions.get('screen');
 
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    height: 69,
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    width: width,
+    height: height * 0.06,
+    zIndex: 30,
   },
   leftContainer: {
     flex: 1,
@@ -47,6 +49,7 @@ const styles = EStyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     height: 30,
+    marginTop: height * 0.015,
   },
   mapMarkerIcon: {
     width: 18,

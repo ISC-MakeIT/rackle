@@ -17,6 +17,9 @@ import { LocationPoint } from '../domains/location_point';
 import { S3ThumbnailPath } from '../services/s3_manager';
 import { Ionicons } from '@expo/vector-icons';
 import * as _ from 'lodash';
+import { ElevatorModal } from '../components/elevatorComponent/ElevatorModal';
+import ElevatorList from '../components/elevatorComponent/ElevatorList';
+import NavigationPlate from '../components/NavigationPlate';
 
 interface Props { navigation: any; }
 
@@ -34,6 +37,9 @@ interface State {
   selectedCarousel: Carousel;
   objectPoints: ObjectPoint[];
   guideLineMarkers: LocationPoint[];
+  elevatorModalView: boolean;
+  startGate: Gate;
+  endGate:Gate;
 }
 
 export default class GuideScreen extends React.Component<Props, State> {
@@ -44,6 +50,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   readonly state: State = {
     showCarouselModalVisible: false,
     movieModalVisible: false,
+    elevatorModalView: false,
   };
 
   async componentDidMount () {
@@ -63,6 +70,8 @@ export default class GuideScreen extends React.Component<Props, State> {
       toilets: this.indoorChanges(mapData.toilets),
       objectPoints,
       selectedCarousel: initialSelectedCarousel,
+      startGate: this.indoorChanges(mapData.start_gate),
+      endGate: this.indoorChanges(mapData.end_gate),
     });
   }
 
@@ -82,7 +91,16 @@ export default class GuideScreen extends React.Component<Props, State> {
 
     return (
       <View style={styles.content_wrap}>
-        <Ionicons name='md-arrow-back' size={45} style={styles.backBtn} onPress={this.goBack}/>
+        {
+          !this.state.elevatorModalView ?
+            <TouchableOpacity
+              style={styles.backBtn}
+              onPress={this.goBack}
+            >
+              <Text style={styles.backBtnText}>{'＜案内終了'}</Text>
+            </TouchableOpacity>
+          : null
+        }
         <MapViewComponent
           indoorLevel={indoorLevel}
           initializedLocation={initializedLocation!}
@@ -97,6 +115,14 @@ export default class GuideScreen extends React.Component<Props, State> {
           hideModal={this.hideModal}
           modalChange={this.state.showCarouselModalVisible}
         />
+        <View style={styles.navigationPlate}>
+          <NavigationPlate
+            stationName={'横浜駅'}
+            startGateName={`${this.state.startGate.tname}/${this.state.startGate.name}`}
+            endGateName={`${this.state.endGate.tname}/${this.state.endGate.name}`}
+          >
+          </NavigationPlate>
+        </View>
         <View style={styles.guideButtonAround}>
           <View style={styles.guideBottom}>
             <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
@@ -109,7 +135,7 @@ export default class GuideScreen extends React.Component<Props, State> {
           <View style={styles.guideBottom}>
             <TouchableOpacity
               style={styles.carouselMovieBottomRadius}
-              onPress={this.moveElevatorScreen}
+              onPress={this.elevatorListChangeFlg}
             >
               <View style={styles.carouselMovieBottomTextAround}>
                 <Image source={elevatorIcon} style={styles.movieIcon} />
@@ -150,11 +176,27 @@ export default class GuideScreen extends React.Component<Props, State> {
           />
         </Modal>
         {this.renderCarouselModalButton()}
+        <ElevatorModal elevatorModalView={this.state.elevatorModalView}>
+          <ElevatorList
+            elevatorModalView={this.state.elevatorModalView}
+            elevatorObjectPoints={this.elevatorObjectPointPickOut()}
+            startGate={this.state.startGate}
+            endGate={this.state.endGate}
+            elevatorListChangeFlg={this.elevatorListChangeFlg}
+          >
+          </ElevatorList>
+        </ElevatorModal>
       </View>
     );
   }
 
-  private moveElevatorScreen = () => this.props.navigation.navigate('Elevator');
+  private elevatorObjectPointPickOut = () => {
+    return this.state.objectPoints.filter(objectPoint => objectPoint.type === 'elevator');
+  }
+
+  private elevatorListChangeFlg = () => this.setState({
+    elevatorModalView: this.state.elevatorModalView ? false: true,
+  })
 
   private goBack = () => this.props.navigation.goBack();
 
@@ -166,6 +208,11 @@ export default class GuideScreen extends React.Component<Props, State> {
 
   private indoorChanges = (items: any) => {
     if (items == undefined) return;
+    if (!Array.isArray(items)) {
+      const floor = String(items.floor).replace('-', 'B');
+      items.floor = floor;
+      return items;
+    }
 
     return items.map((item: Gate) => {
       const floor = String(item.floor).replace('-', 'B');
@@ -362,12 +409,17 @@ const styles = EStyleSheet.create({
   backBtn: {
     position: 'absolute',
     height: 45,
-    width: 45,
-    left: 20,
-    top: 20,
+    width: width * 0.3,
+    //left: width * 0.01,
+    top: height * 0.06,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 10,
+    zIndex: 1,
+  },
+  backBtnText: {
+    fontSize: 20,
+    color: Colors.white,
+    fontFamily: 'MPLUS1p',
   },
   thumbnails: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -526,7 +578,7 @@ const styles = EStyleSheet.create({
     right: 0,
     width: width * 0.16,
     height: height * 0.22,
-    top: height * 0.03,
+    marginTop: height * 0.07,
     marginRight: 10,
   },
   imageMessage: {
@@ -539,5 +591,9 @@ const styles = EStyleSheet.create({
     color: Colors.white,
     fontSize: '1.5rem',
     fontFamily: 'MPLUS1p-Medium',
+  },
+  navigationPlate: {
+    position: 'absolute',
+    //marginTop: height * 0.012,
   },
 });
