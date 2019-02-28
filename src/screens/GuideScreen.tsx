@@ -178,7 +178,6 @@ export default class GuideScreen extends React.Component<Props, State> {
         {this.renderCarouselModalButton()}
         <ElevatorModal elevatorModalView={this.state.elevatorModalView}>
           <ElevatorList
-            elevatorModalView={this.state.elevatorModalView}
             elevatorObjectPoints={this.elevatorObjectPointPickOut()}
             startGate={this.state.startGate}
             endGate={this.state.endGate}
