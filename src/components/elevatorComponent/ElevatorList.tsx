@@ -11,7 +11,6 @@ import { Gate } from '../../domains/gate';
 
 type ElevatorCapacity = '6人乗り' | '8人乗り' | '12人乗り';
 
-
 interface Props {
   elevatorModalView: boolean;
   elevatorObjectPoints: ObjectPoint[];

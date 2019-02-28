@@ -194,9 +194,12 @@ export default class GuideScreen extends React.Component<Props, State> {
     return this.state.objectPoints.filter(objectPoint => objectPoint.type === 'elevator');
   }
 
-  private elevatorListChangeFlg = () => this.setState({
-    elevatorModalView: this.state.elevatorModalView ? false: true,
-  })
+  private elevatorListChangeFlg = () => {
+    const elevatorModalViewFlg = this.state.elevatorModalView ? false: true;
+    this.setState({
+      elevatorModalView: elevatorModalViewFlg,
+    });
+  }
 
   private goBack = () => this.props.navigation.goBack();
 
