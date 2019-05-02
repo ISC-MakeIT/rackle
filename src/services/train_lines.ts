@@ -6,6 +6,7 @@ export const getTrainLines = async(id: number) => {
   const queryParams = `?station_id=${id}`;
   const requestUrl = baseUrl + path + queryParams;
 
+  console.warn(requestUrl);
   const res = await fetch(requestUrl, {
     headers: defaultHeader,
     method: 'get',
@@ -15,6 +16,7 @@ export const getTrainLines = async(id: number) => {
 
   if (res.status !== 200) throw new Error(data.result);
 
+  alert(data);
   return data;
 };
 

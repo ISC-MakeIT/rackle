@@ -52,7 +52,7 @@ export default class HomeScreen extends React.Component<Props, State> {
   };
 
   readonly state = {
-    station: undefined,
+    station: {'id': 1, 'name': '横浜'},
     lines: undefined,
     fromGates: undefined,
     toGates: undefined,
@@ -74,6 +74,7 @@ export default class HomeScreen extends React.Component<Props, State> {
   }
 
   public render() {
+    console.warn(this.state);
     return (
       <View style={styles.container}>
       <ScrollView style={styles.ScrollView}>
