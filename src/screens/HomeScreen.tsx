@@ -74,7 +74,6 @@ export default class HomeScreen extends React.Component<Props, State> {
   }
 
   public render() {
-    console.warn(this.state);
     return (
       <View style={styles.container}>
       <ScrollView style={styles.ScrollView}>
@@ -147,6 +146,11 @@ export default class HomeScreen extends React.Component<Props, State> {
             buttonText={'案内開始'}
             navigate={this.props.navigation.navigate}
             pageName={'Guide'}
+          />
+          <ExtButton
+            buttonText={'MyPage'}
+            navigate={this.props.navigation.navigate}
+            pageName={'MyPage'}
           />
       </ImageBackground>
       </ScrollView>
