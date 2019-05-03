@@ -10,8 +10,15 @@ interface Props {
 }
 
 export const HeaderButton: React.FC<Props> = props => {
-  const navigate = () => props.navigate(props.pageName);
+  const navigate = () => props.navigate(props.pageName, getInfo());
 
+  const getInfo = () => {
+    const info = props.info;
+    return ({
+      wheelchair: info.wheelchair == undefined ? undefined : info.wheelchair,
+      caregiver: info.caregiver == undefined ? undefined : info.caregiver,
+    });
+  };
   return (
     <TouchableOpacity
       style={rootButtonStyle.execBtn}

@@ -77,6 +77,7 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   public render () {
+    alert(this.props.navigation.state.params.wheelchair);
     if (this.state.indoorLevel == undefined) return null;
 
     console.log(getStatusBarHeight(true));

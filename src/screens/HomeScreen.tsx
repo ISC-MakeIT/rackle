@@ -31,6 +31,15 @@ interface State {
 
 class LogoTitle extends React.Component<Props,{}> {
   render() {
+    // alert(this.props.info.wheelchair);
+
+    const getInfo = () => {
+      const info = this.props.info;
+      return ({
+        wheelchair: info.wheelchair == undefined ? undefined : info.wheelchair,
+        caregiver: info.caregiver == undefined ? undefined : info.caregiver,
+      });
+    };
     return (
       <View style={titleContainerStyle.header}>
         <Image
@@ -41,6 +50,7 @@ class LogoTitle extends React.Component<Props,{}> {
             buttonText={'マイページへ'}
             navigate={this.props.navigate}
             pageName={'MyPage'}
+            info={() => getInfo()}
         />
       </View>
     );
@@ -58,7 +68,7 @@ export default class HomeScreen extends React.Component<Props, State> {
     },
     header: ({navigation}) =>{
       return(
-        <LogoTitle navigate={navigation.navigate}/>
+        <LogoTitle navigate={navigation.navigate} info={navigation.state.params}/>
       );
     },
   };
@@ -86,6 +96,19 @@ export default class HomeScreen extends React.Component<Props, State> {
   }
 
   public render() {
+    const getInfo = () => {
+      const info = this.props.navigation.state.params;
+      if (info == undefined) return ({
+        wheelchair: undefined,
+        caregiver: undefined,
+      });
+      alert(this.props.navigation.state.params.wheelchair);
+
+      return ({
+        wheelchair: info.wheelchair == undefined ? undefined : info.wheelchair,
+        caregiver: info.caregiver == undefined ? undefined : info.caregiver,
+      });
+    };
     return (
       <View style={styles.container}>
       <ScrollView style={styles.ScrollView}>
@@ -158,6 +181,7 @@ export default class HomeScreen extends React.Component<Props, State> {
             buttonText={'案内開始'}
             navigate={this.props.navigation.navigate}
             pageName={'Guide'}
+            info={getInfo()}
           />
       </ImageBackground>
       </ScrollView>
@@ -291,7 +315,6 @@ const titleContainerStyle = EStyleSheet.create({
     backgroundColor: Color.mainColor,
   },
   headerIcon: {
-    textAlign: 'center',
     width: 110,
     height: 20,
     marginLeft: 'auto',

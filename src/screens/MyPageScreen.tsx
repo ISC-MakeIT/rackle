@@ -26,6 +26,11 @@ export default class MyPageScreen extends React.Component<Props, {}> {
     },
   };
 
+  public readonly state = {
+    wheelchair: this.props.navigation.state.params.wheelchair,
+    caregiver: this.props.navigation.state.params.caregiver,
+  };
+
   public render() {
   const btnColor = this.props.active ? { backgroundColor: Color.mainColor } : { backgroundColor: Color.white };
     return (
@@ -40,15 +45,24 @@ export default class MyPageScreen extends React.Component<Props, {}> {
               <Text style={mainStyle.checkListText}>車椅子</Text>
             </View>
             <View style={checkButtonStyle.checkButtonList}>
-              <TouchableOpacity style={checkButtonStyle.wheelchairButton}>
+              <TouchableOpacity
+                style={checkButtonStyle.wheelchairButton}
+                onPress={() => this.changeWheelchair('自走式')}
+              >
                 <Image source={wheelchairSelf} style={checkButtonStyle.iconImage}/>
                 <Text style={checkButtonStyle.wheelchairButtonText}>自走式</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={checkButtonStyle.wheelchairButton}>
+              <TouchableOpacity
+                style={checkButtonStyle.wheelchairButton}
+                onPress={() => this.changeWheelchair('介助者用')}
+              >
                 <Image source={wheelchairHelper} style={checkButtonStyle.iconImage}/>
                 <Text style={checkButtonStyle.wheelchairButtonText}>介助用</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={checkButtonStyle.wheelchairButton}>
+              <TouchableOpacity
+                style={checkButtonStyle.wheelchairButton}
+                onPress={() => this.changeWheelchair('ティルト')}
+              >
                 <Image source={wheelchairTilt} style={checkButtonStyle.iconImage}/>
                 <Text style={checkButtonStyle.wheelchairButtonText}>ティルト</Text>
               </TouchableOpacity>
@@ -59,10 +73,16 @@ export default class MyPageScreen extends React.Component<Props, {}> {
               <Text style={mainStyle.checkListText}>介助者</Text>
             </View>
             <View style={checkButtonStyle.checkButtonList}>
-              <TouchableOpacity style={checkButtonStyle.helperButton}>
+              <TouchableOpacity
+                style={checkButtonStyle.helperButton}
+                onPress={() => this.changeCaregiver('あり')}
+              >
                 <Text style={checkButtonStyle.helperButtonText}>あり</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={checkButtonStyle.helperButton}>
+              <TouchableOpacity
+                style={checkButtonStyle.helperButton}
+                onPress={() => this.changeCaregiver('なし')}
+              >
                 <Text style={checkButtonStyle.helperButtonText}>なし</Text>
               </TouchableOpacity>
             </View>
@@ -72,9 +92,23 @@ export default class MyPageScreen extends React.Component<Props, {}> {
           buttonText={'情報登録'}
           navigate={this.props.navigation.navigate}
           pageName={'Home'}
+          info={this.state}
         />
       </View>
     );
+  }
+
+  public changeWheelchair = (wheelchair: string) => {
+    this.setState({
+      wheelchair: wheelchair,
+    });
+    alert(this.state.wheelchair);
+  }
+
+  public changeCaregiver = (caregiver: string) => {
+    this.setState({
+      caregiver: caregiver,
+    });
   }
 }
 
