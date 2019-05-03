@@ -14,6 +14,7 @@ import swapIcon from '../../assets/images/changeIcon.png';
 import { getTrainLines } from '../services/train_lines';
 import { getGates } from '../services/gates';
 import { Gate } from 'src/domains/gate';
+import { HeaderButton } from '../components/HeaderButton';
 
 interface Props { navigation: any; }
 
@@ -28,13 +29,20 @@ interface State {
   selectedToGateId: number | undefined;
 }
 
-class LogoTitle extends React.Component {
+class LogoTitle extends React.Component<Props,{}> {
   render() {
     return (
-      <Image
-        source={headerLogo}
-        style={{ width: 110, height: 20 }}
-      />
+      <View style={titleContainerStyle.header}>
+        <Image
+          source={headerLogo}
+          style={titleContainerStyle.headerIcon}
+        />
+        <HeaderButton
+            buttonText={'マイページへ'}
+            navigate={this.props.navigate}
+            pageName={'MyPage'}
+        />
+      </View>
     );
   }
 }
@@ -48,7 +56,11 @@ export default class HomeScreen extends React.Component<Props, State> {
     headerTitleStyle: {
       color: Color.white,
     },
-    headerTitle: <LogoTitle />,
+    header: ({navigation}) =>{
+      return(
+        <LogoTitle navigate={navigation.navigate}/>
+      );
+    },
   };
 
   readonly state = {
@@ -146,11 +158,6 @@ export default class HomeScreen extends React.Component<Props, State> {
             buttonText={'案内開始'}
             navigate={this.props.navigation.navigate}
             pageName={'Guide'}
-          />
-          <ExtButton
-            buttonText={'MyPage'}
-            navigate={this.props.navigation.navigate}
-            pageName={'MyPage'}
           />
       </ImageBackground>
       </ScrollView>
@@ -278,7 +285,19 @@ const gradationStyle = EStyleSheet.create({
   },
 });
 
-const titleContainerStyle = EStyleSheet.create( {
+const titleContainerStyle = EStyleSheet.create({
+  header: {
+    height: 70,
+    backgroundColor: Color.mainColor,
+  },
+  headerIcon: {
+    textAlign: 'center',
+    width: 110,
+    height: 20,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    top: 30,
+  },
   appTitleContainer: {
     lineHeight: '1.5rem',
     marginTop: '3rem',

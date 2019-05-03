@@ -14,7 +14,7 @@ interface Props {
 
 export default class MyPageScreen extends React.Component<Props, {}> {
   updateActiveSelector = () => this.setState({ active: true});
-  
+
   public static navigationOptions = {
     title: 'マイページ',
     headerStyle: {
@@ -56,7 +56,7 @@ export default class MyPageScreen extends React.Component<Props, {}> {
           </View>
           <View style={mainStyle.checkListLastItem}>
             <View style={mainStyle.checkListLabel}>
-              <Text style={mainStyle.checkListText}>介助者</Text>            
+              <Text style={mainStyle.checkListText}>介助者</Text>
             </View>
             <View style={checkButtonStyle.checkButtonList}>
               <TouchableOpacity style={checkButtonStyle.helperButton}>
@@ -71,7 +71,7 @@ export default class MyPageScreen extends React.Component<Props, {}> {
         <ExtButton
           buttonText={'情報登録'}
           navigate={this.props.navigation.navigate}
-          pageName={'MyPage'}
+          pageName={'Home'}
         />
       </View>
     );
