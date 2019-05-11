@@ -15,8 +15,8 @@ export const ExtButton: React.FC<Props> = props => {
     const info = props.info;
     console.warn(info);
     return ({
-      wheelchair: info.wheelchair == undefined ? undefined : info.wheelchair,
-      caregiver: info.caregiver == undefined ? undefined : info.caregiver,
+      wheelchair: info.wheelchair,
+      caregiver: info.caregiver,
     });
   };
   return (

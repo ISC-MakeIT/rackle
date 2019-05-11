@@ -13,7 +13,7 @@ export const getGates = async(stationId: number, lineId: number) => {
 
   const data = await res.json();
 
-  // if (res.status !== 200) throw new Error(data.result);
+  //  if (res.status !== 200) console.warn(data.result);
 
   return data.gates;
 };

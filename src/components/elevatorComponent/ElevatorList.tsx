@@ -134,6 +134,7 @@ const styles = EStyleSheet.create({
     width: width * 0.12,
     height: width * 0.12,
     right: width * 0.05,
+    top: 10,
   },
   modalChangeButtonText: {
     color: Color.white,

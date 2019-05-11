@@ -15,6 +15,11 @@ interface Props {
 export default class MyPageScreen extends React.Component<Props, {}> {
   updateActiveSelector = () => this.setState({ active: true});
 
+  readonly state = {
+    caregiver: undefined,
+    wheelchair: undefined,
+  };
+
   public static navigationOptions = {
     title: 'マイページ',
     headerStyle: {
@@ -26,12 +31,13 @@ export default class MyPageScreen extends React.Component<Props, {}> {
     },
   };
 
-  public readonly state = {
-    wheelchair: this.props.navigation.state.params.wheelchair,
-    caregiver: this.props.navigation.state.params.caregiver,
-  };
-
   public render() {
+  const getInfo = () => {
+    return ({
+      wheelchair: this.state.wheelchair,
+      caregiver: undefined,
+    });
+  };
   const btnColor = this.props.active ? { backgroundColor: Color.mainColor } : { backgroundColor: Color.white };
     return (
       <View style={styles.container}>
@@ -45,28 +51,28 @@ export default class MyPageScreen extends React.Component<Props, {}> {
               <Text style={mainStyle.checkListText}>車椅子</Text>
             </View>
             <View style={checkButtonStyle.checkButtonList}>
-              <TouchableOpacity
-                style={checkButtonStyle.wheelchairButton}
-                onPress={() => this.changeWheelchair('自走式')}
-              >
-                <Image source={wheelchairSelf} style={checkButtonStyle.iconImage}/>
-                <Text style={checkButtonStyle.wheelchairButtonText}>自走式</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={checkButtonStyle.wheelchairButton}
-                onPress={() => this.changeWheelchair('介助者用')}
-              >
-                <Image source={wheelchairHelper} style={checkButtonStyle.iconImage}/>
-                <Text style={checkButtonStyle.wheelchairButtonText}>介助用</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={checkButtonStyle.wheelchairButton}
-                onPress={() => this.changeWheelchair('ティルト')}
-              >
-                <Image source={wheelchairTilt} style={checkButtonStyle.iconImage}/>
-                <Text style={checkButtonStyle.wheelchairButtonText}>ティルト</Text>
-              </TouchableOpacity>
-            </View>
+        <TouchableOpacity
+          style={this.state.wheelchair === '自走式' ? checkButtonStyle.selectWheelchairButton : checkButtonStyle.wheelchairButton}
+          onPress={() => this.changeWheelchair('自走式')}
+        >
+          <Image source={wheelchairSelf} style={checkButtonStyle.iconImage}/>
+          <Text style={checkButtonStyle.wheelchairButtonText}>自走式</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={this.state.wheelchair === '介助用' ? checkButtonStyle.selectWheelchairButton : checkButtonStyle.wheelchairButton}
+          onPress={() => this.changeWheelchair('介助用')}
+        >
+          <Image source={wheelchairHelper} style={checkButtonStyle.iconImage}/>
+          <Text style={checkButtonStyle.wheelchairButtonText}>介助用</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={this.state.wheelchair === 'ティルト' ? checkButtonStyle.selectWheelchairButton : checkButtonStyle.wheelchairButton}
+          onPress={() => this.changeWheelchair('ティルト')}
+        >
+          <Image source={wheelchairTilt} style={checkButtonStyle.iconImage}/>
+          <Text style={checkButtonStyle.wheelchairButtonText}>ティルト</Text>
+        </TouchableOpacity>
+      </View>
           </View>
           <View style={mainStyle.checkListLastItem}>
             <View style={mainStyle.checkListLabel}>
@@ -74,16 +80,16 @@ export default class MyPageScreen extends React.Component<Props, {}> {
             </View>
             <View style={checkButtonStyle.checkButtonList}>
               <TouchableOpacity
-                style={checkButtonStyle.helperButton}
+                style={this.state.caregiver === 'あり' ? checkButtonStyle.selectHelperButton : checkButtonStyle.helperButton}
                 onPress={() => this.changeCaregiver('あり')}
               >
-                <Text style={checkButtonStyle.helperButtonText}>あり</Text>
+                <Text style={this.state.caregiver === 'あり' ? checkButtonStyle.selectHelperButtonText : checkButtonStyle.helperButtonText}>あり</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={checkButtonStyle.helperButton}
+                style={this.state.caregiver === 'なし' ? checkButtonStyle.selectHelperButton : checkButtonStyle.helperButton}
                 onPress={() => this.changeCaregiver('なし')}
               >
-                <Text style={checkButtonStyle.helperButtonText}>なし</Text>
+                <Text style={this.state.caregiver === 'なし' ? checkButtonStyle.selectHelperButtonText : checkButtonStyle.helperButtonText}>なし</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -91,24 +97,21 @@ export default class MyPageScreen extends React.Component<Props, {}> {
         <ExtButton
           buttonText={'情報登録'}
           navigate={this.props.navigation.navigate}
-          pageName={'Home'}
-          info={this.state}
+          pageName={'Guide'}
+          info={getInfo()}
         />
       </View>
     );
   }
 
-  public changeWheelchair = (wheelchair: string) => {
+  public changeWheelchair = (wheelchair) => {
     this.setState({
       wheelchair: wheelchair,
     });
-    alert(this.state.wheelchair);
   }
 
-  public changeCaregiver = (caregiver: string) => {
-    this.setState({
-      caregiver: caregiver,
-    });
+  public changeCaregiver = (caregiver) => {
+    this.setState({caregiver: caregiver});
   }
 }
 
@@ -202,6 +205,19 @@ const checkButtonStyle = EStyleSheet.create({
     borderWidth: 2,
     borderRadius: '0.3rem',
   },
+  selectWheelchairButton: {
+    width: '4.5rem',
+    height: '4.5rem',
+    marginLeft: '0.6rem',
+    // marginRight: '0.3rem',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Color.mainColor,
+    borderColor: Color.mainColor,
+    borderWidth: 2,
+    borderRadius: '0.3rem',
+  },
   wheelchairButtonText: {
     color: Color.black,
     fontWeight: '700',
@@ -226,8 +242,26 @@ const checkButtonStyle = EStyleSheet.create({
     borderWidth: 2,
     borderRadius: 50,
   },
+  selectHelperButton: {
+    width: '7rem',
+    height: '2.3rem',
+    marginLeft: '0.6rem',
+    // marginRight: '0.4rem',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Color.mainColor,
+    borderColor: Color.mainColor,
+    borderWidth: 2,
+    borderRadius: 50,
+  },
   helperButtonText: {
     color: Color.mainColor,
+    fontWeight: '700',
+    fontSize: '1.1rem',
+  },
+  selectHelperButtonText: {
+    color: Color.white,
     fontWeight: '700',
     fontSize: '1.1rem',
   },

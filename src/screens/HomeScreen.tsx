@@ -36,8 +36,8 @@ class LogoTitle extends React.Component<Props,{}> {
     const getInfo = () => {
       const info = this.props.info;
       return ({
-        wheelchair: info.wheelchair == undefined ? undefined : info.wheelchair,
-        caregiver: info.caregiver == undefined ? undefined : info.caregiver,
+        wheelchair: info.wheelchair,
+        caregiver: undefined,
       });
     };
     return (
@@ -97,16 +97,10 @@ export default class HomeScreen extends React.Component<Props, State> {
 
   public render() {
     const getInfo = () => {
-      const info = this.props.navigation.state.params;
-      if (info == undefined) return ({
-        wheelchair: undefined,
-        caregiver: undefined,
-      });
-      alert(this.props.navigation.state.params.wheelchair);
-
+      const info = this.props.navigation.state.params.wheelchair;
       return ({
-        wheelchair: info.wheelchair == undefined ? undefined : info.wheelchair,
-        caregiver: info.caregiver == undefined ? undefined : info.caregiver,
+        wheelchair: info,
+        caregiver: undefined,
       });
     };
     return (
@@ -181,7 +175,7 @@ export default class HomeScreen extends React.Component<Props, State> {
             buttonText={'案内開始'}
             navigate={this.props.navigation.navigate}
             pageName={'Guide'}
-            info={getInfo()}
+            info={ getInfo() }
           />
       </ImageBackground>
       </ScrollView>

@@ -21,6 +21,9 @@ import { ElevatorModal } from '../components/elevatorComponent/ElevatorModal';
 import ElevatorList from '../components/elevatorComponent/ElevatorList';
 import NavigationPlate from '../components/NavigationPlate';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { MapData } from '../dummydata/mapData';
+import SetImage from '../../assets/images/set.png';
+
 
 interface Props { navigation: any; }
 
@@ -52,10 +55,47 @@ export default class GuideScreen extends React.Component<Props, State> {
     showCarouselModalVisible: false,
     movieModalVisible: false,
     elevatorModalView: false,
+    wheelchair: undefined,
   };
 
   async componentDidMount () {
-    const mapData = await getGuidelines(6, 11);
+    const info = this.props.navigation.state.params;
+    let mapData;
+    if (info.wheelchair === '自走式') {
+      mapData = await getGuidelines(6, 11, true);
+      // mapData = MapData;
+    } else {
+      mapData = await getGuidelines(6, 11);
+    }
+    const objectPoints = this.indoorChanges(mapData.object_points);
+    const initialSelectedCarousel = objectPoints[0];
+
+    this.setState({
+      indoorLevel: '1',
+      initializedLocation: {
+        latitude: 35.46588771428577,
+        longitude: 139.62227088041905,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
+      },
+      guideLineMarkers: this.indoorChanges(mapData.guidelines.location_points),
+      toilets: this.indoorChanges(mapData.toilets),
+      objectPoints,
+      selectedCarousel: initialSelectedCarousel,
+      startGate: this.indoorChanges(mapData.start_gate),
+      endGate: this.indoorChanges(mapData.end_gate),
+    });
+  }
+
+  async componentWillReceiveProps (nextProps) {
+    const info = nextProps.navigation.state.params;
+    let mapData;
+    if (info.wheelchair === '自走式') {
+      mapData = await getGuidelines(6, 11, true);
+      // mapData = MapData;
+    } else {
+      mapData = await getGuidelines(6, 11);
+    }
     const objectPoints = this.indoorChanges(mapData.object_points);
     const initialSelectedCarousel = objectPoints[0];
 
@@ -77,10 +117,9 @@ export default class GuideScreen extends React.Component<Props, State> {
   }
 
   public render () {
-    alert(this.props.navigation.state.params.wheelchair);
+    // this.setState({wheelchair: this.props.navigation.state.params.wheelchair})
+    // alert(this.props.navigation.state.params.wheelchair)
     if (this.state.indoorLevel == undefined) return null;
-
-    console.log(getStatusBarHeight(true));
     const {
       indoorLevel,
       initializedLocation,
@@ -122,6 +161,17 @@ export default class GuideScreen extends React.Component<Props, State> {
           </NavigationPlate>
         </View>
         <View style={styles.guideButtonAround}>
+          <View style={styles.guideBottom}>
+            <TouchableOpacity
+              style={styles.carouselMovieBottomRadius}
+              onPress={this.setInfo}
+            >
+              <View style={styles.carouselMovieBottomTextAround}>
+                <Image source={SetImage} style={{...styles.movieIcon, width: 30, height: 30}} />
+                <Text style={{...styles.carouselMovieBottomText, marginTop: 6}}>設定</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
           <View style={styles.guideBottom}>
             <TouchableOpacity style={styles.carouselMovieBottomRadius} onPress={this.openMovieModal}>
               <View style={styles.carouselMovieBottomTextAround}>
@@ -198,7 +248,7 @@ export default class GuideScreen extends React.Component<Props, State> {
     });
   }
 
-  private goBack = () => this.props.navigation.goBack();
+  private goBack = () => this.props.navigation.navigate('Home', {wheelchair: this.props.navigation.state.params.wheelchair, caregiver: this.props.navigation.state.params.caregiver});
 
   private setMovieModalVisible = (movieModalVisible: boolean) => this.setState({ movieModalVisible });
 
@@ -337,6 +387,10 @@ export default class GuideScreen extends React.Component<Props, State> {
       },
       selectedCarousel: carousel,
     });
+  }
+
+  public setInfo = () => {
+    this.props.navigation.navigate('MyPage', this.props.navigation.state.params);
   }
 
   private createMarkers = (type: ObjectType) => {

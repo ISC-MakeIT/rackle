@@ -4,7 +4,6 @@ import { createBottomTabNavigator, createStackNavigator, TabNavigator } from 're
 import TabBarIcon from '../components/TabBarIcon';
 import GuideScreen from '../screens/GuideScreen';
 import HomeScreen from '../screens/HomeScreen';
-import MyPageScreen from '../screens/MyPageScreen';
 import ElevatorScreen from '../screens/ElevatorScreen';
 import MapScreen from '../screens/MapScreen';
 

@@ -1,21 +1,21 @@
 import * as React from 'react';
-import {Text, TouchableOpacity, Image} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 import Color from '../constants/Colors';
-import EStyleSheet, { absoluteFill } from 'react-native-extended-stylesheet';
-import SetImage from '../../assets/images/set.png';
-
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 interface Props {
   navigate: any;
   buttonText: string;
   pageName: string;
+  stage: number;
+  changeStage: any;
 }
 
-export const HeaderButton: React.FC<Props> = props => {
+export const SetButton: React.FC<Props> = props => {
   const navigate = () => props.navigate(props.pageName, getInfo());
-
   const getInfo = () => {
     const info = props.info;
+    console.warn(info);
     return ({
       wheelchair: info.wheelchair == undefined ? undefined : info.wheelchair,
       caregiver: info.caregiver == undefined ? undefined : info.caregiver,
@@ -24,13 +24,9 @@ export const HeaderButton: React.FC<Props> = props => {
   return (
     <TouchableOpacity
       style={rootButtonStyle.execBtn}
-      onPress={navigate}
+      onPress={props.stage === 3 ? navigate : props.changeStage}
     >
-        {/* <Text style={rootButtonStyle.execText}>{props.buttonText}</Text> */}
-        <Image
-          source={SetImage}
-          style={{width: 25, height: 25}}
-        />
+        <Text style={rootButtonStyle.execText}>{props.buttonText}</Text>
     </TouchableOpacity>
   );
 };
@@ -39,18 +35,22 @@ EStyleSheet.build();
 
 const rootButtonStyle = EStyleSheet.create({
   execBtn: {
-    width: '30%',
-    height: '2rem',
-    backgroundColor: Color.mainColor,
+    width: '80%',
+    height: '3.5rem',
+    backgroundColor: Color.subColorRed,
+    marginLeft: 'auto',
+    marginRight: 'auto',
     borderRadius: 50,
-    position: 'absolute',
-    right: -80,
-    top: 25,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: '4.5rem',
+    marginTop: 40,
   },
   execText: {
-    fontSize: '1.2rem',
-    fontWeight: '500',
+    fontSize: '1.5rem',
+    fontWeight: '700',
     color: Color.white,
-    letterSpacing: '0.1rem',
+    letterSpacing: '0.2rem',
   },
 });

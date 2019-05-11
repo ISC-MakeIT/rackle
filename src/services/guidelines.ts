@@ -1,8 +1,10 @@
 import {baseUrl, defaultHeader} from './client';
+import { MapData, newDate } from '../dummydata/mapData';
+
 
 const path = '/guidelines';
 
-export const getGuidelines = async(startLineId: number, endLineId: number) => {
+export const getGuidelines = async(startLineId: number, endLineId: number, flg = false) => {
   const queryParams = `?start_gate_id=${startLineId}&end_gate_id=${endLineId}`;
   const requestUrl = baseUrl + path + queryParams;
 
@@ -11,7 +13,8 @@ export const getGuidelines = async(startLineId: number, endLineId: number) => {
     method: 'get',
   });
 
-  const data = await res.json();
+  let data = await res.json();
+  if (flg) data = MapData;
 
   return data;
 };
