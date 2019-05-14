@@ -108,7 +108,7 @@ export default class MapViewComponent extends React.Component<Props, State> {
         loadingEnabled={true}
         scrollEnabled={!this.props.guideLinesColor}
         rotateEnabled={!this.props.guideLinesColor}
-        onPress={this.props.hideModal}
+        onPress={e => {console.warn(e.nativeEvent.coordinate);}}
       >
         {movieMarkers}
         {toiletMarkers}

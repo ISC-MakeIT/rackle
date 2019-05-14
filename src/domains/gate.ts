@@ -1,6 +1,6 @@
 export interface Gate {
   id: number;
-  train_line_name: string;
+  tname: string;
   name: string;
   latitude: number;
   longitude: number;

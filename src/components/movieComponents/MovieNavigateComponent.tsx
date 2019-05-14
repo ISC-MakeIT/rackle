@@ -53,7 +53,7 @@ export default class MovieNavigateComponent extends React.Component<Props, State
   public render() {
     const { file_path } = this.props.carouselMarker;
     const url = S3MoviePath(file_path);
- 
+
     return(
       <View style={styles.content_wrap}>
         <TouchableOpacity style={styles.header__controller_back_wrap} onPress={this.props.setMovieModalVisible}>

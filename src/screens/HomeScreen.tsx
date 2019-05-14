@@ -14,6 +14,7 @@ import swapIcon from '../../assets/images/changeIcon.png';
 import { getTrainLines } from '../services/train_lines';
 import { getGates } from '../services/gates';
 import { Gate } from 'src/domains/gate';
+import { HeaderButton } from '../components/HeaderButton';
 
 interface Props { navigation: any; }
 
@@ -28,13 +29,30 @@ interface State {
   selectedToGateId: number | undefined;
 }
 
-class LogoTitle extends React.Component {
+class LogoTitle extends React.Component<Props,{}> {
   render() {
+    // alert(this.props.info.wheelchair);
+
+    const getInfo = () => {
+      const info = this.props.info;
+      return ({
+        wheelchair: info.wheelchair,
+        caregiver: undefined,
+      });
+    };
     return (
-      <Image
-        source={headerLogo}
-        style={{ width: 110, height: 20 }}
-      />
+      <View style={titleContainerStyle.header}>
+        <Image
+          source={headerLogo}
+          style={titleContainerStyle.headerIcon}
+        />
+        <HeaderButton
+            buttonText={'マイページへ'}
+            navigate={this.props.navigate}
+            pageName={'MyPage'}
+            info={() => getInfo()}
+        />
+      </View>
     );
   }
 }
@@ -48,11 +66,15 @@ export default class HomeScreen extends React.Component<Props, State> {
     headerTitleStyle: {
       color: Color.white,
     },
-    headerTitle: <LogoTitle />,
+    header: ({navigation}) =>{
+      return(
+        <LogoTitle navigate={navigation.navigate} info={navigation.state.params}/>
+      );
+    },
   };
 
   readonly state = {
-    station: undefined,
+    station: {'id': 1, 'name': '横浜'},
     lines: undefined,
     fromGates: undefined,
     toGates: undefined,
@@ -74,6 +96,13 @@ export default class HomeScreen extends React.Component<Props, State> {
   }
 
   public render() {
+    const getInfo = () => {
+      const info = this.props.navigation.state.params.wheelchair;
+      return ({
+        wheelchair: info,
+        caregiver: undefined,
+      });
+    };
     return (
       <View style={styles.container}>
       <ScrollView style={styles.ScrollView}>
@@ -146,6 +175,7 @@ export default class HomeScreen extends React.Component<Props, State> {
             buttonText={'案内開始'}
             navigate={this.props.navigation.navigate}
             pageName={'Guide'}
+            info={ getInfo() }
           />
       </ImageBackground>
       </ScrollView>
@@ -273,7 +303,18 @@ const gradationStyle = EStyleSheet.create({
   },
 });
 
-const titleContainerStyle = EStyleSheet.create( {
+const titleContainerStyle = EStyleSheet.create({
+  header: {
+    height: 70,
+    backgroundColor: Color.mainColor,
+  },
+  headerIcon: {
+    width: 110,
+    height: 20,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    top: 30,
+  },
   appTitleContainer: {
     lineHeight: '1.5rem',
     marginTop: '3rem',

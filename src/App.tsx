@@ -44,7 +44,7 @@ export default class App extends React.Component <Props, State> {
         require('../assets/images/user_setting_icon_2_0.png'),
         require('../assets/images/user_setting_icon_3_0.png'),
         require('../assets/images/marker.png'),
-        // ↓で読み込むと早いけど、なんかサイズが狂う
+        //↓で読み込むと早いけど、なんかサイズが狂う
         // require('../assets/images/map-toilet-marker.png'),
         // require('../assets/images/map_movie_pointer.png'),
         // require('../assets/images/map-elevator-small-marker.png'),
